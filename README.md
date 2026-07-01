@@ -161,6 +161,12 @@ Hot-swap only works where the client honors `notifications/tools/list_changed`, 
 
 The registry/CLI works with any client (it just writes config). The hot-swap is the part that needs client support.
 
+## How this compares (honestly)
+
+This is a tiny, days-old, solo project. There's an official MCP registry (Anthropic + GitHub + Microsoft) and directories indexing tens of thousands of servers — MCP Salad isn't trying to out-register those. The `list_changed` mechanism is straight from the spec; others use it too. What's actually here is a clean **operator hot-swap UX** — flip a whole server on/off, live, from a second terminal — plus a small legible CLI.
+
+For the full competitive picture, honest verdict, and what is / isn't novel, see **[docs/landscape.md](docs/landscape.md)**.
+
 ## Two parts, one project
 
 - **Gateway** (`gateway/`) — an MCP router that loads servers on demand and hot-swaps them at runtime via `notifications/tools/list_changed`. It opens a control socket so `salad enable/disable <server>` can flip tools on a live session — no restart.
