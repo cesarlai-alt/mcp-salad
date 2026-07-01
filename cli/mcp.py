@@ -562,5 +562,129 @@ def doctor():
     sys.exit(0 if issues == 0 else 1)
 
 
+# ── Upgrade ───────────────────────────────────────────────────────────────────
+
+def _build_canonical_entry(server: dict, existing_entry: dict = None) -> dict:
+    """Build the 'should-be' server entry from registry data.
+
+    Preserves existing env values so user credentials are never overwritten.
+    """
+    install_section = server.get("install", {})
+    install_type = install_section.get("type", "stdio")
+    env_req = install_section.get("env_required", [])
+
+    if install_type == "http":
+        return {
+            "type": "http",
+            "url": install_section.get("url", ""),
+        }
+
+    entry: dict = {
+        "type": "stdio",
+        "command": install_section.get("command", "npx"),
+        "args": list(install_section.get("args", [])),
+    }
+    if env_req:
+        existing_env = (existing_entry or {}).get("env", {})
+        env_dict = {}
+        for env_item in env_req:
+            var_name = env_item["name"]
+            env_dict[var_name] = existing_env.get(var_name, f"${{{var_name}}}")
+        entry["env"] = env_dict
+    return entry
+
+
+def _entry_summary(entry: dict) -> str:
+    """One-line display string for diff output."""
+    if entry.get("type") == "http":
+        return entry.get("url", "")
+    cmd = entry.get("command", "")
+    args = " ".join(entry.get("args", []))
+    return f"{cmd} {args}".strip()
+
+
+def _entries_differ(current: dict, new: dict) -> bool:
+    """True if structural config differs (env *values* are ignored, only key-set is checked)."""
+    for key in ("type", "command", "args", "url"):
+        if current.get(key) != new.get(key):
+            return True
+    current_env_keys = set((current.get("env") or {}).keys())
+    new_env_keys = set((new.get("env") or {}).keys())
+    return current_env_keys != new_env_keys
+
+
+def _upgrade_one(server_id: str, config: dict, registry_servers: list) -> bool:
+    """Upgrade a single server in-place. Returns True if config was changed."""
+    click.echo(f"\nUpgrading {server_id}...")
+
+    installed = config.get("servers") or {}
+    if server_id not in installed:
+        click.echo(f"  ⚠️  '{server_id}' is not installed — skipping.")
+        return False
+
+    reg_server = next(
+        (s for s in registry_servers if normalize_server_id(s["name"]) == server_id),
+        None,
+    )
+    if reg_server is None:
+        click.echo(f"  ⚠️  '{server_id}' not found in registry — cannot upgrade.")
+        return False
+
+    current_entry = installed[server_id]
+    new_entry = _build_canonical_entry(reg_server, existing_entry=current_entry)
+
+    if not _entries_differ(current_entry, new_entry):
+        click.echo("  No changes — already up to date.")
+        return False
+
+    current_summary = _entry_summary(current_entry)
+    new_summary = _entry_summary(new_entry)
+    if current_summary != new_summary:
+        click.echo(f"  Current:  {current_summary}")
+        click.echo(f"  Registry: {new_summary}")
+        click.echo("  ↑ args updated.")
+
+    config["servers"][server_id] = new_entry
+    click.echo(f"\n  ✅ {server_id} upgraded.")
+    return True
+
+
+@cli.command()
+@click.argument("name", required=False)
+@click.option("--all", "upgrade_all", is_flag=True, default=False,
+              help="Upgrade all installed servers")
+def upgrade(name, upgrade_all):
+    """Upgrade an installed server's config entry from the registry."""
+    if not name and not upgrade_all:
+        click.echo("Usage: mcp upgrade <name>  OR  mcp upgrade --all")
+        sys.exit(1)
+
+    config = load_gateway_config()
+    if config is None:
+        click.echo(f"Gateway config not found at {GATEWAY_CONFIG}")
+        sys.exit(1)
+
+    config.setdefault("servers", {})
+    registry_servers = get_servers()
+
+    if upgrade_all:
+        installed_ids = list(config["servers"].keys())
+        if not installed_ids:
+            click.echo("\n  No servers installed to upgrade.\n")
+            return
+        changed = sum(
+            1 for sid in installed_ids if _upgrade_one(sid, config, registry_servers)
+        )
+        if changed:
+            save_gateway_config(config)
+        click.echo(f"\n  {changed} server(s) upgraded.\n")
+    else:
+        server_id = normalize_server_id(name)
+        changed = _upgrade_one(server_id, config, registry_servers)
+        if changed:
+            save_gateway_config(config)
+        click.echo()
+
+
 if __name__ == "__main__":
     cli()

@@ -329,6 +329,35 @@ class TestMcpDoctor:
 # Smoke: existing Phase 1 commands still work
 # --------------------------------------------------------------------------- #
 
+# --------------------------------------------------------------------------- #
+# Tests: mcp upgrade
+# --------------------------------------------------------------------------- #
+
+class TestMcpUpgrade:
+    def test_upgrade_installed_server_exits_ok(self, config_with_firecrawl):
+        """Upgrading an installed server exits 0."""
+        result = run_cli("upgrade", "firecrawl", config_path=config_with_firecrawl)
+        assert result.returncode == 0, (
+            f"Expected exit 0, got {result.returncode}\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+    def test_upgrade_noninstalled_server_no_crash(self, empty_config):
+        """Upgrading a server that isn't installed exits 0 with a warning, no traceback."""
+        result = run_cli("upgrade", "firecrawl", config_path=empty_config)
+        assert "traceback" not in result.stderr.lower(), (
+            f"Upgrading a non-installed server raised an unhandled exception:\n{result.stderr}"
+        )
+        assert result.returncode == 0, (
+            f"Expected exit 0 (graceful warning) for non-installed server, "
+            f"got {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+
+# --------------------------------------------------------------------------- #
+# Smoke: existing Phase 1 commands still work
+# --------------------------------------------------------------------------- #
+
 class TestPhase1Regression:
     """Quick sanity checks that Phase 1 commands weren't broken by Phase 2."""
 
