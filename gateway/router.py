@@ -47,7 +47,12 @@ logging.basicConfig(
 log = logging.getLogger("vero-router")
 
 # ─── Config loading ─────────────────────────────────────────────────────────────
-CONFIG_PATH = Path(__file__).parent / "config.yaml"
+# Config path defaults to gateway/config.yaml next to this file, but can be
+# overridden via the MCP_ROUTER_CONFIG env var (used by tests and alternate
+# deployments). Kept backward-compatible: unset → identical to previous behavior.
+CONFIG_PATH = Path(
+    os.environ.get("MCP_ROUTER_CONFIG", str(Path(__file__).parent / "config.yaml"))
+)
 
 
 def load_config() -> dict:
