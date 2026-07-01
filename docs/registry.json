@@ -1,0 +1,218 @@
+[
+  {
+    "name": "alpha-vantage",
+    "display_name": "Alpha Vantage",
+    "description": "Comprehensive financial market data — stocks, forex, crypto, and economic indicators via Alpha Vantage API",
+    "author": "community",
+    "homepage": "https://www.alphavantage.co",
+    "license": "MIT",
+    "tags": [
+      "finance",
+      "stocks",
+      "forex",
+      "crypto",
+      "data",
+      "api"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "alpha-vantage-mcp"
+      ],
+      "env_required": [
+        {
+          "name": "ALPHA_VANTAGE_API_KEY",
+          "description": "Get free key at alphavantage.co/support/#api-key",
+          "url": "https://www.alphavantage.co/support/#api-key"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"alpha-vantage-mcp\"],\n  \"env\": {\"ALPHA_VANTAGE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
+    "name": "context7",
+    "display_name": "Context7",
+    "description": "Up-to-date documentation for any library — resolves library IDs and fetches live docs",
+    "author": "upstash",
+    "homepage": "https://context7.com",
+    "license": "MIT",
+    "tags": [
+      "documentation",
+      "libraries",
+      "coding",
+      "research"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@upstash/context7-mcp\"]\n}\n"
+  },
+  {
+    "name": "firecrawl",
+    "display_name": "Firecrawl",
+    "description": "Web scraping and crawling MCP server — extract content from any URL",
+    "author": "mendableai",
+    "homepage": "https://firecrawl.dev",
+    "license": "MIT",
+    "tags": [
+      "web",
+      "scraping",
+      "crawling",
+      "research"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env_required": [
+        {
+          "name": "FIRECRAWL_API_KEY",
+          "description": "Get from firecrawl.dev/app",
+          "url": "https://firecrawl.dev/app"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"firecrawl-mcp\"],\n  \"env\": {\"FIRECRAWL_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
+    "name": "google-maps",
+    "display_name": "Google Maps",
+    "description": "Location search, directions, distance matrix, geocoding, and place details via Google Maps API",
+    "author": "google",
+    "homepage": "https://developers.google.com/maps",
+    "license": "Apache-2.0",
+    "tags": [
+      "maps",
+      "location",
+      "navigation",
+      "geocoding",
+      "places"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@googlemaps/mcp"
+      ],
+      "env_required": [
+        {
+          "name": "GOOGLE_MAPS_API_KEY",
+          "description": "Get from Google Cloud Console",
+          "url": "https://console.cloud.google.com/"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@googlemaps/mcp\"],\n  \"env\": {\"GOOGLE_MAPS_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
+    "name": "obsidian-fs",
+    "display_name": "Obsidian File System",
+    "description": "Read, write, and search notes in your Obsidian vault — full filesystem access to local markdown notes",
+    "author": "community",
+    "homepage": "https://obsidian.md",
+    "license": "MIT",
+    "tags": [
+      "notes",
+      "obsidian",
+      "markdown",
+      "productivity",
+      "pkm"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "obsidian-mcp"
+      ],
+      "env_required": [
+        {
+          "name": "OBSIDIAN_VAULT_PATH",
+          "description": "Absolute path to your Obsidian vault folder",
+          "url": "https://obsidian.md"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"obsidian-mcp\"],\n  \"env\": {\"OBSIDIAN_VAULT_PATH\": \"/path/to/your/vault\"}\n}\n"
+  },
+  {
+    "name": "pubmed",
+    "display_name": "PubMed Research",
+    "description": "Search and retrieve biomedical literature from PubMed and Europe PMC databases",
+    "author": "community",
+    "homepage": "https://pubmed.ncbi.nlm.nih.gov",
+    "license": "MIT",
+    "tags": [
+      "research",
+      "biomedical",
+      "science",
+      "papers",
+      "health"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "pubmed-mcp-server"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"pubmed-mcp-server\"]\n}\n"
+  },
+  {
+    "name": "twstock",
+    "display_name": "Taiwan Stock Market (TWSE/OTC)",
+    "description": "Taiwan stock market data — TWSE and OTC quotes, institutional investors, financial statements, company profiles",
+    "author": "community",
+    "homepage": "https://github.com/TW-Stock-MCP/TW-Stock-MCP-Server",
+    "license": "MIT",
+    "tags": [
+      "finance",
+      "taiwan",
+      "stocks",
+      "twse",
+      "otc",
+      "asia"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://TW-Stock-MCP-Server.fastmcp.app/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://TW-Stock-MCP-Server.fastmcp.app/mcp\"\n}\n"
+  },
+  {
+    "name": "yahoo-finance",
+    "display_name": "Yahoo Finance",
+    "description": "Real-time stock quotes, historical data, financial statements, and market news via Yahoo Finance",
+    "author": "community",
+    "homepage": "https://finance.yahoo.com",
+    "license": "MIT",
+    "tags": [
+      "finance",
+      "stocks",
+      "markets",
+      "investing",
+      "data"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "yahoo-finance-mcp"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"yahoo-finance-mcp\"]\n}\n"
+  }
+]

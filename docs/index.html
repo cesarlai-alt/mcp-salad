@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP Salad 🥗 — Find and install MCP servers</title>
+  <meta name="description" content="An open, community-maintained index of MCP servers — find, compare, and install them with one command." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>MCP<span class="accent">Registry</span></h1>
+    <p class="subtitle">An open, community-maintained index of Model Context Protocol servers. Find, compare, and install them in one command.</p>
+  </header>
+
+  <main>
+    <div class="search-wrap">
+      <input
+        type="search"
+        id="search"
+        class="search-box"
+        placeholder="Search servers — try &quot;finance&quot;, &quot;web&quot;, &quot;taiwan&quot;…"
+        autocomplete="off"
+        autofocus
+      />
+    </div>
+
+    <div class="stats-bar" id="stats">Loading servers…</div>
+
+    <section class="cards-grid" id="cards"></section>
+
+    <p class="empty-state" id="empty" hidden>No servers match your search.</p>
+  </main>
+
+  <footer class="site-footer">
+    <a href="https://github.com/cesarlai-alt/mcp-salad" target="_blank" rel="noopener">GitHub</a>
+    <span class="dot">•</span>
+    <a href="https://github.com/cesarlai-alt/mcp-salad/issues/new?template=submit-server.yml" target="_blank" rel="noopener">Submit your server</a>
+    <span class="dot">•</span>
+    <span class="muted">MIT Licensed</span>
+  </footer>
+
+  <div class="toast" id="toast" hidden>Config copied to clipboard</div>
+
+  <script>
+    const cardsEl = document.getElementById("cards");
+    const statsEl = document.getElementById("stats");
+    const searchEl = document.getElementById("search");
+    const emptyEl = document.getElementById("empty");
+    const toastEl = document.getElementById("toast");
+
+    let servers = [];
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function installSnippet(s) {
+      const install = s.install || {};
+      if (install.type === "http") {
+        return install.url || "";
+      }
+      const cmd = install.command || "npx";
+      const args = (install.args || []).join(" ");
+      return `${cmd} ${args}`.trim();
+    }
+
+    function configString(s) {
+      const cfg = (s.claude_config || "").trim();
+      return `"${s.name}": ${cfg}`;
+    }
+
+    function renderCards(list) {
+      cardsEl.innerHTML = "";
+      emptyEl.hidden = list.length !== 0;
+
+      list.forEach((s) => {
+        const tags = (s.tags || [])
+          .map((t) => `<span class="pill">${escapeHtml(t)}</span>`)
+          .join("");
+
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-head">
+            <h3 class="card-name">${escapeHtml(s.name)}</h3>
+            <span class="card-type">${escapeHtml((s.install && s.install.type) || "stdio")}</span>
+          </div>
+          <p class="card-desc">${escapeHtml(s.description || "")}</p>
+          <div class="card-tags">${tags}</div>
+          <code class="card-cmd">${escapeHtml(installSnippet(s))}</code>
+          <button class="copy-btn" type="button">Copy Config</button>
+        `;
+
+        card.querySelector(".copy-btn").addEventListener("click", () => {
+          const text = configString(s);
+          navigator.clipboard.writeText(text).then(() => {
+            showToast();
+          }).catch(() => {
+            // Fallback for non-secure contexts
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); showToast(); } catch (e) {}
+            document.body.removeChild(ta);
+          });
+        });
+
+        cardsEl.appendChild(card);
+      });
+    }
+
+    let toastTimer;
+    function showToast() {
+      toastEl.hidden = false;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastEl.classList.remove("show");
+        setTimeout(() => (toastEl.hidden = true), 300);
+      }, 1600);
+    }
+
+    function applyFilter() {
+      const q = searchEl.value.trim().toLowerCase();
+      if (!q) {
+        renderCards(servers);
+        return;
+      }
+      const filtered = servers.filter((s) => {
+        const hay = [
+          s.name,
+          s.display_name,
+          s.description,
+          (s.tags || []).join(" "),
+          s.author,
+        ].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+      renderCards(filtered);
+    }
+
+    searchEl.addEventListener("input", applyFilter);
+
+    fetch("registry.json")
+      .then((r) => r.json())
+      .then((data) => {
+        servers = data;
+        statsEl.textContent = `${servers.length} servers available`;
+        renderCards(servers);
+      })
+      .catch((err) => {
+        statsEl.textContent = "Failed to load registry.json";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
