@@ -491,10 +491,13 @@ async def list_tools() -> list[types.Tool]:
         types.Tool(
             name="auto_use_capability",
             description=(
-                "Auto-load the capability that owns a specific tool or server. "
-                "Pass a namespaced tool name like 'twstock__get_realtime_quote' or just the "
-                "server prefix like 'twstock'. The router finds which capability owns that "
-                "server and loads it — no need to call list_capabilities() first."
+                "Auto-load the capability that owns a specific tool and immediately call it. "
+                "Pass the full namespaced tool name like 'twstock__get_realtime_quote' plus its "
+                "arguments dict. The router finds which capability owns that server, loads it, "
+                "and proxies the actual tool call in one step — no separate use_capability() needed. "
+                "If only a server prefix is given (e.g. 'twstock'), just loads the capability. "
+                "USE THIS instead of calling capability tools directly — they won't be registered "
+                "until the capability is loaded."
             ),
             inputSchema={
                 "type": "object",
@@ -502,8 +505,15 @@ async def list_tools() -> list[types.Tool]:
                     "tool_name": {
                         "type": "string",
                         "description": (
-                            "Tool name (e.g. 'twstock__get_realtime_quote') "
-                            "or server prefix (e.g. 'twstock')"
+                            "Full namespaced tool name (e.g. 'twstock__get_realtime_quote') "
+                            "or server prefix (e.g. 'twstock') to just load the capability"
+                        ),
+                    },
+                    "arguments": {
+                        "type": "object",
+                        "description": (
+                            "Arguments to pass to the tool (e.g. {'stock_code': '2330'}). "
+                            "Provide when calling a specific tool; omit to just load the capability."
                         ),
                     },
                 },
@@ -650,9 +660,14 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     # ── Meta: auto_use_capability ────────────────────────────────────────────
     if name == "auto_use_capability":
         tool_name = arguments.get("tool_name", "")
+        tool_arguments = arguments.get("arguments", None)
 
-        # Extract server_id: "server_id__tool_name" → "server_id", or bare prefix
-        server_id = tool_name.split("__", 1)[0] if "__" in tool_name else tool_name
+        # Extract server_id and original tool name
+        # "server_id__tool_name" → server_id="server_id", original="tool_name"
+        # "server_id" (bare prefix) → server_id="server_id", original=None
+        has_tool = "__" in tool_name
+        server_id = tool_name.split("__", 1)[0] if has_tool else tool_name
+        original_tool_name = tool_name.split("__", 1)[1] if has_tool else None
 
         cap_name = find_capability_by_server(server_id)
         if not cap_name:
@@ -683,9 +698,41 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         except Exception as e:
             log.warning(f"Failed to send tool_list_changed notification: {e}")
 
+        # If a specific tool name was given (server__tool), proxy the call immediately
+        if has_tool and original_tool_name is not None:
+            call_args = tool_arguments if isinstance(tool_arguments, dict) else {}
+            log.info(f"Auto-routing: proxying {server_id}/{original_tool_name} with args={call_args}")
+            try:
+                client = get_client(server_id)
+                result = await client.call_tool(original_tool_name, call_args)
+            except Exception as e:
+                log.error(f"Auto-proxied call failed: {server_id}/{original_tool_name}: {e}")
+                return [types.TextContent(
+                    type="text",
+                    text=f"Loaded capability '{cap_name}' but tool call failed: {e}",
+                )]
+
+            # Normalize result to text (same logic as the proxy handler below)
+            if isinstance(result, dict):
+                content = result.get("content", [])
+                if isinstance(content, list):
+                    texts = []
+                    for block in content:
+                        if isinstance(block, dict) and block.get("type") == "text":
+                            texts.append(block.get("text", ""))
+                        else:
+                            texts.append(json.dumps(block))
+                    return [types.TextContent(type="text", text="\n".join(texts))]
+                return [types.TextContent(type="text", text=json.dumps(result))]
+            elif isinstance(result, str):
+                return [types.TextContent(type="text", text=result)]
+            else:
+                return [types.TextContent(type="text", text=json.dumps(result))]
+
+        # Bare server prefix — just load the capability, no immediate call
         return [types.TextContent(
             type="text",
-            text=f"✅ Loaded [{cap_name}] for tool [{tool_name}]. {len(tools)} tools now available.",
+            text=f"✅ Loaded [{cap_name}] for server [{server_id}]. {len(tools)} tools now available.",
         )]
 
     # ── Meta: which_capability ───────────────────────────────────────────────
