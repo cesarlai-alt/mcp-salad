@@ -1,0 +1,228 @@
+# mcp-router — Capability Configuration (EXAMPLE)
+#
+# Copy this file to config.yaml and edit for your environment.
+# API keys are read from environment variables — set them in your shell profile
+# or in the env block of each server definition.
+#
+# Each capability maps a natural-language description to one or more MCP servers.
+# keywords: matched against use_capability() input (case-insensitive, partial match)
+# servers:  list of server_id keys defined in the servers section below
+
+capabilities:
+
+  taiwan_stocks:
+    description: "Taiwan stock market, prices, volume, institutional investors, K-line, margin, options, futures, ETFs, TWSE, OTC"
+    keywords:
+      - 股票
+      - 台股
+      - 股價
+      - "2330"
+      - 台積電
+      - TWSE
+      - OTC
+      - 大盤
+      - 法人
+      - ETF
+      - 融資
+      - 融券
+      - 期貨
+      - 選擇權
+      - 上市
+      - 上櫃
+      - 盤後
+      - 漲停
+      - 跌停
+      - 成交量
+      - 技術指標
+      - KD
+    servers:
+      - twstock
+
+  us_stocks:
+    description: "US stocks, Alpha Vantage, Yahoo Finance, S&P 500, Nasdaq, Dow, individual stock quotes, earnings"
+    keywords:
+      - 美股
+      - AAPL
+      - TSLA
+      - NVDA
+      - SPY
+      - nasdaq
+      - s&p
+      - dow
+      - alpha vantage
+      - yahoo finance
+      - US stock
+      - 道瓊
+      - 標普
+    servers:
+      - alpha_vantage
+      - yahoo_finance
+
+  web_research:
+    description: "Web search, scraping, content extraction, competitive intelligence, news, Firecrawl"
+    keywords:
+      - 搜尋
+      - search
+      - 爬
+      - 查網路
+      - 查資料
+      - 抓網頁
+      - firecrawl
+      - 新聞
+      - 競品
+      - 最新
+      - scrape
+      - crawl
+    servers:
+      - firecrawl
+
+  docs_library:
+    description: "Third-party library docs, SDK documentation, framework references, API docs, Context7"
+    keywords:
+      - 文件
+      - docs
+      - documentation
+      - sdk
+      - library
+      - 套件
+      - 框架
+      - framework
+      - context7
+      - api reference
+      - how to use
+    servers:
+      - context7
+
+  medical_research:
+    description: "PubMed medical literature, clinical trials, ClinicalTrials.gov, cancer, drug research"
+    keywords:
+      - pubmed
+      - 論文
+      - 文獻
+      - 臨床試驗
+      - clinical trial
+      - 癌症
+      - 藥物
+      - 醫學
+      - paper
+      - 研究
+    servers:
+      - pubmed
+      - clinicaltrials
+
+  local_files:
+    description: "Read local files, notes, documents from a specific directory via filesystem server"
+    keywords:
+      - 讀檔
+      - 讀取
+      - 本地
+      - local file
+      - notes
+      - obsidian
+      - 文件夾
+    servers:
+      - obsidian_vero
+
+  maps_location:
+    description: "Google Maps, directions, distance matrix, place search, geocoding, navigation"
+    keywords:
+      - 地圖
+      - maps
+      - 距離
+      - 地址
+      - 導航
+      - 附近
+      - 飯店
+      - 路線
+      - 地點
+      - directions
+      - place
+    servers:
+      - google_maps
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Server definitions — how to spawn each MCP process
+# These must match the server_id keys used in capabilities above
+# ──────────────────────────────────────────────────────────────────────────────
+
+servers:
+
+  # Public Streamable HTTP endpoint — no local install needed
+  twstock:
+    type: http
+    url: "https://TW-Stock-MCP-Server.fastmcp.app/mcp"
+
+  # Requires ALPHA_VANTAGE_API_KEY env var
+  # Get a free key at: https://www.alphavantage.co/support/#api-key
+  alpha_vantage:
+    type: stdio
+    command: npx
+    args: ["-y", "alpha-vantage-mcp"]
+    env:
+      ALPHA_VANTAGE_API_KEY: "${ALPHA_VANTAGE_API_KEY}"
+
+  yahoo_finance:
+    type: stdio
+    command: npx
+    args: ["-y", "yahoo-finance-mcp"]
+
+  # Requires FIRECRAWL_API_KEY env var
+  # Get a key at: https://firecrawl.dev
+  firecrawl:
+    type: stdio
+    command: npx
+    args: ["-y", "firecrawl-mcp"]
+    env:
+      FIRECRAWL_API_KEY: "${FIRECRAWL_API_KEY}"
+
+  context7:
+    type: stdio
+    command: npx
+    args: ["-y", "@upstash/context7-mcp@latest"]
+
+  # pubmed-mcp-server requires a global npm install:
+  #   npm install -g @cyanheads/pubmed-mcp-server
+  # Then update the path below to the actual installed location.
+  # Find it with: npm root -g
+  pubmed:
+    type: stdio
+    command: node
+    # Replace with the full absolute path from: npm root -g
+    args: ["${HOME}/.npm-global/lib/node_modules/@cyanheads/pubmed-mcp-server/dist/index.js"]
+
+  clinicaltrials:
+    type: stdio
+    command: npx
+    args: ["-y", "clinicaltrialsgov-mcp-server@latest"]
+
+  # obsidian_vero: expose a local directory via the filesystem MCP server
+  # Replace /path/to/your/notes with the absolute path to your notes directory
+  obsidian_vero:
+    type: stdio
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/your/notes"]
+
+  # Requires GOOGLE_MAPS_API_KEY env var
+  # Get a key at: https://developers.google.com/maps
+  google_maps:
+    type: stdio
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-google-maps"]
+    env:
+      GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY}"
+
+  # ── Custom / private servers ────────────────────────────────────────────────
+  # Add your own servers below following the same pattern.
+  # Example: a local Python RAG server
+  #
+  # my_rag_server:
+  #   type: stdio
+  #   command: python3
+  #   args: ["/path/to/your/rag_mcp_server.py"]
+  #
+  # Example: Salesforce MCP
+  #
+  # salesforce:
+  #   type: stdio
+  #   command: node
+  #   args: ["/path/to/sf-mcp-server", "-o", "your-org@example.com", "--toolsets", "data,orgs"]
