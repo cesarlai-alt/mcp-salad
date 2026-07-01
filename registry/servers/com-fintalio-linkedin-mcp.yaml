@@ -1,0 +1,16 @@
+name: com-fintalio-linkedin-mcp
+display_name: Fintalio Linkedin Mcp
+description: LinkedIn outreach MCP server — 19 tools for AI agents to prospect, sequence,
+  and manage contacts.
+author: community
+source: official_registry
+tags:
+- crm
+- sales
+- linkedin
+- outreach
+install:
+  type: http
+  url: https://fintalio.com/mcp
+claude_config: "{\n  \"url\": \"https://fintalio.com/mcp\"\n}"
+homepage: https://fintalio.com

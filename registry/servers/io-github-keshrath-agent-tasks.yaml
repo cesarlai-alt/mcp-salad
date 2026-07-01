@@ -1,0 +1,19 @@
+name: io-github-keshrath-agent-tasks
+display_name: Keshrath Agent Tasks
+description: Pipeline task management for AI agents - stages, dependencies, artifacts,
+  claiming
+author: keshrath
+source: official_registry
+tags:
+- productivity
+- task-management
+- agents
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - agent-tasks@1.10.11
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"agent-tasks@1.10.11\"\
+  \n  ]\n}"
+homepage: https://github.com/keshrath/agent-tasks

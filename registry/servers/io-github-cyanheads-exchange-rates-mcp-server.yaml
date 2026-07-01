@@ -1,0 +1,15 @@
+name: io-github-cyanheads-exchange-rates-mcp-server
+display_name: Exchange Rates Mcp Server
+description: Convert currencies, get FX rates, and query historical ECB exchange rate
+  data.
+author: cyanheads
+source: official_registry
+tags:
+- finance
+- forex
+- currency
+install:
+  type: http
+  url: https://exchange-rates.caseyjhand.com/mcp
+claude_config: "{\n  \"url\": \"https://exchange-rates.caseyjhand.com/mcp\"\n}"
+homepage: https://exchange-rates.caseyjhand.com

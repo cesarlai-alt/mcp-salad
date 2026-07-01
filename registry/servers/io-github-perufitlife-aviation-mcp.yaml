@@ -1,0 +1,16 @@
+name: io-github-perufitlife-aviation-mcp
+display_name: Perufitlife Aviation Mcp
+description: 'Live aviation data for AI agents: METAR weather, airports, aircraft,
+  glossary & FAA questions.'
+author: perufitlife
+source: official_registry
+tags:
+- travel
+- aviation
+- hotels
+install:
+  type: http
+  url: https://renzomacar--aviation-mcp.apify.actor/mcp?token={apifyToken}
+claude_config: "{\n  \"url\": \"https://renzomacar--aviation-mcp.apify.actor/mcp?token={apifyToken}\"\
+  \n}"
+homepage: https://renzomacar--aviation-mcp.apify.actor

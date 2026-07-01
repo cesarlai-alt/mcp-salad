@@ -1,0 +1,16 @@
+name: dev-patent-patent
+display_name: Patent Patent
+description: 'Search patents & trademarks from EPO, USPTO & DPMA: claims, legal status,
+  prosecution, PTAB'
+author: patent.dev
+source: official_registry
+tags:
+- ip
+- patents
+- trademarks
+- legal
+install:
+  type: http
+  url: https://mcp.patent.dev/mcp
+claude_config: "{\n  \"url\": \"https://mcp.patent.dev/mcp\"\n}"
+homepage: https://mcp.patent.dev

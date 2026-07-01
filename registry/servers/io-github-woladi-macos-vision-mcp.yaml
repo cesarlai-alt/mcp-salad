@@ -1,0 +1,20 @@
+name: io-github-woladi-macos-vision-mcp
+display_name: Woladi Macos Vision Mcp
+description: Local OCR & image analysis via Apple Vision — no cloud, no API keys,
+  ~97% fewer tokens on PDFs.
+author: woladi
+source: official_registry
+tags:
+- ocr
+- vision
+- macos
+- pdf
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - macos-vision-mcp@0.4.9
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"macos-vision-mcp@0.4.9\"\
+  \n  ]\n}"
+homepage: https://github.com/woladi/macos-vision-mcp

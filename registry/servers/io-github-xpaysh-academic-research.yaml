@@ -1,0 +1,17 @@
+name: io-github-xpaysh-academic-research
+display_name: Xpaysh Academic Research
+description: 30+ academic research tools. Semantic Scholar, arXiv, PubMed, bioRxiv,
+  CrossRef, IACR.
+author: xpaysh
+source: official_registry
+tags:
+- medical
+- research
+- pubmed
+- biomedical
+install:
+  type: http
+  url: https://research.mcp.xpay.sh/mcp?key={api_key}
+claude_config: "{\n  \"url\": \"https://research.mcp.xpay.sh/mcp?key={api_key}\"\n\
+  }"
+homepage: https://research.mcp.xpay.sh

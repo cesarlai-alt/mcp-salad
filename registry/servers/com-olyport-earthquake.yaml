@@ -1,0 +1,14 @@
+name: com-olyport-earthquake
+display_name: Olyport Earthquake
+description: Real-time earthquake events from the US Geological Survey
+author: community
+source: official_registry
+tags:
+- geoscience
+- real-time
+- alerts
+install:
+  type: http
+  url: https://mcp.olyport.com/earthquake/mcp
+claude_config: "{\n  \"url\": \"https://mcp.olyport.com/earthquake/mcp\"\n}"
+homepage: https://mcp.olyport.com

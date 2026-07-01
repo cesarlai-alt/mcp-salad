@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-trade-intel
+display_name: Trade Intel
+description: Trade Intel MCP — Compound tools that chain Comtrade, Census, Treasury,
+author: pipeworx
+source: official_registry
+tags:
+- trade
+- customs
+- international
+- tariffs
+install:
+  type: http
+  url: https://gateway.pipeworx.io/trade-intel/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/trade-intel/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

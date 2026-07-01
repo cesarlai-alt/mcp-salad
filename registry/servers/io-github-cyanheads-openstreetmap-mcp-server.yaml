@@ -1,0 +1,15 @@
+name: io-github-cyanheads-openstreetmap-mcp-server
+display_name: Openstreetmap Mcp Server
+description: Geocode, reverse geocode, and run Overpass spatial queries on OpenStreetMap
+  data.
+author: cyanheads
+source: official_registry
+tags:
+- maps
+- geocoding
+- geo
+install:
+  type: http
+  url: https://openstreetmap.caseyjhand.com/mcp
+claude_config: "{\n  \"url\": \"https://openstreetmap.caseyjhand.com/mcp\"\n}"
+homepage: https://openstreetmap.caseyjhand.com

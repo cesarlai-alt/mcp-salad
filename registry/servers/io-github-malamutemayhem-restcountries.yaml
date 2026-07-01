@@ -1,0 +1,19 @@
+name: io-github-malamutemayhem-restcountries
+display_name: Malamutemayhem Restcountries
+description: 'Country data: flags, currencies, languages, regions, capitals, and more.
+  No API key. By UnClick.'
+author: malamutemayhem
+source: official_registry
+tags:
+- reference
+- geography
+- countries
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - '@unclick/restcountries-mcp@0.1.0'
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@unclick/restcountries-mcp@0.1.0\"\
+  \n  ]\n}"
+homepage: https://github.com/malamutemayhem/restcountries

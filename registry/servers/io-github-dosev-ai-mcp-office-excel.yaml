@@ -1,0 +1,30 @@
+name: io-github-dosev-ai-mcp-office-excel
+display_name: Dosev Ai Mcp Office Excel
+description: 65-tool Excel MCP server. Read, write, format, and export .xlsx files.
+  Windows-first.
+author: dosev
+source: official_registry
+tags:
+- excel
+- spreadsheets
+- office
+install:
+  type: stdio
+  command: uvx
+  args:
+  - mcp-office
+  env_required:
+  - name: EXCEL_ALLOWLIST_ROOTS
+    description: Required environment variable
+  - name: EXCEL_ENABLE_WRITE
+    description: Required environment variable
+  - name: EXCEL_ENABLE_COM
+    description: Required environment variable
+  - name: EXCEL_MAX_ITEMS
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"mcp-office\"\n  ],\n\
+  \  \"env\": {\n    \"EXCEL_ALLOWLIST_ROOTS\": \"YOUR_EXCEL_ALLOWLIST_ROOTS_HERE\"\
+  ,\n    \"EXCEL_ENABLE_WRITE\": \"YOUR_EXCEL_ENABLE_WRITE_HERE\",\n    \"EXCEL_ENABLE_COM\"\
+  : \"YOUR_EXCEL_ENABLE_COM_HERE\",\n    \"EXCEL_MAX_ITEMS\": \"YOUR_EXCEL_MAX_ITEMS_HERE\"\
+  \n  }\n}"
+homepage: https://github.com/dosev/ai-mcp-office-excel

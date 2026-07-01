@@ -1,0 +1,18 @@
+name: io-github-tlennon-ie-neurodock-mcp-translation
+display_name: Tlennon Ie Neurodock Mcp Translation
+description: Decode subtext, tone, and ambiguity in messages; rewrite outgoing replies;
+  brief meetings.
+author: tlennon
+source: official_registry
+tags:
+- productivity
+- communication
+- nlp
+install:
+  type: stdio
+  command: uvx
+  args:
+  - neurodock-mcp-translation
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"neurodock-mcp-translation\"\
+  \n  ]\n}"
+homepage: https://github.com/tlennon/ie-neurodock-mcp-translation

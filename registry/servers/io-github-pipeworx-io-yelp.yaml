@@ -1,0 +1,14 @@
+name: io-github-pipeworx-io-yelp
+display_name: Yelp
+description: Yelp MCP — wraps the Yelp Fusion API (api.yelp.com/v3)
+author: pipeworx
+source: official_registry
+tags:
+- local-business
+- reviews
+- search
+install:
+  type: http
+  url: https://gateway.pipeworx.io/yelp/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/yelp/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

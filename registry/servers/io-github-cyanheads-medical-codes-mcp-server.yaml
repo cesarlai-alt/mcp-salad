@@ -1,0 +1,16 @@
+name: io-github-cyanheads-medical-codes-mcp-server
+display_name: Medical Codes Mcp Server
+description: Offline US medical code lookup and crosswalk — ICD-10-CM/PCS, HCPCS Level
+  II, RxNorm. Keyless.
+author: cyanheads
+source: official_registry
+tags:
+- medical
+- fda
+- drugs
+- clinical
+install:
+  type: http
+  url: https://medical-codes.caseyjhand.com/mcp
+claude_config: "{\n  \"url\": \"https://medical-codes.caseyjhand.com/mcp\"\n}"
+homepage: https://medical-codes.caseyjhand.com

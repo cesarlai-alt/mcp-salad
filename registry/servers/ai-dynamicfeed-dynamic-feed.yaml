@@ -1,0 +1,15 @@
+name: ai-dynamicfeed-dynamic-feed
+display_name: Dynamicfeed Dynamic Feed
+description: '91 keyless tools of live, verifiable data for AI: weather, hazards,
+  space, CVEs. Ed25519-signed.'
+author: community
+source: official_registry
+tags:
+- data
+- real-time
+- utilities
+install:
+  type: http
+  url: https://dynamicfeed.ai/mcp
+claude_config: "{\n  \"url\": \"https://dynamicfeed.ai/mcp\"\n}"
+homepage: https://dynamicfeed.ai

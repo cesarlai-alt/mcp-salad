@@ -1,0 +1,19 @@
+name: io-github-pkotecha-eng-aria-mcp-server
+display_name: Pkotecha Eng Aria Mcp Server
+description: Search 35M+ PubMed, 400K+ ClinicalTrials.gov & ISRCTN trials. Prompts
+  included. No API key.
+author: pkotecha
+source: official_registry
+tags:
+- medical
+- research
+- pubmed
+- biomedical
+install:
+  type: stdio
+  command: uvx
+  args:
+  - aria-mcp-server
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"aria-mcp-server\"\
+  \n  ]\n}"
+homepage: https://github.com/pkotecha/eng-aria-mcp-server

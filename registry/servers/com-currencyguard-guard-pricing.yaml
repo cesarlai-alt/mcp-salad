@@ -1,0 +1,15 @@
+name: com-currencyguard-guard-pricing
+display_name: Currencyguard Guard Pricing
+description: FX protection for SMEs — price Guards, live spot/forward rates, settlement
+  dates, and more.
+author: community
+source: official_registry
+tags:
+- finance
+- forex
+- currency
+install:
+  type: http
+  url: https://api.currencyguard.com/mcp
+claude_config: "{\n  \"url\": \"https://api.currencyguard.com/mcp\"\n}"
+homepage: https://api.currencyguard.com

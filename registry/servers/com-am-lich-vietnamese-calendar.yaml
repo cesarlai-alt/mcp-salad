@@ -1,0 +1,15 @@
+name: com-am-lich-vietnamese-calendar
+display_name: Am Lich Vietnamese Calendar
+description: Vietnamese Lunar Calendar for date and calendar conversion, and cultural
+  insights.
+author: community
+source: official_registry
+tags:
+- calendar
+- localization
+- vietnam
+install:
+  type: http
+  url: https://am-lich.com/mcp
+claude_config: "{\n  \"url\": \"https://am-lich.com/mcp\"\n}"
+homepage: https://am-lich.com

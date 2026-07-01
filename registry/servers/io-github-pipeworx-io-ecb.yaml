@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-ecb
+display_name: Ecb
+description: ECB Data Portal MCP — European Central Bank statistical data
+author: pipeworx
+source: official_registry
+tags:
+- economics
+- central-bank
+- macroeconomics
+- finance
+install:
+  type: http
+  url: https://gateway.pipeworx.io/ecb/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/ecb/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

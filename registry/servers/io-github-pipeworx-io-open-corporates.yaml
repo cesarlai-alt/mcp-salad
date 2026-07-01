@@ -1,0 +1,16 @@
+name: io-github-pipeworx-io-open-corporates
+display_name: Open Corporates
+description: OpenCorporates MCP — Global company registry data (free, no auth, rate
+  limited)
+author: pipeworx
+source: official_registry
+tags:
+- company-registry
+- kyb
+- due-diligence
+install:
+  type: http
+  url: https://gateway.pipeworx.io/open-corporates/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/open-corporates/mcp\"\n\
+  }"
+homepage: https://gateway.pipeworx.io

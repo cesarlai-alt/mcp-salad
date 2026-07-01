@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-oecd
+display_name: Oecd
+description: OECD MCP — Organisation for Economic Co-operation and Development data
+author: pipeworx
+source: official_registry
+tags:
+- economics
+- central-bank
+- macroeconomics
+- finance
+install:
+  type: http
+  url: https://gateway.pipeworx.io/oecd/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/oecd/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

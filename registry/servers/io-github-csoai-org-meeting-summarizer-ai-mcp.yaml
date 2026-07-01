@@ -1,0 +1,17 @@
+name: io-github-csoai-org-meeting-summarizer-ai-mcp
+display_name: Csoai Org Meeting Summarizer Ai Mcp
+description: meeting-summarizer-ai-mcp MCP server by MEOK AI Labs
+author: csoai
+source: official_registry
+tags:
+- productivity
+- meetings
+- ai
+install:
+  type: stdio
+  command: uvx
+  args:
+  - meeting-summarizer-ai-mcp
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"meeting-summarizer-ai-mcp\"\
+  \n  ]\n}"
+homepage: https://github.com/csoai/org-meeting-summarizer-ai-mcp

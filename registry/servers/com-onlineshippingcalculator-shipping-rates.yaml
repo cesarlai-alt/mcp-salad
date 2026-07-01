@@ -1,0 +1,15 @@
+name: com-onlineshippingcalculator-shipping-rates
+display_name: Onlineshippingcalculator Shipping Rates
+description: Live USPS, UPS & FedEx shipping rates plus USPS postage and stamp prices.
+  Free, no API key.
+author: community
+source: official_registry
+tags:
+- shipping
+- logistics
+- ecommerce
+install:
+  type: http
+  url: https://onlineshippingcalculator.com/api/mcp
+claude_config: "{\n  \"url\": \"https://onlineshippingcalculator.com/api/mcp\"\n}"
+homepage: https://onlineshippingcalculator.com

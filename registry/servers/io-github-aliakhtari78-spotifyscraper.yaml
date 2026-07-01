@@ -1,0 +1,21 @@
+name: io-github-aliakhtari78-spotifyscraper
+display_name: Aliakhtari78 Spotifyscraper
+description: Public Spotify metadata, lyrics and podcasts for LLM agents. No API key,
+  read-only.
+author: aliakhtari78
+source: official_registry
+tags:
+- music
+- spotify
+- media
+install:
+  type: stdio
+  command: uvx
+  args:
+  - spotifyscraper
+  env_required:
+  - name: SPOTIFY_SP_DC
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"spotifyscraper\"\n\
+  \  ],\n  \"env\": {\n    \"SPOTIFY_SP_DC\": \"YOUR_SPOTIFY_SP_DC_HERE\"\n  }\n}"
+homepage: https://github.com/aliakhtari78/spotifyscraper

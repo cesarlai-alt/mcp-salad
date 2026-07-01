@@ -1,0 +1,14 @@
+name: io-github-br0ski777-regex-generator
+display_name: Br0ski777 Regex Generator
+description: Test, validate and explain regular expressions with match highlighting.
+  x402 micropayment.
+author: br0ski777
+source: official_registry
+tags:
+- developer-tools
+- utilities
+install:
+  type: http
+  url: https://regex-generator.api.klymax402.com/mcp
+claude_config: "{\n  \"url\": \"https://regex-generator.api.klymax402.com/mcp\"\n}"
+homepage: https://regex-generator.api.klymax402.com

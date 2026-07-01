@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-hts
+display_name: Hts
+description: HTS MCP — US import tariff rates via the USITC Harmonized Tariff Schedule.
+author: pipeworx
+source: official_registry
+tags:
+- trade
+- customs
+- international
+- tariffs
+install:
+  type: http
+  url: https://gateway.pipeworx.io/hts/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/hts/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

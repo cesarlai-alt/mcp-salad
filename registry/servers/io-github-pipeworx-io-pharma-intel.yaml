@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-pharma-intel
+display_name: Pharma Intel
+description: Pharma Intel MCP — Compound tools that chain ClinicalTrials.gov,
+author: pipeworx
+source: official_registry
+tags:
+- medical
+- clinical-trials
+- pharma
+- research
+install:
+  type: http
+  url: https://gateway.pipeworx.io/pharma-intel/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/pharma-intel/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

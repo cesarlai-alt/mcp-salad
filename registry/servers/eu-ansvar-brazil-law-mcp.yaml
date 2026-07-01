@@ -1,0 +1,17 @@
+name: eu-ansvar-brazil-law-mcp
+display_name: Brazil Law Mcp
+description: Brazil legislation via MCP — full-text search across statutes and provisions
+author: ansvar
+source: official_registry
+tags:
+- legal
+- legislation
+- compliance
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - '@ansvar/brazil-law-mcp@1.0.3'
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@ansvar/brazil-law-mcp@1.0.3\"\
+  \n  ]\n}"

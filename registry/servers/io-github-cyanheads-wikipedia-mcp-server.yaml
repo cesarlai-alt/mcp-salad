@@ -1,0 +1,22 @@
+name: io-github-cyanheads-wikipedia-mcp-server
+display_name: Wikipedia Mcp Server
+description: Search Wikipedia, read summaries and full text, target sections, find
+  nearby pages, list languages.
+author: cyanheads
+source: official_registry
+tags:
+- reference
+- knowledge
+- wikipedia
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - '@cyanheads/wikipedia-mcp-server@0.1.10'
+  env_required:
+  - name: MCP_LOG_LEVEL
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@cyanheads/wikipedia-mcp-server@0.1.10\"\
+  \n  ],\n  \"env\": {\n    \"MCP_LOG_LEVEL\": \"YOUR_MCP_LOG_LEVEL_HERE\"\n  }\n}"
+homepage: https://github.com/cyanheads/wikipedia-mcp-server

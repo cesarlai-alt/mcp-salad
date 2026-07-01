@@ -1,0 +1,15 @@
+name: app-octotrip-flights
+display_name: Octotrip Flights
+description: Free, no-login flight search with real-time pricing from multiple airlines.
+author: community
+source: official_registry
+tags:
+- trade
+- customs
+- international
+- tariffs
+install:
+  type: http
+  url: https://mcp.octotrip.app/flights/mcp
+claude_config: "{\n  \"url\": \"https://mcp.octotrip.app/flights/mcp\"\n}"
+homepage: https://mcp.octotrip.app

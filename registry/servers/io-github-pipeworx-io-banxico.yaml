@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-banxico
+display_name: Banxico
+description: Banxico MCP — Banco de México (Mexico's central bank) via the SIE API.
+author: pipeworx
+source: official_registry
+tags:
+- economics
+- central-bank
+- macroeconomics
+- finance
+install:
+  type: http
+  url: https://gateway.pipeworx.io/banxico/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/banxico/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

@@ -1,0 +1,15 @@
+name: ai-delega-aws-pricing-calculator
+display_name: Delega Aws Pricing Calculator
+description: Create AWS cost estimates and shareable AWS Pricing Calculator URLs.
+author: community
+source: official_registry
+tags:
+- cloud
+- aws
+- pricing
+- devops
+install:
+  type: http
+  url: https://calculator.delega.ai/mcp
+claude_config: "{\n  \"url\": \"https://calculator.delega.ai/mcp\"\n}"
+homepage: https://calculator.delega.ai

@@ -1,0 +1,17 @@
+name: io-github-stayce-icd-mcp
+display_name: Stayce Icd Mcp
+description: WHO ICD-10/ICD-11 diagnosis codes. Lookup, search, chapters via official
+  WHO API.
+author: stayce
+source: official_registry
+tags:
+- medical
+- fda
+- drugs
+- clinical
+install:
+  type: http
+  url: https://icd-mcp-server.staycek.workers.dev/mcp
+claude_config: "{\n  \"url\": \"https://icd-mcp-server.staycek.workers.dev/mcp\"\n\
+  }"
+homepage: https://icd-mcp-server.staycek.workers.dev

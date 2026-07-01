@@ -1,0 +1,22 @@
+name: io-github-blazickjp-arxiv-mcp-server
+display_name: Blazickjp Arxiv Mcp Server
+description: Search arXiv papers, download full text, semantic search, citation graphs,
+  and alerts via MCP.
+author: blazickjp
+source: official_registry
+tags:
+- research
+- academic
+- science
+install:
+  type: stdio
+  command: uvx
+  args:
+  - arxiv-mcp-server
+  env_required:
+  - name: ARXIV_STORAGE_PATH
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"arxiv-mcp-server\"\
+  \n  ],\n  \"env\": {\n    \"ARXIV_STORAGE_PATH\": \"YOUR_ARXIV_STORAGE_PATH_HERE\"\
+  \n  }\n}"
+homepage: https://github.com/blazickjp/arxiv-mcp-server

@@ -1,0 +1,17 @@
+name: eu-ansvar-japan-law-mcp
+display_name: Japan Law Mcp
+description: Japan legislation via MCP — full-text search across statutes and provisions
+author: ansvar
+source: official_registry
+tags:
+- legal
+- legislation
+- compliance
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - '@ansvar/japan-law-mcp@1.1.1'
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@ansvar/japan-law-mcp@1.1.1\"\
+  \n  ]\n}"

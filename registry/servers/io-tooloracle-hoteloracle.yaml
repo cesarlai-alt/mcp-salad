@@ -1,0 +1,15 @@
+name: io-tooloracle-hoteloracle
+display_name: Io Tooloracle Hoteloracle
+description: Hotel Intelligence MCP — search, price compare, area guides, price calendars
+  via Google Hotels
+author: tooloracle
+source: official_registry
+tags:
+- travel
+- aviation
+- hotels
+install:
+  type: http
+  url: https://tooloracle.io/hotel/mcp/
+claude_config: "{\n  \"url\": \"https://tooloracle.io/hotel/mcp/\"\n}"
+homepage: https://tooloracle.io

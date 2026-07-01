@@ -1,0 +1,15 @@
+name: dev-cz-agents-eu-registry
+display_name: Cz Agents Eu Registry
+description: EU business registry lookup via GLEIF/LEI & national registries — cross-border
+  due diligence & KYC.
+author: cz-agents
+source: official_registry
+tags:
+- company-registry
+- kyb
+- due-diligence
+install:
+  type: http
+  url: https://eu-registry.cz-agents.dev/mcp
+claude_config: "{\n  \"url\": \"https://eu-registry.cz-agents.dev/mcp\"\n}"
+homepage: https://eu-registry.cz-agents.dev

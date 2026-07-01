@@ -1,0 +1,15 @@
+name: io-github-sophymarine-openregistry
+display_name: Sophymarine Openregistry
+description: Live data from 27 official national company registries. Unmodified. For
+  KYB and due diligence.
+author: sophymarine
+source: official_registry
+tags:
+- company-registry
+- kyb
+- due-diligence
+install:
+  type: http
+  url: https://openregistry.sophymarine.com/mcp
+claude_config: "{\n  \"url\": \"https://openregistry.sophymarine.com/mcp\"\n}"
+homepage: https://openregistry.sophymarine.com

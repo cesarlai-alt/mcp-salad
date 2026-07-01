@@ -1,0 +1,15 @@
+name: com-petabloom-podcasts
+display_name: Petabloom Podcasts
+description: An MCP server that provides tools to discover and retrieve podcast episodes
+  transcripts.
+author: community
+source: official_registry
+tags:
+- podcasts
+- media
+- audio
+install:
+  type: http
+  url: https://podcasts.petabloom.com/mcp
+claude_config: "{\n  \"url\": \"https://podcasts.petabloom.com/mcp\"\n}"
+homepage: https://podcasts.petabloom.com

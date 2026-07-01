@@ -1,5 +1,63 @@
 [
   {
+    "name": "ai-agentic-news-mcp",
+    "display_name": "Agentic News Mcp",
+    "description": "AI-powered news intelligence — 21 tools for personalized monitoring, briefings, and semantic search",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "news",
+      "monitoring",
+      "intelligence"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://api.agentic-news.ai/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://api.agentic-news.ai/mcp\"\n}",
+    "homepage": "https://api.agentic-news.ai",
+    "installable": true
+  },
+  {
+    "name": "ai-delega-aws-pricing-calculator",
+    "display_name": "Delega Aws Pricing Calculator",
+    "description": "Create AWS cost estimates and shareable AWS Pricing Calculator URLs.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "cloud",
+      "aws",
+      "pricing",
+      "devops"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://calculator.delega.ai/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://calculator.delega.ai/mcp\"\n}",
+    "homepage": "https://calculator.delega.ai",
+    "installable": true
+  },
+  {
+    "name": "ai-dynamicfeed-dynamic-feed",
+    "display_name": "Dynamicfeed Dynamic Feed",
+    "description": "91 keyless tools of live, verifiable data for AI: weather, hazards, space, CVEs. Ed25519-signed.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "data",
+      "real-time",
+      "utilities"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://dynamicfeed.ai/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://dynamicfeed.ai/mcp\"\n}",
+    "homepage": "https://dynamicfeed.ai",
+    "installable": true
+  },
+  {
     "name": "alpha-vantage",
     "display_name": "Alpha Vantage",
     "description": "Comprehensive financial market data — stocks, forex, crypto, and economic indicators via Alpha Vantage API",
@@ -30,6 +88,45 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"alpha-vantage-mcp\"],\n  \"env\": {\"ALPHA_VANTAGE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
+  },
+  {
+    "name": "app-docwand-pdf",
+    "display_name": "Docwand Pdf",
+    "description": "Sign, fill, merge and split PDFs entirely in your browser - files never leave your device.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "pdf",
+      "documents",
+      "productivity"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://mcp.docwand.app/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://mcp.docwand.app/mcp\"\n}",
+    "homepage": "https://mcp.docwand.app",
+    "installable": true
+  },
+  {
+    "name": "app-octotrip-flights",
+    "display_name": "Octotrip Flights",
+    "description": "Free, no-login flight search with real-time pricing from multiple airlines.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://mcp.octotrip.app/flights/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://mcp.octotrip.app/flights/mcp\"\n}",
+    "homepage": "https://mcp.octotrip.app",
     "installable": true
   },
   {
@@ -89,6 +186,143 @@
     "installable": true
   },
   {
+    "name": "com-am-lich-vietnamese-calendar",
+    "display_name": "Am Lich Vietnamese Calendar",
+    "description": "Vietnamese Lunar Calendar for date and calendar conversion, and cultural insights.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "calendar",
+      "localization",
+      "vietnam"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://am-lich.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://am-lich.com/mcp\"\n}",
+    "homepage": "https://am-lich.com",
+    "installable": true
+  },
+  {
+    "name": "com-currencyguard-guard-pricing",
+    "display_name": "Currencyguard Guard Pricing",
+    "description": "FX protection for SMEs — price Guards, live spot/forward rates, settlement dates, and more.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "forex",
+      "currency"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://api.currencyguard.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://api.currencyguard.com/mcp\"\n}",
+    "homepage": "https://api.currencyguard.com",
+    "installable": true
+  },
+  {
+    "name": "com-exactpdf-mcp",
+    "display_name": "Exactpdf Mcp",
+    "description": "Agent-facing PDF API: merge, split, rotate, compress, images, metadata, text, and Markdown.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "pdf",
+      "documents",
+      "productivity"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@exactpdf/mcp@0.2.3"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@exactpdf/mcp@0.2.3\"\n  ]\n}",
+    "installable": true
+  },
+  {
+    "name": "com-fintalio-linkedin-mcp",
+    "display_name": "Fintalio Linkedin Mcp",
+    "description": "LinkedIn outreach MCP server — 19 tools for AI agents to prospect, sequence, and manage contacts.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "crm",
+      "sales",
+      "linkedin",
+      "outreach"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://fintalio.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://fintalio.com/mcp\"\n}",
+    "homepage": "https://fintalio.com",
+    "installable": true
+  },
+  {
+    "name": "com-olyport-earthquake",
+    "display_name": "Olyport Earthquake",
+    "description": "Real-time earthquake events from the US Geological Survey",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "geoscience",
+      "real-time",
+      "alerts"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://mcp.olyport.com/earthquake/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://mcp.olyport.com/earthquake/mcp\"\n}",
+    "homepage": "https://mcp.olyport.com",
+    "installable": true
+  },
+  {
+    "name": "com-onlineshippingcalculator-shipping-rates",
+    "display_name": "Onlineshippingcalculator Shipping Rates",
+    "description": "Live USPS, UPS & FedEx shipping rates plus USPS postage and stamp prices. Free, no API key.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "shipping",
+      "logistics",
+      "ecommerce"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://onlineshippingcalculator.com/api/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://onlineshippingcalculator.com/api/mcp\"\n}",
+    "homepage": "https://onlineshippingcalculator.com",
+    "installable": true
+  },
+  {
+    "name": "com-petabloom-podcasts",
+    "display_name": "Petabloom Podcasts",
+    "description": "An MCP server that provides tools to discover and retrieve podcast episodes transcripts.",
+    "author": "community",
+    "source": "official_registry",
+    "tags": [
+      "podcasts",
+      "media",
+      "audio"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://podcasts.petabloom.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://podcasts.petabloom.com/mcp\"\n}",
+    "homepage": "https://podcasts.petabloom.com",
+    "installable": true
+  },
+  {
     "name": "context7",
     "display_name": "Context7",
     "description": "Up-to-date documentation for any library — resolves library IDs and fetches live docs",
@@ -110,6 +344,45 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@upstash/context7-mcp\"]\n}\n",
+    "installable": true
+  },
+  {
+    "name": "dev-cz-agents-eu-registry",
+    "display_name": "Cz Agents Eu Registry",
+    "description": "EU business registry lookup via GLEIF/LEI & national registries — cross-border due diligence & KYC.",
+    "author": "cz-agents",
+    "source": "official_registry",
+    "tags": [
+      "company-registry",
+      "kyb",
+      "due-diligence"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://eu-registry.cz-agents.dev/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://eu-registry.cz-agents.dev/mcp\"\n}",
+    "homepage": "https://eu-registry.cz-agents.dev",
+    "installable": true
+  },
+  {
+    "name": "dev-patent-patent",
+    "display_name": "Patent Patent",
+    "description": "Search patents & trademarks from EPO, USPTO & DPMA: claims, legal status, prosecution, PTAB",
+    "author": "patent.dev",
+    "source": "official_registry",
+    "tags": [
+      "ip",
+      "patents",
+      "trademarks",
+      "legal"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://mcp.patent.dev/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://mcp.patent.dev/mcp\"\n}",
+    "homepage": "https://mcp.patent.dev",
     "installable": true
   },
   {
@@ -135,6 +408,72 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-server-docker\"]\n}\n",
+    "installable": true
+  },
+  {
+    "name": "eu-ansvar-brazil-law-mcp",
+    "display_name": "Brazil Law Mcp",
+    "description": "Brazil legislation via MCP — full-text search across statutes and provisions",
+    "author": "ansvar",
+    "source": "official_registry",
+    "tags": [
+      "legal",
+      "legislation",
+      "compliance"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ansvar/brazil-law-mcp@1.0.3"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@ansvar/brazil-law-mcp@1.0.3\"\n  ]\n}",
+    "installable": true
+  },
+  {
+    "name": "eu-ansvar-japan-law-mcp",
+    "display_name": "Japan Law Mcp",
+    "description": "Japan legislation via MCP — full-text search across statutes and provisions",
+    "author": "ansvar",
+    "source": "official_registry",
+    "tags": [
+      "legal",
+      "legislation",
+      "compliance"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ansvar/japan-law-mcp@1.1.1"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@ansvar/japan-law-mcp@1.1.1\"\n  ]\n}",
+    "installable": true
+  },
+  {
+    "name": "eu-ansvar-taiwanese-law-mcp",
+    "display_name": "Taiwanese Law Mcp",
+    "description": "Taiwanese legislation via MCP — full-text search across statutes and provisions",
+    "author": "ansvar",
+    "source": "official_registry",
+    "tags": [
+      "legal",
+      "legislation",
+      "compliance"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ansvar/taiwanese-law-mcp@1.0.0"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@ansvar/taiwanese-law-mcp@1.0.0\"\n  ]\n}",
     "installable": true
   },
   {
@@ -340,6 +679,1287 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@googlemaps/mcp\"],\n  \"env\": {\"GOOGLE_MAPS_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
+  },
+  {
+    "name": "io-github-aliakhtari78-spotifyscraper",
+    "display_name": "Aliakhtari78 Spotifyscraper",
+    "description": "Public Spotify metadata, lyrics and podcasts for LLM agents. No API key, read-only.",
+    "author": "aliakhtari78",
+    "source": "official_registry",
+    "tags": [
+      "music",
+      "spotify",
+      "media"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "spotifyscraper"
+      ],
+      "env_required": [
+        {
+          "name": "SPOTIFY_SP_DC",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"spotifyscraper\"\n  ],\n  \"env\": {\n    \"SPOTIFY_SP_DC\": \"YOUR_SPOTIFY_SP_DC_HERE\"\n  }\n}",
+    "homepage": "https://github.com/aliakhtari78/spotifyscraper",
+    "installable": true
+  },
+  {
+    "name": "io-github-blazickjp-arxiv-mcp-server",
+    "display_name": "Blazickjp Arxiv Mcp Server",
+    "description": "Search arXiv papers, download full text, semantic search, citation graphs, and alerts via MCP.",
+    "author": "blazickjp",
+    "source": "official_registry",
+    "tags": [
+      "research",
+      "academic",
+      "science"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "arxiv-mcp-server"
+      ],
+      "env_required": [
+        {
+          "name": "ARXIV_STORAGE_PATH",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"arxiv-mcp-server\"\n  ],\n  \"env\": {\n    \"ARXIV_STORAGE_PATH\": \"YOUR_ARXIV_STORAGE_PATH_HERE\"\n  }\n}",
+    "homepage": "https://github.com/blazickjp/arxiv-mcp-server",
+    "installable": true
+  },
+  {
+    "name": "io-github-br0ski777-regex-generator",
+    "display_name": "Br0ski777 Regex Generator",
+    "description": "Test, validate and explain regular expressions with match highlighting. x402 micropayment.",
+    "author": "br0ski777",
+    "source": "official_registry",
+    "tags": [
+      "developer-tools",
+      "utilities"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://regex-generator.api.klymax402.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://regex-generator.api.klymax402.com/mcp\"\n}",
+    "homepage": "https://regex-generator.api.klymax402.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-containers-kubernetes-mcp-server",
+    "display_name": "Containers Kubernetes Mcp Server",
+    "description": "A Model Context Protocol (MCP) server for Kubernetes and OpenShift",
+    "author": "containers",
+    "source": "official_registry",
+    "tags": [
+      "devops",
+      "docker",
+      "kubernetes"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "kubernetes-mcp-server@0.0.63"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"kubernetes-mcp-server@0.0.63\"\n  ]\n}",
+    "homepage": "https://github.com/containers/kubernetes-mcp-server",
+    "installable": true
+  },
+  {
+    "name": "io-github-csoai-org-docker-helper-ai-mcp",
+    "display_name": "Csoai Org Docker Helper Ai Mcp",
+    "description": "Docker Helper Ai MCP Server by MEOK AI Labs",
+    "author": "csoai",
+    "source": "official_registry",
+    "tags": [
+      "devops",
+      "docker",
+      "kubernetes"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "docker-helper-ai-mcp"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"docker-helper-ai-mcp\"\n  ]\n}",
+    "homepage": "https://github.com/csoai/org-docker-helper-ai-mcp",
+    "installable": true
+  },
+  {
+    "name": "io-github-csoai-org-meeting-summarizer-ai-mcp",
+    "display_name": "Csoai Org Meeting Summarizer Ai Mcp",
+    "description": "meeting-summarizer-ai-mcp MCP server by MEOK AI Labs",
+    "author": "csoai",
+    "source": "official_registry",
+    "tags": [
+      "productivity",
+      "meetings",
+      "ai"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "meeting-summarizer-ai-mcp"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"meeting-summarizer-ai-mcp\"\n  ]\n}",
+    "homepage": "https://github.com/csoai/org-meeting-summarizer-ai-mcp",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-exchange-rates-mcp-server",
+    "display_name": "Exchange Rates Mcp Server",
+    "description": "Convert currencies, get FX rates, and query historical ECB exchange rate data.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "forex",
+      "currency"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://exchange-rates.caseyjhand.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://exchange-rates.caseyjhand.com/mcp\"\n}",
+    "homepage": "https://exchange-rates.caseyjhand.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-medical-codes-mcp-server",
+    "display_name": "Medical Codes Mcp Server",
+    "description": "Offline US medical code lookup and crosswalk — ICD-10-CM/PCS, HCPCS Level II, RxNorm. Keyless.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "fda",
+      "drugs",
+      "clinical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://medical-codes.caseyjhand.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://medical-codes.caseyjhand.com/mcp\"\n}",
+    "homepage": "https://medical-codes.caseyjhand.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-openstreetmap-mcp-server",
+    "display_name": "Openstreetmap Mcp Server",
+    "description": "Geocode, reverse geocode, and run Overpass spatial queries on OpenStreetMap data.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "maps",
+      "geocoding",
+      "geo"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://openstreetmap.caseyjhand.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://openstreetmap.caseyjhand.com/mcp\"\n}",
+    "homepage": "https://openstreetmap.caseyjhand.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-sanctions-screening-mcp-server",
+    "display_name": "Sanctions Screening Mcp Server",
+    "description": "Screen names against OFAC, EU, UK, UN sanctions lists; resolve entities via GLEIF. Screening aid.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "compliance",
+      "legal",
+      "kyc",
+      "sanctions"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://sanctions-screening.caseyjhand.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://sanctions-screening.caseyjhand.com/mcp\"\n}",
+    "homepage": "https://sanctions-screening.caseyjhand.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-treasury-fiscaldata-mcp-server",
+    "display_name": "Treasury Fiscaldata Mcp Server",
+    "description": "MCP server for US Treasury Fiscal Data — debt, interest rates, exchange rates, and spending.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "us-treasury",
+      "economics"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://treasury-fiscaldata.caseyjhand.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://treasury-fiscaldata.caseyjhand.com/mcp\"\n}",
+    "homepage": "https://treasury-fiscaldata.caseyjhand.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-cyanheads-wikipedia-mcp-server",
+    "display_name": "Wikipedia Mcp Server",
+    "description": "Search Wikipedia, read summaries and full text, target sections, find nearby pages, list languages.",
+    "author": "cyanheads",
+    "source": "official_registry",
+    "tags": [
+      "reference",
+      "knowledge",
+      "wikipedia"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cyanheads/wikipedia-mcp-server@0.1.10"
+      ],
+      "env_required": [
+        {
+          "name": "MCP_LOG_LEVEL",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@cyanheads/wikipedia-mcp-server@0.1.10\"\n  ],\n  \"env\": {\n    \"MCP_LOG_LEVEL\": \"YOUR_MCP_LOG_LEVEL_HERE\"\n  }\n}",
+    "homepage": "https://github.com/cyanheads/wikipedia-mcp-server",
+    "installable": true
+  },
+  {
+    "name": "io-github-dgunning-edgartools",
+    "display_name": "Dgunning Edgartools",
+    "description": "Open-source SEC EDGAR toolkit — 11 tools, 7 prompts, every filing type. No API key required.",
+    "author": "dgunning",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "sec",
+      "filings",
+      "stocks"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "edgartools"
+      ],
+      "env_required": [
+        {
+          "name": "EDGAR_IDENTITY",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"edgartools\"\n  ],\n  \"env\": {\n    \"EDGAR_IDENTITY\": \"YOUR_EDGAR_IDENTITY_HERE\"\n  }\n}",
+    "homepage": "https://github.com/dgunning/edgartools",
+    "installable": true
+  },
+  {
+    "name": "io-github-docdyhr-macwhisper-mcp-server",
+    "display_name": "Docdyhr Macwhisper Mcp Server",
+    "description": "MacWhisper transcription for Claude Desktop. Fully local, no cloud, audio stays on your Mac.",
+    "author": "docdyhr",
+    "source": "official_registry",
+    "tags": [
+      "audio",
+      "transcription",
+      "speech-to-text"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "macwhisper-mcp-server"
+      ],
+      "env_required": [
+        {
+          "name": "MACWHISPER_ALLOWED_PATHS",
+          "description": "Required environment variable"
+        },
+        {
+          "name": "MACWHISPER_CLI",
+          "description": "Required environment variable"
+        },
+        {
+          "name": "MACWHISPER_LOG_PATH",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"macwhisper-mcp-server\"\n  ],\n  \"env\": {\n    \"MACWHISPER_ALLOWED_PATHS\": \"YOUR_MACWHISPER_ALLOWED_PATHS_HERE\",\n    \"MACWHISPER_CLI\": \"YOUR_MACWHISPER_CLI_HERE\",\n    \"MACWHISPER_LOG_PATH\": \"YOUR_MACWHISPER_LOG_PATH_HERE\"\n  }\n}",
+    "homepage": "https://github.com/docdyhr/macwhisper-mcp-server",
+    "installable": true
+  },
+  {
+    "name": "io-github-domdomegg-barcode-scanner-mcp",
+    "display_name": "Domdomegg Barcode Scanner Mcp",
+    "description": "Scan and generate barcodes and QR codes.",
+    "author": "domdomegg",
+    "source": "official_registry",
+    "tags": [
+      "barcode",
+      "qr-code",
+      "utilities"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "barcode-scanner-mcp@1.2.0"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"barcode-scanner-mcp@1.2.0\"\n  ]\n}",
+    "homepage": "https://github.com/domdomegg/barcode-scanner-mcp",
+    "installable": true
+  },
+  {
+    "name": "io-github-dosev-ai-mcp-office-excel",
+    "display_name": "Dosev Ai Mcp Office Excel",
+    "description": "65-tool Excel MCP server. Read, write, format, and export .xlsx files. Windows-first.",
+    "author": "dosev",
+    "source": "official_registry",
+    "tags": [
+      "excel",
+      "spreadsheets",
+      "office"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-office"
+      ],
+      "env_required": [
+        {
+          "name": "EXCEL_ALLOWLIST_ROOTS",
+          "description": "Required environment variable"
+        },
+        {
+          "name": "EXCEL_ENABLE_WRITE",
+          "description": "Required environment variable"
+        },
+        {
+          "name": "EXCEL_ENABLE_COM",
+          "description": "Required environment variable"
+        },
+        {
+          "name": "EXCEL_MAX_ITEMS",
+          "description": "Required environment variable"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"mcp-office\"\n  ],\n  \"env\": {\n    \"EXCEL_ALLOWLIST_ROOTS\": \"YOUR_EXCEL_ALLOWLIST_ROOTS_HERE\",\n    \"EXCEL_ENABLE_WRITE\": \"YOUR_EXCEL_ENABLE_WRITE_HERE\",\n    \"EXCEL_ENABLE_COM\": \"YOUR_EXCEL_ENABLE_COM_HERE\",\n    \"EXCEL_MAX_ITEMS\": \"YOUR_EXCEL_MAX_ITEMS_HERE\"\n  }\n}",
+    "homepage": "https://github.com/dosev/ai-mcp-office-excel",
+    "installable": true
+  },
+  {
+    "name": "io-github-jwulff-whisper-mcp",
+    "display_name": "Jwulff Whisper Mcp",
+    "description": "Local audio transcription using whisper.cpp. Transcribe with OpenAI Whisper models.",
+    "author": "jwulff",
+    "source": "official_registry",
+    "tags": [
+      "audio",
+      "transcription",
+      "speech-to-text"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "whisper-mcp@0.1.1"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"whisper-mcp@0.1.1\"\n  ]\n}",
+    "homepage": "https://github.com/jwulff/whisper-mcp",
+    "installable": true
+  },
+  {
+    "name": "io-github-keshrath-agent-tasks",
+    "display_name": "Keshrath Agent Tasks",
+    "description": "Pipeline task management for AI agents - stages, dependencies, artifacts, claiming",
+    "author": "keshrath",
+    "source": "official_registry",
+    "tags": [
+      "productivity",
+      "task-management",
+      "agents"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "agent-tasks@1.10.11"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"agent-tasks@1.10.11\"\n  ]\n}",
+    "homepage": "https://github.com/keshrath/agent-tasks",
+    "installable": true
+  },
+  {
+    "name": "io-github-malamutemayhem-restcountries",
+    "display_name": "Malamutemayhem Restcountries",
+    "description": "Country data: flags, currencies, languages, regions, capitals, and more. No API key. By UnClick.",
+    "author": "malamutemayhem",
+    "source": "official_registry",
+    "tags": [
+      "reference",
+      "geography",
+      "countries"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@unclick/restcountries-mcp@0.1.0"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"@unclick/restcountries-mcp@0.1.0\"\n  ]\n}",
+    "homepage": "https://github.com/malamutemayhem/restcountries",
+    "installable": true
+  },
+  {
+    "name": "io-github-ojaskord-hs-code-classifier-mcp-server",
+    "display_name": "Hs Code Classifier Mcp Server",
+    "description": "Classify products to official HS codes and validate supplier codes before customs submissions",
+    "author": "ojaskord",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://hs-code-classifier-mcp-server-production.up.railway.app"
+    },
+    "claude_config": "{\n  \"url\": \"https://hs-code-classifier-mcp-server-production.up.railway.app\"\n}",
+    "homepage": "https://hs-code-classifier-mcp-server-production.up.railway.app",
+    "installable": true
+  },
+  {
+    "name": "io-github-ojaskord-vat-validator-mcp",
+    "display_name": "Vat Validator Mcp",
+    "description": "Validate EU, UK, AU VAT numbers for AI agents. EU ViDA e-invoicing compliance.",
+    "author": "ojaskord",
+    "source": "official_registry",
+    "tags": [
+      "compliance",
+      "legal",
+      "kyc",
+      "sanctions"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://vat-validator-mcp-production.up.railway.app"
+    },
+    "claude_config": "{\n  \"url\": \"https://vat-validator-mcp-production.up.railway.app\"\n}",
+    "homepage": "https://vat-validator-mcp-production.up.railway.app",
+    "installable": true
+  },
+  {
+    "name": "io-github-patent-precheck-patent-precheck",
+    "display_name": "Patent Precheck Patent Precheck",
+    "description": "Keyless 12-tool patentability MCP: USPTO pillar scores, prior art, hosted at patentprecheck.com/mcp.",
+    "author": "patent",
+    "source": "official_registry",
+    "tags": [
+      "ip",
+      "patents",
+      "trademarks",
+      "legal"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://patentprecheck.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://patentprecheck.com/mcp\"\n}",
+    "homepage": "https://patentprecheck.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-perufitlife-aviation-mcp",
+    "display_name": "Perufitlife Aviation Mcp",
+    "description": "Live aviation data for AI agents: METAR weather, airports, aircraft, glossary & FAA questions.",
+    "author": "perufitlife",
+    "source": "official_registry",
+    "tags": [
+      "travel",
+      "aviation",
+      "hotels"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://renzomacar--aviation-mcp.apify.actor/mcp?token={apifyToken}"
+    },
+    "claude_config": "{\n  \"url\": \"https://renzomacar--aviation-mcp.apify.actor/mcp?token={apifyToken}\"\n}",
+    "homepage": "https://renzomacar--aviation-mcp.apify.actor",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-banxico",
+    "display_name": "Banxico",
+    "description": "Banxico MCP — Banco de México (Mexico's central bank) via the SIE API.",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/banxico/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/banxico/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-bcb-br",
+    "display_name": "Bcb Br",
+    "description": "Banco Central do Brasil (Brazil's central bank) MCP.",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/bcb-br/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/bcb-br/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-chembl",
+    "display_name": "Chembl",
+    "description": "ChEMBL MCP — drug discovery database (EBI).",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "chemistry",
+      "drug-discovery",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/chembl/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/chembl/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-clinicaltrials",
+    "display_name": "Clinicaltrials",
+    "description": "ClinicalTrials MCP — wraps ClinicalTrials.gov API v2 (free, no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "clinical-trials",
+      "pharma",
+      "research"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/clinicaltrials/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/clinicaltrials/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-comtrade",
+    "display_name": "Comtrade",
+    "description": "Comtrade MCP — UN Comtrade API for international bilateral trade data",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/comtrade/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/comtrade/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-dailymed",
+    "display_name": "Dailymed",
+    "description": "DailyMed MCP — FDA Structured Product Labels via NLM",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "fda",
+      "drugs",
+      "clinical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/dailymed/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/dailymed/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-ecb",
+    "display_name": "Ecb",
+    "description": "ECB Data Portal MCP — European Central Bank statistical data",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/ecb/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/ecb/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-edgar",
+    "display_name": "Edgar",
+    "description": "EDGAR MCP — SEC EDGAR public APIs (free, no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "sec",
+      "filings",
+      "stocks"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/edgar/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/edgar/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-ensembl",
+    "display_name": "Ensembl",
+    "description": "Ensembl REST — vertebrate genomes, sequences, comparative genomics, variation",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "genomics",
+      "bioinformatics",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/ensembl/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/ensembl/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-europepmc",
+    "display_name": "Europepmc",
+    "description": "Europe PubMed Central — biomedical literature search and full text",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "research",
+      "pubmed",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/europepmc/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/europepmc/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-flights",
+    "display_name": "Flights",
+    "description": "Flights MCP — wraps OpenSky Network API (free, no auth required)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/flights/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/flights/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-fred",
+    "display_name": "Fred",
+    "description": "FRED MCP — Federal Reserve Economic Data (St. Louis Fed)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/fred/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/fred/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-hts",
+    "display_name": "Hts",
+    "description": "HTS MCP — US import tariff rates via the USITC Harmonized Tariff Schedule.",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/hts/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/hts/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-imf-portwatch",
+    "display_name": "Imf Portwatch",
+    "description": "IMF PortWatch MCP — global maritime trade & chokepoint signals (free, no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/imf-portwatch/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/imf-portwatch/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-imf",
+    "display_name": "Imf",
+    "description": "IMF MCP — wraps IMF SDMX JSON REST API (dataservices.imf.org)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/imf/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/imf/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-mygene-info",
+    "display_name": "Mygene Info",
+    "description": "MyGene.info — gene annotation joining NCBI/Ensembl/UniProt/KEGG/OMIM",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "genomics",
+      "bioinformatics",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/mygene-info/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/mygene-info/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-oecd",
+    "display_name": "Oecd",
+    "description": "OECD MCP — Organisation for Economic Co-operation and Development data",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/oecd/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/oecd/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-open-corporates",
+    "display_name": "Open Corporates",
+    "description": "OpenCorporates MCP — Global company registry data (free, no auth, rate limited)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "company-registry",
+      "kyb",
+      "due-diligence"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/open-corporates/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/open-corporates/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-openfda",
+    "display_name": "Openfda",
+    "description": "OpenFDA MCP — wraps the openFDA API (free, no auth required)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "fda",
+      "drugs",
+      "clinical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/openfda/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/openfda/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-pharma-intel",
+    "display_name": "Pharma Intel",
+    "description": "Pharma Intel MCP — Compound tools that chain ClinicalTrials.gov,",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "clinical-trials",
+      "pharma",
+      "research"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/pharma-intel/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/pharma-intel/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-pubchem",
+    "display_name": "Pubchem",
+    "description": "PubChem MCP — NIH chemistry compound database (no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "chemistry",
+      "drug-discovery",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/pubchem/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/pubchem/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-rxnorm",
+    "display_name": "Rxnorm",
+    "description": "RxNorm MCP — wraps the NLM RxNav REST API (free, no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "fda",
+      "drugs",
+      "clinical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/rxnorm/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/rxnorm/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-sec-xbrl",
+    "display_name": "Sec Xbrl",
+    "description": "SEC XBRL MCP — wraps SEC EDGAR XBRL API (data.sec.gov)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "finance",
+      "sec",
+      "filings",
+      "stocks"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/sec-xbrl/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/sec-xbrl/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-trade-intel",
+    "display_name": "Trade Intel",
+    "description": "Trade Intel MCP — Compound tools that chain Comtrade, Census, Treasury,",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "trade",
+      "customs",
+      "international",
+      "tariffs"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/trade-intel/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/trade-intel/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-trademarks",
+    "display_name": "Trademarks",
+    "description": "Trademarks MCP — USPTO TSDR trademark lookup",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "ip",
+      "patents",
+      "trademarks",
+      "legal"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/trademarks/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/trademarks/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-uniprot",
+    "display_name": "Uniprot",
+    "description": "UniProt MCP — protein sequence + function database.",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "genomics",
+      "bioinformatics",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/uniprot/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/uniprot/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-weather",
+    "display_name": "Weather",
+    "description": "Real-time weather conditions and multi-day forecasts via Open-Meteo — free, no API key required",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "weather",
+      "real-time",
+      "forecasting"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/weather/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/weather/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-wolfram-alpha",
+    "display_name": "Wolfram Alpha",
+    "description": "Wolfram Alpha MCP — computational, factual, and quantitative queries",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "research",
+      "academic",
+      "science"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/wolfram-alpha/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/wolfram-alpha/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-worldbank",
+    "display_name": "Worldbank",
+    "description": "World Bank MCP — wraps the World Bank Data API v2 (free, no auth)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "economics",
+      "central-bank",
+      "macroeconomics",
+      "finance"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/worldbank/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/worldbank/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pipeworx-io-yelp",
+    "display_name": "Yelp",
+    "description": "Yelp MCP — wraps the Yelp Fusion API (api.yelp.com/v3)",
+    "author": "pipeworx",
+    "source": "official_registry",
+    "tags": [
+      "local-business",
+      "reviews",
+      "search"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gateway.pipeworx.io/yelp/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://gateway.pipeworx.io/yelp/mcp\"\n}",
+    "homepage": "https://gateway.pipeworx.io",
+    "installable": true
+  },
+  {
+    "name": "io-github-pkotecha-eng-aria-mcp-server",
+    "display_name": "Pkotecha Eng Aria Mcp Server",
+    "description": "Search 35M+ PubMed, 400K+ ClinicalTrials.gov & ISRCTN trials. Prompts included. No API key.",
+    "author": "pkotecha",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "research",
+      "pubmed",
+      "biomedical"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "aria-mcp-server"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"aria-mcp-server\"\n  ]\n}",
+    "homepage": "https://github.com/pkotecha/eng-aria-mcp-server",
+    "installable": true
+  },
+  {
+    "name": "io-github-sophymarine-openregistry",
+    "display_name": "Sophymarine Openregistry",
+    "description": "Live data from 27 official national company registries. Unmodified. For KYB and due diligence.",
+    "author": "sophymarine",
+    "source": "official_registry",
+    "tags": [
+      "company-registry",
+      "kyb",
+      "due-diligence"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://openregistry.sophymarine.com/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://openregistry.sophymarine.com/mcp\"\n}",
+    "homepage": "https://openregistry.sophymarine.com",
+    "installable": true
+  },
+  {
+    "name": "io-github-stayce-icd-mcp",
+    "display_name": "Stayce Icd Mcp",
+    "description": "WHO ICD-10/ICD-11 diagnosis codes. Lookup, search, chapters via official WHO API.",
+    "author": "stayce",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "fda",
+      "drugs",
+      "clinical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://icd-mcp-server.staycek.workers.dev/mcp"
+    },
+    "claude_config": "{\n  \"url\": \"https://icd-mcp-server.staycek.workers.dev/mcp\"\n}",
+    "homepage": "https://icd-mcp-server.staycek.workers.dev",
+    "installable": true
+  },
+  {
+    "name": "io-github-tlennon-ie-neurodock-mcp-translation",
+    "display_name": "Tlennon Ie Neurodock Mcp Translation",
+    "description": "Decode subtext, tone, and ambiguity in messages; rewrite outgoing replies; brief meetings.",
+    "author": "tlennon",
+    "source": "official_registry",
+    "tags": [
+      "productivity",
+      "communication",
+      "nlp"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "neurodock-mcp-translation"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"neurodock-mcp-translation\"\n  ]\n}",
+    "homepage": "https://github.com/tlennon/ie-neurodock-mcp-translation",
+    "installable": true
+  },
+  {
+    "name": "io-github-woladi-macos-vision-mcp",
+    "display_name": "Woladi Macos Vision Mcp",
+    "description": "Local OCR & image analysis via Apple Vision — no cloud, no API keys, ~97% fewer tokens on PDFs.",
+    "author": "woladi",
+    "source": "official_registry",
+    "tags": [
+      "ocr",
+      "vision",
+      "macos",
+      "pdf"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "macos-vision-mcp@0.4.9"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"macos-vision-mcp@0.4.9\"\n  ]\n}",
+    "homepage": "https://github.com/woladi/macos-vision-mcp",
+    "installable": true
+  },
+  {
+    "name": "io-github-xpaysh-academic-research",
+    "display_name": "Xpaysh Academic Research",
+    "description": "30+ academic research tools. Semantic Scholar, arXiv, PubMed, bioRxiv, CrossRef, IACR.",
+    "author": "xpaysh",
+    "source": "official_registry",
+    "tags": [
+      "medical",
+      "research",
+      "pubmed",
+      "biomedical"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://research.mcp.xpay.sh/mcp?key={api_key}"
+    },
+    "claude_config": "{\n  \"url\": \"https://research.mcp.xpay.sh/mcp?key={api_key}\"\n}",
+    "homepage": "https://research.mcp.xpay.sh",
+    "installable": true
+  },
+  {
+    "name": "io-tooloracle-hoteloracle",
+    "display_name": "Io Tooloracle Hoteloracle",
+    "description": "Hotel Intelligence MCP — search, price compare, area guides, price calendars via Google Hotels",
+    "author": "tooloracle",
+    "source": "official_registry",
+    "tags": [
+      "travel",
+      "aviation",
+      "hotels"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://tooloracle.io/hotel/mcp/"
+    },
+    "claude_config": "{\n  \"url\": \"https://tooloracle.io/hotel/mcp/\"\n}",
+    "homepage": "https://tooloracle.io",
     "installable": true
   },
   {

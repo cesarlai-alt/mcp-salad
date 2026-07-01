@@ -1,0 +1,15 @@
+name: io-github-pipeworx-io-sec-xbrl
+display_name: Sec Xbrl
+description: SEC XBRL MCP — wraps SEC EDGAR XBRL API (data.sec.gov)
+author: pipeworx
+source: official_registry
+tags:
+- finance
+- sec
+- filings
+- stocks
+install:
+  type: http
+  url: https://gateway.pipeworx.io/sec-xbrl/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/sec-xbrl/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

@@ -1,0 +1,27 @@
+name: io-github-docdyhr-macwhisper-mcp-server
+display_name: Docdyhr Macwhisper Mcp Server
+description: MacWhisper transcription for Claude Desktop. Fully local, no cloud, audio
+  stays on your Mac.
+author: docdyhr
+source: official_registry
+tags:
+- audio
+- transcription
+- speech-to-text
+install:
+  type: stdio
+  command: uvx
+  args:
+  - macwhisper-mcp-server
+  env_required:
+  - name: MACWHISPER_ALLOWED_PATHS
+    description: Required environment variable
+  - name: MACWHISPER_CLI
+    description: Required environment variable
+  - name: MACWHISPER_LOG_PATH
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"macwhisper-mcp-server\"\
+  \n  ],\n  \"env\": {\n    \"MACWHISPER_ALLOWED_PATHS\": \"YOUR_MACWHISPER_ALLOWED_PATHS_HERE\"\
+  ,\n    \"MACWHISPER_CLI\": \"YOUR_MACWHISPER_CLI_HERE\",\n    \"MACWHISPER_LOG_PATH\"\
+  : \"YOUR_MACWHISPER_LOG_PATH_HERE\"\n  }\n}"
+homepage: https://github.com/docdyhr/macwhisper-mcp-server

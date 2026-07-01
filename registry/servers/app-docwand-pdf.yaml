@@ -1,0 +1,15 @@
+name: app-docwand-pdf
+display_name: Docwand Pdf
+description: Sign, fill, merge and split PDFs entirely in your browser - files never
+  leave your device.
+author: community
+source: official_registry
+tags:
+- pdf
+- documents
+- productivity
+install:
+  type: http
+  url: https://mcp.docwand.app/mcp
+claude_config: "{\n  \"url\": \"https://mcp.docwand.app/mcp\"\n}"
+homepage: https://mcp.docwand.app

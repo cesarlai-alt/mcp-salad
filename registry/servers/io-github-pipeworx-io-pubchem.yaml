@@ -1,0 +1,14 @@
+name: io-github-pipeworx-io-pubchem
+display_name: Pubchem
+description: PubChem MCP — NIH chemistry compound database (no auth)
+author: pipeworx
+source: official_registry
+tags:
+- chemistry
+- drug-discovery
+- biomedical
+install:
+  type: http
+  url: https://gateway.pipeworx.io/pubchem/mcp
+claude_config: "{\n  \"url\": \"https://gateway.pipeworx.io/pubchem/mcp\"\n}"
+homepage: https://gateway.pipeworx.io

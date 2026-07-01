@@ -2,11 +2,13 @@
 
 ### Hot-swappable MCP servers for Claude Code. Enable or disable them at runtime — no restart.
 
-Powered by the MCP spec's own `notifications/tools/list_changed`. Flip a server on from another terminal and your **already-running** session gains its tools instantly.
+MCP Salad is a CLI + runtime layer for the MCP ecosystem. It searches and installs from the official MCP registry (14,000+ servers), then adds one thing the registry can't: flip servers on/off in a running session from a second terminal.
+
+Powered by the MCP spec's own `notifications/tools/list_changed`. Enable a server from another terminal and your **already-running** session gains its tools instantly. Disable it and the context tokens come back.
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Servers](https://img.shields.io/badge/servers-26-brightgreen.svg)
+![Servers](https://img.shields.io/badge/servers-103-brightgreen.svg)
 ![Runtime](https://img.shields.io/badge/runtime-hot--swap-ff69b4.svg)
 
 ![MCP Salad runtime hot-swap demo](docs/hotswap-demo.gif)
@@ -43,6 +45,18 @@ salad publish               # submit your own server in ~30s
 ```
 
 > No install step for the CLI yet — run it as `python3 cli/mcp.py <command>`, or add the one-line `salad` shim (see [Install the `salad` command](#install-the-salad-command)).
+
+### 103 curated servers across 15 categories
+
+The registry ships with **103 hand-picked servers** covering Medical/Biomedical, Finance & Economics, Trade & Customs, Legal & Compliance, Patents & IP, Research, Productivity, Travel, Documents, Developer Tools, Audio/Media, Geo, and more.
+
+Browse by category: [`registry/CATEGORIES.md`](registry/CATEGORIES.md)
+
+Notable curated collections:
+- **16 medical/pharma** servers — PubMed, ClinicalTrials, OpenFDA, ICD, RxNorm, ChEMBL, UniProt...
+- **14 finance/economics** servers — FRED, IMF, OECD, World Bank, ECB, SEC EDGAR, Treasury...
+- **6 trade/customs** servers — UN Comtrade, HTS tariffs, HS code classifier, PortWatch...
+- **8 legal/compliance** servers — Taiwanese/Brazil/Japan law, OFAC sanctions, VAT validator...
 
 ### Search spans the official registry
 

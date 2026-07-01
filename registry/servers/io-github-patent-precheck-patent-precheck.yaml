@@ -1,0 +1,16 @@
+name: io-github-patent-precheck-patent-precheck
+display_name: Patent Precheck Patent Precheck
+description: 'Keyless 12-tool patentability MCP: USPTO pillar scores, prior art, hosted
+  at patentprecheck.com/mcp.'
+author: patent
+source: official_registry
+tags:
+- ip
+- patents
+- trademarks
+- legal
+install:
+  type: http
+  url: https://patentprecheck.com/mcp
+claude_config: "{\n  \"url\": \"https://patentprecheck.com/mcp\"\n}"
+homepage: https://patentprecheck.com

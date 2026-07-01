@@ -1,0 +1,17 @@
+name: io-github-csoai-org-docker-helper-ai-mcp
+display_name: Csoai Org Docker Helper Ai Mcp
+description: Docker Helper Ai MCP Server by MEOK AI Labs
+author: csoai
+source: official_registry
+tags:
+- devops
+- docker
+- kubernetes
+install:
+  type: stdio
+  command: uvx
+  args:
+  - docker-helper-ai-mcp
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"docker-helper-ai-mcp\"\
+  \n  ]\n}"
+homepage: https://github.com/csoai/org-docker-helper-ai-mcp

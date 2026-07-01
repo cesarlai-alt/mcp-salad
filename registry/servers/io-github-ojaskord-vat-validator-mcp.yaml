@@ -1,0 +1,16 @@
+name: io-github-ojaskord-vat-validator-mcp
+display_name: Vat Validator Mcp
+description: Validate EU, UK, AU VAT numbers for AI agents. EU ViDA e-invoicing compliance.
+author: ojaskord
+source: official_registry
+tags:
+- compliance
+- legal
+- kyc
+- sanctions
+install:
+  type: http
+  url: https://vat-validator-mcp-production.up.railway.app
+claude_config: "{\n  \"url\": \"https://vat-validator-mcp-production.up.railway.app\"\
+  \n}"
+homepage: https://vat-validator-mcp-production.up.railway.app

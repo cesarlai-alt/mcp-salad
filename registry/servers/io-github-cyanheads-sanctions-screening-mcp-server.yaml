@@ -1,0 +1,17 @@
+name: io-github-cyanheads-sanctions-screening-mcp-server
+display_name: Sanctions Screening Mcp Server
+description: Screen names against OFAC, EU, UK, UN sanctions lists; resolve entities
+  via GLEIF. Screening aid.
+author: cyanheads
+source: official_registry
+tags:
+- compliance
+- legal
+- kyc
+- sanctions
+install:
+  type: http
+  url: https://sanctions-screening.caseyjhand.com/mcp
+claude_config: "{\n  \"url\": \"https://sanctions-screening.caseyjhand.com/mcp\"\n\
+  }"
+homepage: https://sanctions-screening.caseyjhand.com

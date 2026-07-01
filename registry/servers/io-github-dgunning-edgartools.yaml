@@ -1,0 +1,22 @@
+name: io-github-dgunning-edgartools
+display_name: Dgunning Edgartools
+description: Open-source SEC EDGAR toolkit — 11 tools, 7 prompts, every filing type.
+  No API key required.
+author: dgunning
+source: official_registry
+tags:
+- finance
+- sec
+- filings
+- stocks
+install:
+  type: stdio
+  command: uvx
+  args:
+  - edgartools
+  env_required:
+  - name: EDGAR_IDENTITY
+    description: Required environment variable
+claude_config: "{\n  \"command\": \"uvx\",\n  \"args\": [\n    \"edgartools\"\n  ],\n\
+  \  \"env\": {\n    \"EDGAR_IDENTITY\": \"YOUR_EDGAR_IDENTITY_HERE\"\n  }\n}"
+homepage: https://github.com/dgunning/edgartools

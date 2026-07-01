@@ -1,0 +1,18 @@
+name: io-github-domdomegg-barcode-scanner-mcp
+display_name: Domdomegg Barcode Scanner Mcp
+description: Scan and generate barcodes and QR codes.
+author: domdomegg
+source: official_registry
+tags:
+- barcode
+- qr-code
+- utilities
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - barcode-scanner-mcp@1.2.0
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"barcode-scanner-mcp@1.2.0\"\
+  \n  ]\n}"
+homepage: https://github.com/domdomegg/barcode-scanner-mcp

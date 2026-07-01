@@ -1,0 +1,15 @@
+name: ai-agentic-news-mcp
+display_name: Agentic News Mcp
+description: AI-powered news intelligence — 21 tools for personalized monitoring,
+  briefings, and semantic search
+author: community
+source: official_registry
+tags:
+- news
+- monitoring
+- intelligence
+install:
+  type: http
+  url: https://api.agentic-news.ai/mcp
+claude_config: "{\n  \"url\": \"https://api.agentic-news.ai/mcp\"\n}"
+homepage: https://api.agentic-news.ai

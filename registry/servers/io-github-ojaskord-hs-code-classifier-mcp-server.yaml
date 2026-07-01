@@ -1,0 +1,17 @@
+name: io-github-ojaskord-hs-code-classifier-mcp-server
+display_name: Hs Code Classifier Mcp Server
+description: Classify products to official HS codes and validate supplier codes before
+  customs submissions
+author: ojaskord
+source: official_registry
+tags:
+- trade
+- customs
+- international
+- tariffs
+install:
+  type: http
+  url: https://hs-code-classifier-mcp-server-production.up.railway.app
+claude_config: "{\n  \"url\": \"https://hs-code-classifier-mcp-server-production.up.railway.app\"\
+  \n}"
+homepage: https://hs-code-classifier-mcp-server-production.up.railway.app

@@ -1,0 +1,16 @@
+name: io-github-cyanheads-treasury-fiscaldata-mcp-server
+display_name: Treasury Fiscaldata Mcp Server
+description: MCP server for US Treasury Fiscal Data — debt, interest rates, exchange
+  rates, and spending.
+author: cyanheads
+source: official_registry
+tags:
+- finance
+- us-treasury
+- economics
+install:
+  type: http
+  url: https://treasury-fiscaldata.caseyjhand.com/mcp
+claude_config: "{\n  \"url\": \"https://treasury-fiscaldata.caseyjhand.com/mcp\"\n\
+  }"
+homepage: https://treasury-fiscaldata.caseyjhand.com

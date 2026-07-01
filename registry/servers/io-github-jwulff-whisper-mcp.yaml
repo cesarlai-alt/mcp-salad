@@ -1,0 +1,19 @@
+name: io-github-jwulff-whisper-mcp
+display_name: Jwulff Whisper Mcp
+description: Local audio transcription using whisper.cpp. Transcribe with OpenAI Whisper
+  models.
+author: jwulff
+source: official_registry
+tags:
+- audio
+- transcription
+- speech-to-text
+install:
+  type: stdio
+  command: npx
+  args:
+  - -y
+  - whisper-mcp@0.1.1
+claude_config: "{\n  \"command\": \"npx\",\n  \"args\": [\n    \"-y\",\n    \"whisper-mcp@0.1.1\"\
+  \n  ]\n}"
+homepage: https://github.com/jwulff/whisper-mcp
