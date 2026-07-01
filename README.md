@@ -1,8 +1,10 @@
 # MCP Salad 🥗
 
-> The MCP ecosystem has 500+ servers spread across GitHub, npm, and blog posts. There's no central place to find, compare, or install them.
->
-> MCP Salad is an open, community-maintained index of MCP servers — with a CLI for one-command installation and a searchable web interface.
+**The MCP ecosystem has no package manager.**
+
+500+ servers exist. They're scattered across GitHub repos, npm packages, and blog posts. There's no `npm install`. No search. No standard way to know what exists or how to try it.
+
+MCP Salad fixes this: an open, community-maintained registry with a CLI and a searchable index. `mcp search web` finds what you need. `mcp install firecrawl` shows you exactly how to configure it.
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
