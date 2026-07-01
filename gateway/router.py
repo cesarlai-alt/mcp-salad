@@ -97,6 +97,14 @@ def match_capability(description: str) -> str | None:
     return None
 
 
+def find_capability_by_server(server_id: str) -> str | None:
+    """Find which capability owns a given server_id."""
+    for cap_name, cap_def in CAPABILITIES.items():
+        if server_id in cap_def.get("servers", []):
+            return cap_name
+    return None
+
+
 # ─── Child MCP communication ────────────────────────────────────────────────────
 
 class StdioMCPClient:
@@ -411,6 +419,19 @@ def unload_capability(cap_name: str) -> bool:
 app = Server("vero-mcp-router")
 
 
+# ─── MCPRouter class (thin wrapper for testing / external use) ───────────────────
+
+class MCPRouter:
+    """Thin wrapper around the module-level app for testing and external callers."""
+
+    def __init__(self, config_path: str):
+        # Config is already loaded at module level; accept path for API compatibility
+        pass
+
+    async def list_tools(self) -> list[types.Tool]:
+        return await list_tools()
+
+
 @app.list_tools()
 async def list_tools() -> list[types.Tool]:
     """
@@ -467,6 +488,46 @@ async def list_tools() -> list[types.Tool]:
                 "required": ["name"],
             },
         ),
+        types.Tool(
+            name="auto_use_capability",
+            description=(
+                "Auto-load the capability that owns a specific tool or server. "
+                "Pass a namespaced tool name like 'twstock__get_realtime_quote' or just the "
+                "server prefix like 'twstock'. The router finds which capability owns that "
+                "server and loads it — no need to call list_capabilities() first."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "tool_name": {
+                        "type": "string",
+                        "description": (
+                            "Tool name (e.g. 'twstock__get_realtime_quote') "
+                            "or server prefix (e.g. 'twstock')"
+                        ),
+                    },
+                },
+                "required": ["tool_name"],
+            },
+        ),
+        types.Tool(
+            name="which_capability",
+            description=(
+                "Find the best matching capability for a natural language description — "
+                "WITHOUT loading it. Use this to decide what to load before committing. "
+                "E.g. 'I need to look up Taiwan stock prices' → returns 'taiwan_stocks'."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Natural language description of what you need to do",
+                    },
+                },
+                "required": ["description"],
+            },
+        ),
     ]
 
     # Collect all currently active proxy tools
@@ -494,14 +555,30 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         lines = ["## Available Capability Groups\n"]
         for cap_name, cap_def in CAPABILITIES.items():
             status = "✅ ACTIVE" if cap_name in active_capabilities else "  inactive"
-            servers = ", ".join(cap_def.get("servers", []))
+            servers = cap_def.get("servers", [])
             lines.append(
                 f"**{cap_name}** {status}\n"
                 f"  {cap_def.get('description', '')}\n"
-                f"  servers: {servers}\n"
+                f"  servers: {', '.join(servers)}"
             )
+            if cap_name in active_capabilities:
+                # Show actual loaded tool names (up to 5)
+                tool_names = [t["name"] for t in active_capabilities[cap_name]]
+                sample = tool_names[:5]
+                extra = len(tool_names) - 5
+                line = "  example tools: " + ", ".join(f"`{t}`" for t in sample)
+                if extra > 0:
+                    line += f" (+{extra} more)"
+                lines.append(line)
+            else:
+                # Show server prefix patterns so Claude knows the naming scheme
+                prefixes = ", ".join(f"`{sid}__*`" for sid in servers)
+                lines.append(f"  tool prefix: {prefixes}")
+            lines.append("")
         lines.append(
-            "\nUse `use_capability(description)` to activate a group."
+            "Use `use_capability(description)` to activate by keyword, "
+            "`auto_use_capability(tool_name)` to activate by tool/server name, "
+            "or `which_capability(description)` to preview the match without loading."
         )
         return [types.TextContent(type="text", text="\n".join(lines))]
 
@@ -569,6 +646,80 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
                 type="text",
                 text=f"Capability '{cap_name}' was not active.",
             )]
+
+    # ── Meta: auto_use_capability ────────────────────────────────────────────
+    if name == "auto_use_capability":
+        tool_name = arguments.get("tool_name", "")
+
+        # Extract server_id: "server_id__tool_name" → "server_id", or bare prefix
+        server_id = tool_name.split("__", 1)[0] if "__" in tool_name else tool_name
+
+        cap_name = find_capability_by_server(server_id)
+        if not cap_name:
+            cap_list = "\n".join(
+                f"- **{k}** (servers: {', '.join(v.get('servers', []))})"
+                for k, v in CAPABILITIES.items()
+            )
+            return [types.TextContent(
+                type="text",
+                text=(
+                    f"No capability found for server/tool '{tool_name}'.\n\n"
+                    f"Available capabilities:\n{cap_list}\n\n"
+                    f"Use list_capabilities() to see full details."
+                ),
+            )]
+
+        try:
+            tools = await load_capability_tools(cap_name)
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"Error loading capability '{cap_name}': {e}",
+            )]
+
+        try:
+            await app.request_context.session.send_tool_list_changed()
+            log.info(f"Sent tools/list_changed notification after auto-loading '{cap_name}'")
+        except Exception as e:
+            log.warning(f"Failed to send tool_list_changed notification: {e}")
+
+        return [types.TextContent(
+            type="text",
+            text=f"✅ Loaded [{cap_name}] for tool [{tool_name}]. {len(tools)} tools now available.",
+        )]
+
+    # ── Meta: which_capability ───────────────────────────────────────────────
+    if name == "which_capability":
+        description = arguments.get("description", "")
+        cap_name = match_capability(description)
+
+        if not cap_name:
+            cap_list = "\n".join(
+                f"- **{k}**: {v.get('description', '')}"
+                for k, v in CAPABILITIES.items()
+            )
+            return [types.TextContent(
+                type="text",
+                text=(
+                    f"No capability matched '{description}'.\n\n"
+                    f"Available capabilities:\n{cap_list}"
+                ),
+            )]
+
+        cap_def = CAPABILITIES[cap_name]
+        servers = cap_def.get("servers", [])
+        prefixes = ", ".join(f"`{sid}__*`" for sid in servers)
+        return [types.TextContent(
+            type="text",
+            text=(
+                f"**{cap_name}**\n"
+                f"{cap_def.get('description', '')}\n"
+                f"Servers: {', '.join(servers)}\n"
+                f"Tool prefix: {prefixes}\n\n"
+                f"Call `use_capability(\"{cap_name}\")` or "
+                f"`auto_use_capability(\"{servers[0] if servers else cap_name}\")` to load it."
+            ),
+        )]
 
     # ── Proxy: route to child MCP ────────────────────────────────────────────
     parsed = parse_proxy_tool_name(name)
