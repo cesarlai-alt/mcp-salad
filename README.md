@@ -2,6 +2,8 @@
 
 ### MCP Salad doesn't grow vegetables. It's the bowl.
 
+**Built for people who use tools, not people who build them.**
+
 **Nobody knows which MCP servers they'll need before a session starts.**
 
 Every other tool makes you decide upfront. MCP Salad doesn't. Servers sit dormant — zero tokens, zero context cost — until you actually need them. When you do, one command from a second terminal drops them into your running session instantly. Done with them? Remove them and the tokens come back.
