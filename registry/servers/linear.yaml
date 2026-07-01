@@ -1,0 +1,15 @@
+name: linear
+display_name: Linear
+description: Official Linear MCP server — create, search, and update issues, projects, and teams in Linear
+author: linear
+homepage: https://linear.app/docs/mcp
+license: MIT
+tags: [project-management, issues, tasks, engineering, productivity]
+install:
+  type: http
+  url: https://mcp.linear.app/mcp
+claude_config: |
+  {
+    "type": "http",
+    "url": "https://mcp.linear.app/mcp"
+  }

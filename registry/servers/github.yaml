@@ -1,0 +1,21 @@
+name: github
+display_name: GitHub
+description: GitHub's official MCP server — search repos, read files, manage issues and pull requests via the GitHub API
+author: github
+homepage: https://github.com/github/github-mcp-server
+license: MIT
+tags: [github, git, code, issues, pull-requests, repositories]
+install:
+  type: stdio
+  command: docker
+  args: ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"]
+  env_required:
+    - name: GITHUB_PERSONAL_ACCESS_TOKEN
+      description: "GitHub personal access token — Settings > Developer settings > Personal access tokens"
+      url: https://github.com/settings/tokens
+claude_config: |
+  {
+    "command": "docker",
+    "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+    "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE"}
+  }

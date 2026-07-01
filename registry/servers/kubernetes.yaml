@@ -1,0 +1,16 @@
+name: kubernetes
+display_name: Kubernetes
+description: Manage Kubernetes clusters — create pods, deployments, services, and namespaces using your local kubeconfig
+author: Flux159
+homepage: https://github.com/Flux159/mcp-server-kubernetes
+license: MIT
+tags: [kubernetes, k8s, devops, infrastructure, containers, cloud]
+install:
+  type: stdio
+  command: npx
+  args: ["mcp-server-kubernetes"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["mcp-server-kubernetes"]
+  }

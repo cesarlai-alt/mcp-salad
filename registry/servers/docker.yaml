@@ -1,0 +1,16 @@
+name: docker
+display_name: Docker
+description: Manage Docker containers, images, networks, and volumes via natural language using the Docker socket
+author: ckreiling
+homepage: https://github.com/ckreiling/mcp-server-docker
+license: GPL-3.0
+tags: [docker, containers, devops, infrastructure, deployment]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "mcp-server-docker"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "mcp-server-docker"]
+  }

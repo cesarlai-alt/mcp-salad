@@ -1,0 +1,21 @@
+name: brave-search
+display_name: Brave Search
+description: Web, image, news, and local search via Brave Search API — privacy-focused alternative to Google Search
+author: brave
+homepage: https://github.com/brave/brave-search-mcp-server
+license: MIT
+tags: [search, web, news, privacy, research]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@brave/brave-search-mcp-server"]
+  env_required:
+    - name: BRAVE_API_KEY
+      description: "Brave Search API key — free tier available at brave.com/search/api"
+      url: https://brave.com/search/api/
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@brave/brave-search-mcp-server"],
+    "env": {"BRAVE_API_KEY": "YOUR_KEY_HERE"}
+  }

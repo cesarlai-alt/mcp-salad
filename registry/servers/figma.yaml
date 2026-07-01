@@ -1,0 +1,21 @@
+name: figma
+display_name: Figma
+description: Provides Figma design data and layout information to AI coding agents via the Figma REST API
+author: GLips
+homepage: https://github.com/GLips/Figma-Context-MCP
+license: MIT
+tags: [design, figma, ui, coding, frontend]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "figma-developer-mcp", "--stdio"]
+  env_required:
+    - name: FIGMA_API_KEY
+      description: "Personal access token from Figma — Settings > Account > Personal access tokens"
+      url: https://www.figma.com/settings
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "figma-developer-mcp", "--stdio"],
+    "env": {"FIGMA_API_KEY": "YOUR_KEY_HERE"}
+  }

@@ -1,0 +1,21 @@
+name: stripe
+display_name: Stripe
+description: Official Stripe MCP server — manage customers, products, payments, subscriptions, and financial data
+author: stripe
+homepage: https://docs.stripe.com/mcp
+license: MIT
+tags: [payments, stripe, billing, ecommerce, finance]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@stripe/mcp", "--api-key=YOUR_STRIPE_SECRET_KEY"]
+  env_required:
+    - name: STRIPE_SECRET_KEY
+      description: "Stripe secret API key (sk_live_... or sk_test_...) from the Stripe Dashboard"
+      url: https://dashboard.stripe.com/apikeys
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@stripe/mcp"],
+    "env": {"STRIPE_SECRET_KEY": "sk_test_YOUR_KEY_HERE"}
+  }

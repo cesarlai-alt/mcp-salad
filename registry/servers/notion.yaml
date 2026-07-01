@@ -1,0 +1,23 @@
+name: notion
+display_name: Notion
+description: Official Notion MCP server — search, read, create, and update Notion pages and databases
+author: makenotion
+homepage: https://github.com/makenotion/notion-mcp-server
+license: MIT
+tags: [notion, notes, productivity, knowledge-base, wiki]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@notionhq/notion-mcp-server"]
+  env_required:
+    - name: OPENAPI_MCP_HEADERS
+      description: "JSON string with Authorization header: '{\"Authorization\": \"Bearer YOUR_NOTION_TOKEN\"}' — get token from notion.so/my-integrations"
+      url: https://www.notion.so/my-integrations
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@notionhq/notion-mcp-server"],
+    "env": {
+      "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer YOUR_NOTION_TOKEN_HERE\", \"Notion-Version\": \"2022-06-28\"}"
+    }
+  }

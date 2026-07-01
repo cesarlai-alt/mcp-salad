@@ -1,0 +1,16 @@
+name: postgres
+display_name: PostgreSQL
+description: Read-only access to PostgreSQL databases — inspect schemas and run queries via natural language
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/postgres
+license: MIT
+tags: [database, postgresql, sql, data, backend]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://user:password@host:5432/dbname"]
+  }

@@ -1,0 +1,16 @@
+name: playwright
+display_name: Playwright
+description: Browser automation via Microsoft Playwright — lets AI agents navigate, click, fill forms, and screenshot web pages
+author: microsoft
+homepage: https://playwright.dev/docs/getting-started-mcp
+license: Apache-2.0
+tags: [browser, automation, testing, web, scraping]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@playwright/mcp@latest"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@playwright/mcp@latest"]
+  }

@@ -1,0 +1,16 @@
+name: memory
+display_name: Memory (Knowledge Graph)
+description: Persistent knowledge graph memory for AI — store entities, relations, and observations across conversations
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+license: MIT
+tags: [memory, knowledge-graph, persistence, ai, context]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-memory"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-memory"]
+  }

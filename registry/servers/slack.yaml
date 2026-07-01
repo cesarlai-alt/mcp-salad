@@ -1,0 +1,27 @@
+name: slack
+display_name: Slack
+description: Read and post messages in Slack channels, list channels, and search workspace content
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/slack
+license: MIT
+tags: [slack, messaging, team, communication, workspace]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-slack"]
+  env_required:
+    - name: SLACK_BOT_TOKEN
+      description: "Slack bot OAuth token (xoxb-...) — create a Slack app and install it to your workspace"
+      url: https://api.slack.com/apps
+    - name: SLACK_TEAM_ID
+      description: "Slack workspace/team ID — found in workspace settings or URL"
+      url: https://api.slack.com/apps
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-slack"],
+    "env": {
+      "SLACK_BOT_TOKEN": "xoxb-YOUR_TOKEN_HERE",
+      "SLACK_TEAM_ID": "YOUR_TEAM_ID_HERE"
+    }
+  }

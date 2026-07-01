@@ -1,0 +1,16 @@
+name: fetch
+display_name: Fetch
+description: Fetch any URL and return its content as markdown — lets AI agents retrieve live web pages, APIs, and RSS feeds
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+license: MIT
+tags: [web, http, fetch, scraping, content]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-fetch"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-fetch"]
+  }

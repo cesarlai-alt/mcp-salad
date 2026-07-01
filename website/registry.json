@@ -32,6 +32,60 @@
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"alpha-vantage-mcp\"],\n  \"env\": {\"ALPHA_VANTAGE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
   },
   {
+    "name": "aws-docs",
+    "display_name": "AWS Documentation",
+    "description": "Search and read official AWS documentation — get accurate, up-to-date answers about AWS services and APIs",
+    "author": "awslabs",
+    "homepage": "https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server",
+    "license": "Apache-2.0",
+    "tags": [
+      "aws",
+      "cloud",
+      "documentation",
+      "amazon",
+      "infrastructure"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-documentation-mcp-server@latest"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\"awslabs.aws-documentation-mcp-server@latest\"],\n  \"env\": {\"FASTMCP_LOG_LEVEL\": \"ERROR\"}\n}\n"
+  },
+  {
+    "name": "brave-search",
+    "display_name": "Brave Search",
+    "description": "Web, image, news, and local search via Brave Search API — privacy-focused alternative to Google Search",
+    "author": "brave",
+    "homepage": "https://github.com/brave/brave-search-mcp-server",
+    "license": "MIT",
+    "tags": [
+      "search",
+      "web",
+      "news",
+      "privacy",
+      "research"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server"
+      ],
+      "env_required": [
+        {
+          "name": "BRAVE_API_KEY",
+          "description": "Brave Search API key — free tier available at brave.com/search/api",
+          "url": "https://brave.com/search/api/"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@brave/brave-search-mcp-server\"],\n  \"env\": {\"BRAVE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
     "name": "context7",
     "display_name": "Context7",
     "description": "Up-to-date documentation for any library — resolves library IDs and fetches live docs",
@@ -53,6 +107,111 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@upstash/context7-mcp\"]\n}\n"
+  },
+  {
+    "name": "docker",
+    "display_name": "Docker",
+    "description": "Manage Docker containers, images, networks, and volumes via natural language using the Docker socket",
+    "author": "ckreiling",
+    "homepage": "https://github.com/ckreiling/mcp-server-docker",
+    "license": "GPL-3.0",
+    "tags": [
+      "docker",
+      "containers",
+      "devops",
+      "infrastructure",
+      "deployment"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-server-docker"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-server-docker\"]\n}\n"
+  },
+  {
+    "name": "fetch",
+    "display_name": "Fetch",
+    "description": "Fetch any URL and return its content as markdown — lets AI agents retrieve live web pages, APIs, and RSS feeds",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+    "license": "MIT",
+    "tags": [
+      "web",
+      "http",
+      "fetch",
+      "scraping",
+      "content"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-fetch\"]\n}\n"
+  },
+  {
+    "name": "figma",
+    "display_name": "Figma",
+    "description": "Provides Figma design data and layout information to AI coding agents via the Figma REST API",
+    "author": "GLips",
+    "homepage": "https://github.com/GLips/Figma-Context-MCP",
+    "license": "MIT",
+    "tags": [
+      "design",
+      "figma",
+      "ui",
+      "coding",
+      "frontend"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--stdio"
+      ],
+      "env_required": [
+        {
+          "name": "FIGMA_API_KEY",
+          "description": "Personal access token from Figma — Settings > Account > Personal access tokens",
+          "url": "https://www.figma.com/settings"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"figma-developer-mcp\", \"--stdio\"],\n  \"env\": {\"FIGMA_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
+    "name": "filesystem",
+    "display_name": "Filesystem",
+    "description": "Secure local filesystem access — read, write, search, and manage files within specified allowed directories",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+    "license": "MIT",
+    "tags": [
+      "filesystem",
+      "files",
+      "local",
+      "storage",
+      "tools"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/dir"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"/Users/username/Documents\"]\n}\n"
   },
   {
     "name": "firecrawl",
@@ -83,6 +242,62 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"firecrawl-mcp\"],\n  \"env\": {\"FIRECRAWL_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+  },
+  {
+    "name": "git-mcp",
+    "display_name": "GitMCP",
+    "description": "Turns any GitHub repository into an MCP knowledge base — eliminates code hallucinations by serving live docs and code",
+    "author": "idosal",
+    "homepage": "https://github.com/idosal/git-mcp",
+    "license": "MIT",
+    "tags": [
+      "github",
+      "documentation",
+      "code",
+      "knowledge-base",
+      "research"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://gitmcp.io/{owner}/{repo}"
+    },
+    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://gitmcp.io/owner/repo\"\n}\n"
+  },
+  {
+    "name": "github",
+    "display_name": "GitHub",
+    "description": "GitHub's official MCP server — search repos, read files, manage issues and pull requests via the GitHub API",
+    "author": "github",
+    "homepage": "https://github.com/github/github-mcp-server",
+    "license": "MIT",
+    "tags": [
+      "github",
+      "git",
+      "code",
+      "issues",
+      "pull-requests",
+      "repositories"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env_required": [
+        {
+          "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "description": "GitHub personal access token — Settings > Developer settings > Personal access tokens",
+          "url": "https://github.com/settings/tokens"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"-e\", \"GITHUB_PERSONAL_ACCESS_TOKEN\", \"ghcr.io/github/github-mcp-server\"],\n  \"env\": {\"GITHUB_PERSONAL_ACCESS_TOKEN\": \"YOUR_TOKEN_HERE\"}\n}\n"
   },
   {
     "name": "google-maps",
@@ -116,6 +331,147 @@
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@googlemaps/mcp\"],\n  \"env\": {\"GOOGLE_MAPS_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
   },
   {
+    "name": "kubernetes",
+    "display_name": "Kubernetes",
+    "description": "Manage Kubernetes clusters — create pods, deployments, services, and namespaces using your local kubeconfig",
+    "author": "Flux159",
+    "homepage": "https://github.com/Flux159/mcp-server-kubernetes",
+    "license": "MIT",
+    "tags": [
+      "kubernetes",
+      "k8s",
+      "devops",
+      "infrastructure",
+      "containers",
+      "cloud"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "mcp-server-kubernetes"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"mcp-server-kubernetes\"]\n}\n"
+  },
+  {
+    "name": "linear",
+    "display_name": "Linear",
+    "description": "Official Linear MCP server — create, search, and update issues, projects, and teams in Linear",
+    "author": "linear",
+    "homepage": "https://linear.app/docs/mcp",
+    "license": "MIT",
+    "tags": [
+      "project-management",
+      "issues",
+      "tasks",
+      "engineering",
+      "productivity"
+    ],
+    "install": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://mcp.linear.app/mcp\"\n}\n"
+  },
+  {
+    "name": "memory",
+    "display_name": "Memory (Knowledge Graph)",
+    "description": "Persistent knowledge graph memory for AI — store entities, relations, and observations across conversations",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+    "license": "MIT",
+    "tags": [
+      "memory",
+      "knowledge-graph",
+      "persistence",
+      "ai",
+      "context"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"]\n}\n"
+  },
+  {
+    "name": "mysql",
+    "display_name": "MySQL",
+    "description": "Read and query MySQL databases — inspect schemas, run SQL queries, with optional write access via env flags",
+    "author": "benborla",
+    "homepage": "https://github.com/benborla/mcp-server-mysql",
+    "license": "MIT",
+    "tags": [
+      "database",
+      "mysql",
+      "sql",
+      "data",
+      "backend"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benborla29/mcp-server-mysql"
+      ],
+      "env_required": [
+        {
+          "name": "MYSQL_HOST",
+          "description": "MySQL server hostname (e.g. localhost or 127.0.0.1)"
+        },
+        {
+          "name": "MYSQL_USER",
+          "description": "MySQL username"
+        },
+        {
+          "name": "MYSQL_PASS",
+          "description": "MySQL password"
+        },
+        {
+          "name": "MYSQL_DB",
+          "description": "Default database name to connect to"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@benborla29/mcp-server-mysql\"],\n  \"env\": {\n    \"MYSQL_HOST\": \"127.0.0.1\",\n    \"MYSQL_USER\": \"root\",\n    \"MYSQL_PASS\": \"YOUR_PASSWORD\",\n    \"MYSQL_DB\": \"your_database\"\n  }\n}\n"
+  },
+  {
+    "name": "notion",
+    "display_name": "Notion",
+    "description": "Official Notion MCP server — search, read, create, and update Notion pages and databases",
+    "author": "makenotion",
+    "homepage": "https://github.com/makenotion/notion-mcp-server",
+    "license": "MIT",
+    "tags": [
+      "notion",
+      "notes",
+      "productivity",
+      "knowledge-base",
+      "wiki"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@notionhq/notion-mcp-server"
+      ],
+      "env_required": [
+        {
+          "name": "OPENAPI_MCP_HEADERS",
+          "description": "JSON string with Authorization header: '{\"Authorization\": \"Bearer YOUR_NOTION_TOKEN\"}' — get token from notion.so/my-integrations",
+          "url": "https://www.notion.so/my-integrations"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n  \"env\": {\n    \"OPENAPI_MCP_HEADERS\": \"{\\\"Authorization\\\": \\\"Bearer YOUR_NOTION_TOKEN_HERE\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\"\n  }\n}\n"
+  },
+  {
     "name": "obsidian-fs",
     "display_name": "Obsidian File System",
     "description": "Read, write, and search notes in your Obsidian vault — full filesystem access to local markdown notes",
@@ -147,6 +503,55 @@
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"obsidian-mcp\"],\n  \"env\": {\"OBSIDIAN_VAULT_PATH\": \"/path/to/your/vault\"}\n}\n"
   },
   {
+    "name": "playwright",
+    "display_name": "Playwright",
+    "description": "Browser automation via Microsoft Playwright — lets AI agents navigate, click, fill forms, and screenshot web pages",
+    "author": "microsoft",
+    "homepage": "https://playwright.dev/docs/getting-started-mcp",
+    "license": "Apache-2.0",
+    "tags": [
+      "browser",
+      "automation",
+      "testing",
+      "web",
+      "scraping"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@playwright/mcp@latest\"]\n}\n"
+  },
+  {
+    "name": "postgres",
+    "display_name": "PostgreSQL",
+    "description": "Read-only access to PostgreSQL databases — inspect schemas and run queries via natural language",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres",
+    "license": "MIT",
+    "tags": [
+      "database",
+      "postgresql",
+      "sql",
+      "data",
+      "backend"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/mydb"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-postgres\", \"postgresql://user:password@host:5432/dbname\"]\n}\n"
+  },
+  {
     "name": "pubmed",
     "display_name": "PubMed Research",
     "description": "Search and retrieve biomedical literature from PubMed and Europe PMC databases",
@@ -169,6 +574,99 @@
       ]
     },
     "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"pubmed-mcp-server\"]\n}\n"
+  },
+  {
+    "name": "slack",
+    "display_name": "Slack",
+    "description": "Read and post messages in Slack channels, list channels, and search workspace content",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/slack",
+    "license": "MIT",
+    "tags": [
+      "slack",
+      "messaging",
+      "team",
+      "communication",
+      "workspace"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env_required": [
+        {
+          "name": "SLACK_BOT_TOKEN",
+          "description": "Slack bot OAuth token (xoxb-...) — create a Slack app and install it to your workspace",
+          "url": "https://api.slack.com/apps"
+        },
+        {
+          "name": "SLACK_TEAM_ID",
+          "description": "Slack workspace/team ID — found in workspace settings or URL",
+          "url": "https://api.slack.com/apps"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-slack\"],\n  \"env\": {\n    \"SLACK_BOT_TOKEN\": \"xoxb-YOUR_TOKEN_HERE\",\n    \"SLACK_TEAM_ID\": \"YOUR_TEAM_ID_HERE\"\n  }\n}\n"
+  },
+  {
+    "name": "sqlite",
+    "display_name": "SQLite",
+    "description": "Query and analyze local SQLite databases — run SQL, inspect schemas, and create memos",
+    "author": "modelcontextprotocol",
+    "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite",
+    "license": "MIT",
+    "tags": [
+      "database",
+      "sqlite",
+      "sql",
+      "local",
+      "data"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "/path/to/database.db"
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-sqlite\", \"/absolute/path/to/your.db\"]\n}\n"
+  },
+  {
+    "name": "stripe",
+    "display_name": "Stripe",
+    "description": "Official Stripe MCP server — manage customers, products, payments, subscriptions, and financial data",
+    "author": "stripe",
+    "homepage": "https://docs.stripe.com/mcp",
+    "license": "MIT",
+    "tags": [
+      "payments",
+      "stripe",
+      "billing",
+      "ecommerce",
+      "finance"
+    ],
+    "install": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@stripe/mcp",
+        "--api-key=YOUR_STRIPE_SECRET_KEY"
+      ],
+      "env_required": [
+        {
+          "name": "STRIPE_SECRET_KEY",
+          "description": "Stripe secret API key (sk_live_... or sk_test_...) from the Stripe Dashboard",
+          "url": "https://dashboard.stripe.com/apikeys"
+        }
+      ]
+    },
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@stripe/mcp\"],\n  \"env\": {\"STRIPE_SECRET_KEY\": \"sk_test_YOUR_KEY_HERE\"}\n}\n"
   },
   {
     "name": "twstock",

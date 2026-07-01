@@ -1,0 +1,16 @@
+name: sqlite
+display_name: SQLite
+description: Query and analyze local SQLite databases — run SQL, inspect schemas, and create memos
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite
+license: MIT
+tags: [database, sqlite, sql, local, data]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-sqlite", "/path/to/database.db"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-sqlite", "/absolute/path/to/your.db"]
+  }

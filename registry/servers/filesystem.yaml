@@ -1,0 +1,16 @@
+name: filesystem
+display_name: Filesystem
+description: Secure local filesystem access — read, write, search, and manage files within specified allowed directories
+author: modelcontextprotocol
+homepage: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+license: MIT
+tags: [filesystem, files, local, storage, tools]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/username/Documents"]
+  }

@@ -1,0 +1,17 @@
+name: aws-docs
+display_name: AWS Documentation
+description: Search and read official AWS documentation — get accurate, up-to-date answers about AWS services and APIs
+author: awslabs
+homepage: https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server
+license: Apache-2.0
+tags: [aws, cloud, documentation, amazon, infrastructure]
+install:
+  type: stdio
+  command: uvx
+  args: ["awslabs.aws-documentation-mcp-server@latest"]
+claude_config: |
+  {
+    "command": "uvx",
+    "args": ["awslabs.aws-documentation-mcp-server@latest"],
+    "env": {"FASTMCP_LOG_LEVEL": "ERROR"}
+  }

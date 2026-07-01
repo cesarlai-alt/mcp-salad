@@ -1,0 +1,15 @@
+name: git-mcp
+display_name: GitMCP
+description: Turns any GitHub repository into an MCP knowledge base — eliminates code hallucinations by serving live docs and code
+author: idosal
+homepage: https://github.com/idosal/git-mcp
+license: MIT
+tags: [github, documentation, code, knowledge-base, research]
+install:
+  type: http
+  url: https://gitmcp.io/{owner}/{repo}
+claude_config: |
+  {
+    "type": "http",
+    "url": "https://gitmcp.io/owner/repo"
+  }
