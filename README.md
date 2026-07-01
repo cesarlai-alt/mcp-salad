@@ -1,6 +1,8 @@
 # MCP Salad 🥗
 
-### Hot-swappable MCP servers for Claude Code. Enable or disable them at runtime — no restart.
+### MCP Salad doesn't grow vegetables. It's the bowl.
+
+Hot-swappable MCP servers for Claude Code. Enable or disable them at runtime — no restart.
 
 MCP Salad is a CLI + runtime layer for the MCP ecosystem. It searches and installs from the official MCP registry (14,000+ servers), then adds one thing the registry can't: flip servers on/off in a running session from a second terminal.
 
