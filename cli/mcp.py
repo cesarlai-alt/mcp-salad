@@ -225,6 +225,144 @@ def search(query, source, limit):
         click.echo(f"No servers found for '{query}'")
 
 
+# ── Suggest ───────────────────────────────────────────────────────────────────
+
+@cli.command()
+@click.argument("description")
+def suggest(description):
+    """Suggest MCP servers based on a natural language description.
+
+    Examples:\n
+      mcp suggest "I want to research academic papers"\n
+      mcp suggest "查台灣股票"\n
+      mcp suggest "scan receipts and invoices"
+    """
+    import re as _re
+
+    # ── 1. Extract keywords ────────────────────────────────────────────────────
+    STOP_WORDS = {
+        "i", "want", "to", "a", "an", "the", "and", "or", "for", "my", "me",
+        "can", "will", "with", "some", "do", "is", "are", "in", "on", "at",
+        "this", "that", "it", "its", "be", "by", "of", "as", "up", "was",
+        "need", "scan", "use", "get", "from", "into", "about", "all", "also",
+        "using", "how", "what", "when", "where", "which", "who", "would",
+    }
+
+    # Tokenize: split on whitespace/punctuation; keep CJK segments intact
+    ascii_words = _re.findall(r"[a-zA-Z][a-zA-Z0-9]*", description)
+    cjk_segments = _re.findall(r"[぀-鿿가-힯]+", description)
+
+    keywords = []
+    for w in ascii_words:
+        low = w.lower()
+        if len(low) >= 3 and low not in STOP_WORDS and low not in keywords:
+            keywords.append(low)
+    for seg in cjk_segments:
+        if seg not in keywords:
+            keywords.append(seg)
+
+    keywords = keywords[:3]  # cap at 3
+
+    if not keywords:
+        click.echo("Could not extract any search keywords from your description.")
+        return
+
+    click.echo(f"\n Searching for: {', '.join(keywords)}\n")
+
+    # ── 2. Text-extraction helpers ─────────────────────────────────────────────
+
+    def _local_text(s):
+        return " ".join([
+            s.get("name", ""),
+            s.get("display_name", ""),
+            s.get("description", ""),
+            " ".join(s.get("tags", [])),
+        ]).lower()
+
+    def _official_text(h):
+        return " ".join([
+            h.get("name", ""),
+            h.get("title", ""),
+            h.get("description", ""),
+        ]).lower()
+
+    def _score(text, kws):
+        return sum(1 for kw in kws if kw.lower() in text)
+
+    # ── 3. Gather local hits ───────────────────────────────────────────────────
+    local_hits = {}  # name -> (server_dict, score)
+    for kw in keywords:
+        for s in _search_local(kw):
+            name = s["name"]
+            sc = _score(_local_text(s), keywords)
+            if name not in local_hits or sc > local_hits[name][1]:
+                local_hits[name] = (s, sc)
+
+    # ── 4. Gather official hits ────────────────────────────────────────────────
+    official_hits = {}  # name -> (normalized_dict, score)
+    for kw in keywords:
+        try:
+            hits, _ = official.search_servers(kw, limit=10)
+            for h in hits:
+                name = h["name"]
+                # Skip names already covered by curated local hits
+                basename = name.split("/")[-1].replace("-", "_")
+                if (name in local_hits
+                        or basename in {n.replace("-", "_") for n in local_hits}):
+                    continue
+                sc = _score(_official_text(h), keywords)
+                if name not in official_hits or sc > official_hits[name][1]:
+                    official_hits[name] = (h, sc)
+        except official.OfficialRegistryError:
+            pass  # silently ignore unreachable official registry per keyword
+
+    # ── 5. Rank and combine ────────────────────────────────────────────────────
+    combined = []
+    for s, sc in local_hits.values():
+        combined.append(("local", s, sc))
+    for h, sc in official_hits.values():
+        combined.append(("official", h, sc))
+
+    combined.sort(key=lambda x: x[2], reverse=True)
+    top = combined[:5]
+
+    if not top:
+        click.echo(f" No servers found matching '{description}'.\n")
+        return
+
+    click.echo(f" Top suggestions for: \"{description}\"\n")
+    for source, item, score in top:
+        if source == "local":
+            name = item["name"]
+            desc = item.get("description", "")
+            tags = item.get("tags", [])
+            badge = click.style("[curated]", fg="magenta")
+        else:
+            name = item["name"]
+            desc = item.get("description", "")
+            tags = []
+            badge = click.style("[official]", fg="blue")
+
+        click.echo(f"  {click.style(name, fg='green', bold=True):<28} {badge}")
+        if desc:
+            click.echo(f"  {'':28} {desc[:70]}")
+        if tags:
+            tag_str = " ".join(f"[{t}]" for t in tags[:4])
+            click.echo(f"  {'':28} {click.style(tag_str, fg='cyan')}")
+        click.echo()
+
+    # ── 6. Prompt to install ───────────────────────────────────────────────────
+    if not sys.stdin.isatty():
+        return
+
+    choice = click.prompt("Install one? Enter name or 'n' to skip", default="n").strip()
+    if not choice or choice.lower() == "n":
+        return
+
+    ctx = click.get_current_context()
+    ctx.invoke(install, name=choice, env_vars=(), yes=False)
+
+
 # ── Registry (was: list) ──────────────────────────────────────────────────────
 
 @cli.command("registry")
