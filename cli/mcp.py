@@ -29,6 +29,18 @@ class _InlineListDumper(yaml.Dumper):
     pass
 
 
+class _LiteralStr(str):
+    """A string that should be dumped as a YAML literal block (|), like claude_config."""
+    pass
+
+
+def _represent_literal_str(dumper, data):
+    return dumper.represent_scalar("tag:yaml.org,2002:str", str(data), style="|")
+
+
+_InlineListDumper.add_representer(_LiteralStr, _represent_literal_str)
+
+
 def _represent_list(dumper, data):
     # Flow style for lists whose items are all scalars (str/int/float/bool)
     if all(isinstance(item, (str, int, float, bool)) for item in data):
@@ -684,6 +696,167 @@ def upgrade(name, upgrade_all):
         if changed:
             save_gateway_config(config)
         click.echo()
+
+
+# ── Publish ───────────────────────────────────────────────────────────────────
+
+import re
+from urllib.parse import quote
+
+_KEBAB_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def _split_multi(value: str) -> list:
+    """Split a comma- or whitespace-separated string into a clean list."""
+    if not value:
+        return []
+    parts = re.split(r"[,\s]+", value.strip())
+    return [p for p in parts if p]
+
+
+def _build_publish_entry(name, display_name, description, author, homepage,
+                         license_, tags, command, args, env_required) -> dict:
+    """Assemble a registry entry dict matching the firecrawl.yaml schema exactly."""
+    install: dict = {
+        "type": "stdio",
+        "command": command,
+        "args": list(args),
+    }
+    if env_required:
+        install["env_required"] = env_required
+
+    # Build the claude_config JSON block from command/args/env.
+    cc: dict = {"command": command, "args": list(args)}
+    if env_required:
+        cc["env"] = {e["name"]: "YOUR_KEY_HERE" for e in env_required}
+    claude_config = json.dumps(cc, indent=2) + "\n"
+
+    return {
+        "name": name,
+        "display_name": display_name,
+        "description": description,
+        "author": author,
+        "homepage": homepage,
+        "license": license_,
+        "tags": list(tags),
+        "install": install,
+        "claude_config": _LiteralStr(claude_config),
+    }
+
+
+@cli.command()
+@click.option("--name", help="Server name (kebab-case: lowercase, digits, hyphens)")
+@click.option("--display-name", help="Human-friendly display name")
+@click.option("--description", help="One-line description")
+@click.option("--author", help="GitHub handle or org")
+@click.option("--homepage", help="Project homepage URL")
+@click.option("--license", "license_", default="MIT", show_default=True, help="License")
+@click.option("--tags", help="Comma-separated tags")
+@click.option("--command", help="Install command (e.g. npx, python3, node)")
+@click.option("--args", "args_str", help="Install args (space or comma separated)")
+@click.option("--out-dir", type=click.Path(), default=None,
+              help="Directory to write the YAML into (defaults to the local registry)")
+@click.option("--force", is_flag=True, default=False, help="Overwrite an existing entry")
+@click.option("--yes", "-y", is_flag=True, default=False,
+              help="Non-interactive: use flags/defaults without prompting")
+def publish(name, display_name, description, author, homepage, license_, tags,
+            command, args_str, out_dir, force, yes):
+    """Publish a new server: generate a registry YAML + a GitHub submission URL."""
+    # ── Decide interactive vs non-interactive ─────────────────────────────────
+    interactive = sys.stdin.isatty() and not name and not yes
+
+    env_required: list = []
+
+    if interactive:
+        click.echo(f"\n 🥗 Publish a new MCP server to the registry\n")
+        name = click.prompt(" Server name (kebab-case)").strip()
+        if not _KEBAB_RE.match(name):
+            click.echo(f"\n ❌ Invalid name '{name}'. Use lowercase letters, digits and hyphens only.", err=True)
+            sys.exit(1)
+        display_name = click.prompt(" Display name", default=name.replace("-", " ").title()).strip()
+        description = click.prompt(" Description (one line)").strip()
+        author = click.prompt(" Author (github handle or org)").strip()
+        homepage = click.prompt(" Homepage URL", default="").strip()
+        license_ = click.prompt(" License", default="MIT").strip()
+        tags = _split_multi(click.prompt(" Tags (comma-separated)", default="").strip())
+        command = click.prompt(" Install command (e.g. npx, python3, node)", default="npx").strip()
+        args = _split_multi(click.prompt(" Install args (space or comma separated)", default="").strip())
+
+        # Loop env vars — empty name ends the loop
+        click.echo("\n Required env vars (press Enter on an empty name to finish):")
+        while True:
+            ev_name = click.prompt("   env var name", default="", show_default=False).strip()
+            if not ev_name:
+                break
+            ev_desc = click.prompt(f"   description for {ev_name}", default="").strip()
+            ev_url = click.prompt(f"   url to obtain {ev_name}", default="").strip()
+            item = {"name": ev_name, "description": ev_desc}
+            if ev_url:
+                item["url"] = ev_url
+            env_required.append(item)
+    else:
+        # Non-interactive: name is required.
+        if not name:
+            click.echo(
+                " ❌ Error: --name is required in non-interactive mode.\n"
+                "    Run in a terminal for interactive prompts, or pass --name (and other flags).",
+                err=True,
+            )
+            sys.exit(1)
+        display_name = display_name or name.replace("-", " ").title()
+        description = description or ""
+        author = author or ""
+        homepage = homepage or ""
+        tags = _split_multi(tags) if tags else []
+        command = command or "npx"
+        args = _split_multi(args_str) if args_str else []
+
+    # ── Validate name ─────────────────────────────────────────────────────────
+    if not _KEBAB_RE.match(name):
+        click.echo(
+            f" ❌ Invalid name '{name}'. Server names must be kebab-case "
+            "(lowercase letters, digits and hyphens only).",
+            err=True,
+        )
+        sys.exit(1)
+
+    # ── Assemble entry ────────────────────────────────────────────────────────
+    entry = _build_publish_entry(
+        name, display_name, description, author, homepage,
+        license_, tags, command, args, env_required,
+    )
+    yaml_text = _yaml_dump(entry)
+
+    # ── Resolve output path ───────────────────────────────────────────────────
+    out_directory = Path(out_dir) if out_dir else LOCAL_REGISTRY
+    out_directory.mkdir(parents=True, exist_ok=True)
+    out_path = out_directory / f"{name}.yaml"
+
+    if out_path.exists() and not force:
+        click.echo(
+            f"\n ⚠️  {out_path} already exists. Use --force to overwrite.\n",
+            err=True,
+        )
+        sys.exit(1)
+
+    out_path.write_text(yaml_text)
+
+    # ── Generate GitHub submission URL ────────────────────────────────────────
+    issue_title = f"Add server: {name}"
+    issue_body = (
+        f"Proposed registry entry for `{name}`.\n\n"
+        f"```yaml\n{yaml_text}```\n"
+    )
+    github_url = (
+        "https://github.com/cesarlai-alt/mcp-salad/issues/new"
+        f"?title={quote(issue_title)}&body={quote(issue_body)}"
+    )
+
+    # ── Success summary ───────────────────────────────────────────────────────
+    click.echo(f"\n ✅ Wrote registry entry: {out_path}")
+    click.echo(f"\n Submit it to the registry by opening this GitHub issue URL:\n")
+    click.echo(f"   {github_url}\n")
+    click.echo(" Opening the link (and submitting the pre-filled issue) completes your submission. 🥗\n")
 
 
 if __name__ == "__main__":

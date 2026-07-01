@@ -370,3 +370,123 @@ class TestPhase1Regression:
         result = run_cli("info", "firecrawl")
         assert result.returncode == 0
         assert "firecrawl" in result.stdout.lower()
+
+
+# --------------------------------------------------------------------------- #
+# Tests: mcp publish
+# --------------------------------------------------------------------------- #
+
+class TestMcpPublish:
+    """`mcp publish` — author a new registry entry + a GitHub submission URL."""
+
+    def test_publish_full_flags_writes_yaml(self, tmp_path):
+        result = run_cli(
+            "publish",
+            "--name", "acme-server",
+            "--display-name", "Acme Server",
+            "--description", "An example MCP server for testing",
+            "--author", "acme-org",
+            "--homepage", "https://acme.example",
+            "--tags", "test,example",
+            "--command", "npx",
+            "--args", "-y acme-mcp",
+            "--out-dir", str(tmp_path),
+            "--yes",
+        )
+        assert result.returncode == 0, (
+            f"Expected exit 0, got {result.returncode}\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        out_file = tmp_path / "acme-server.yaml"
+        assert out_file.exists(), f"Expected YAML written to {out_file}"
+        text = out_file.read_text()
+        assert "acme-server" in text
+        assert "example MCP server" in text
+        assert "install" in text
+
+    def test_published_yaml_round_trips(self, tmp_path):
+        run_cli(
+            "publish",
+            "--name", "roundtrip-server",
+            "--description", "round trip test",
+            "--command", "python3",
+            "--args", "-m,roundtrip",
+            "--out-dir", str(tmp_path),
+            "--yes",
+        )
+        out_file = tmp_path / "roundtrip-server.yaml"
+        data = yaml.safe_load(out_file.read_text())
+        assert data["name"] == "roundtrip-server"
+        assert "install" in data
+        assert data["install"]["command"] == "python3"
+        assert "args" in data["install"]
+
+    def test_publish_invalid_name_fails(self, tmp_path):
+        result = run_cli(
+            "publish",
+            "--name", "Bad_Name",
+            "--description", "bad",
+            "--out-dir", str(tmp_path),
+            "--yes",
+        )
+        assert result.returncode != 0, (
+            f"Expected non-zero exit for invalid name.\nstdout: {result.stdout}"
+        )
+        combined = (result.stdout + result.stderr).lower()
+        assert "traceback" not in result.stderr.lower(), (
+            f"Invalid name raised an unhandled exception:\n{result.stderr}"
+        )
+        assert "invalid" in combined or "kebab" in combined, (
+            f"Expected an 'invalid name' style message.\nOutput:\n{combined}"
+        )
+        assert not (tmp_path / "Bad_Name.yaml").exists()
+
+    def test_publish_output_has_github_url(self, tmp_path):
+        result = run_cli(
+            "publish",
+            "--name", "github-url-server",
+            "--description", "has a github url",
+            "--out-dir", str(tmp_path),
+            "--yes",
+        )
+        assert result.returncode == 0
+        combined = result.stdout + result.stderr
+        assert "github.com" in combined, (
+            f"Expected a github.com submission URL in output.\nOutput:\n{combined}"
+        )
+        assert "issues/new" in combined, (
+            f"Expected a pre-filled 'new issue' URL.\nOutput:\n{combined}"
+        )
+
+    def test_publish_noninteractive_missing_name_fails_gracefully(self, tmp_path):
+        # No --name and stdin is not a TTY (subprocess) → graceful failure.
+        result = run_cli(
+            "publish",
+            "--out-dir", str(tmp_path),
+        )
+        assert result.returncode != 0, (
+            f"Expected non-zero exit when required fields are missing.\nstdout: {result.stdout}"
+        )
+        assert "traceback" not in result.stderr.lower(), (
+            f"Missing required fields raised an unhandled exception:\n{result.stderr}"
+        )
+        combined = (result.stdout + result.stderr).lower()
+        assert "name" in combined and ("required" in combined or "error" in combined), (
+            f"Expected a clear 'name is required' error.\nOutput:\n{combined}"
+        )
+
+    def test_publish_existing_requires_force(self, tmp_path):
+        args = (
+            "publish",
+            "--name", "dup-server",
+            "--description", "first write",
+            "--out-dir", str(tmp_path),
+            "--yes",
+        )
+        first = run_cli(*args)
+        assert first.returncode == 0
+        second = run_cli(*args)
+        assert second.returncode != 0, "Second publish without --force should fail"
+        combined = (second.stdout + second.stderr).lower()
+        assert "force" in combined or "exists" in combined
+        assert "traceback" not in second.stderr.lower()
