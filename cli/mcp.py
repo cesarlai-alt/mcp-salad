@@ -16,10 +16,19 @@ GITHUB_RAW_BASE = "https://raw.githubusercontent.com/your-org/mcp-registry/main/
 
 # Gateway config — override via MCP_GATEWAY_CONFIG env var (used by tests)
 import os as _os
+import socket as _socket
 GATEWAY_CONFIG = Path(_os.environ.get(
     "MCP_GATEWAY_CONFIG",
     str(SCRIPT_DIR.parent.parent / "mcp-router" / "config.yaml")
 ))
+
+# Out-of-band control socket — must match router.CONTROL_SOCK_PATH.
+# Override with MCP_SALAD_CONTROL_SOCK (tests point this at a temp path).
+def _control_sock_path() -> Path:
+    return Path(_os.environ.get(
+        "MCP_SALAD_CONTROL_SOCK",
+        str(Path.home() / ".mcp-salad" / "gateway.sock"),
+    ))
 
 
 # ── YAML helpers ──────────────────────────────────────────────────────────────
@@ -460,6 +469,61 @@ def uninstall(name):
     if removed_from:
         click.echo(f"  Removed from capabilities: {', '.join(removed_from)}")
     click.echo()
+
+
+# ── Enable / Disable (out-of-band, live gateway) ──────────────────────────────
+
+def _send_control_command(command: str, sock_path: Path, timeout: float = 5.0) -> str:
+    """Connect to the gateway control socket, send one line, return the reply."""
+    sock = _socket.socket(_socket.AF_UNIX, _socket.SOCK_STREAM)
+    sock.settimeout(timeout)
+    try:
+        sock.connect(str(sock_path))
+        sock.sendall((command + "\n").encode())
+        buf = b""
+        while b"\n" not in buf:
+            chunk = sock.recv(4096)
+            if not chunk:
+                break
+            buf += chunk
+        return buf.decode("utf-8", errors="replace").strip()
+    finally:
+        sock.close()
+
+
+def _run_control_command(action: str, server: str) -> None:
+    """Shared impl for `enable`/`disable`: talk to the live gateway, print reply."""
+    sock_path = _control_sock_path()
+    friendly = (
+        f"Gateway isn't running (no control socket at {sock_path}). "
+        f"Start it and try again."
+    )
+    if not sock_path.exists():
+        click.echo(friendly)
+        sys.exit(1)
+    try:
+        reply = _send_control_command(f"{action} {server}", sock_path)
+    except (ConnectionRefusedError, FileNotFoundError, OSError):
+        # Socket file is stale or no listener — same friendly message, no traceback.
+        click.echo(friendly)
+        sys.exit(1)
+
+    click.echo(reply)
+    sys.exit(0 if reply.startswith("ok") else 1)
+
+
+@cli.command()
+@click.argument("server")
+def enable(server):
+    """Enable a server in a RUNNING Gateway (no restart) — live tool injection."""
+    _run_control_command("enable", server)
+
+
+@cli.command()
+@click.argument("server")
+def disable(server):
+    """Disable a server in a RUNNING Gateway (no restart)."""
+    _run_control_command("disable", server)
 
 
 # ── Doctor ────────────────────────────────────────────────────────────────────

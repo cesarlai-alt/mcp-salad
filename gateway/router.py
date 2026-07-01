@@ -56,8 +56,15 @@ CONFIG_PATH = Path(
 
 
 def load_config() -> dict:
-    with open(CONFIG_PATH) as f:
-        return yaml.safe_load(f)
+    # Resilient load: a missing or empty config must NOT crash module import
+    # (the control-channel CLI, tests, and `import router` smoke checks all rely
+    # on the module importing cleanly even when no config file is present).
+    try:
+        with open(CONFIG_PATH) as f:
+            return yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        log.warning(f"Config not found at {CONFIG_PATH}; starting with empty config.")
+        return {}
 
 
 CONFIG = load_config()
@@ -73,6 +80,30 @@ child_processes: dict[str, asyncio.subprocess.Process] = {}
 
 # Cache of tool lists per server_id
 server_tool_cache: dict[str, list[dict]] = {}
+
+# ─── Out-of-band control channel state ───────────────────────────────────────────
+# A live reference to the MCP ServerSession, captured on the first real request.
+#
+# WHY THIS EXISTS: notifications/tools/list_changed is normally sent via
+# `app.request_context.session`, but `request_context` is a contextvar that is
+# ONLY set while an inbound tool call is being handled. The out-of-band control
+# socket task (below) runs OUTSIDE any request context, so it cannot read that
+# contextvar. Instead we stash the ServerSession object the first time a real
+# request arrives (see list_tools/call_tool handlers) and call
+# send_tool_list_changed() on it directly from the background task. The MCP
+# client issues tools/list during initialization, so this is populated within
+# milliseconds of connect — well before any manual `enable`/`disable`.
+_active_session = None
+
+# Unix-domain control socket path. Override with MCP_SALAD_CONTROL_SOCK (tests
+# point this at a temp path). Cross-platform note: AF_UNIX sockets are macOS/Linux
+# only; a Windows port would need a different transport (named pipe or TCP loopback).
+CONTROL_SOCK_PATH = Path(
+    os.environ.get(
+        "MCP_SALAD_CONTROL_SOCK",
+        str(Path.home() / ".mcp-salad" / "gateway.sock"),
+    )
+)
 
 # ─── Keyword matching ──────────────────────────────────────────────────────────
 
@@ -419,6 +450,145 @@ def unload_capability(cap_name: str) -> bool:
     return False
 
 
+# ─── Out-of-band control channel ─────────────────────────────────────────────────
+
+def _capture_active_session() -> None:
+    """Stash the live ServerSession the first time a real request is handled.
+
+    `app.request_context` is a contextvar populated only inside request handling;
+    reading it here (top of list_tools/call_tool) captures the session so the
+    background control task can send notifications from OUTSIDE any request.
+    """
+    global _active_session
+    try:
+        _active_session = app.request_context.session
+    except Exception:
+        # No request context yet (e.g. called directly in a unit test) — ignore.
+        # request_context raises LookupError when the contextvar is unset.
+        pass
+
+
+async def _send_list_changed():
+    """Send notifications/tools/list_changed on the captured session.
+
+    Returns True on success, or an 'error: ...' string suitable as a control reply.
+    """
+    if _active_session is None:
+        return "error: no active session yet (open a client and let it list tools first)"
+    try:
+        await _active_session.send_tool_list_changed()
+        return True
+    except Exception as e:  # noqa: BLE001
+        return f"error: failed to notify session: {e}"
+
+
+def parse_control_line(line: str) -> tuple[str, str | None]:
+    """Pure parser for one control-protocol line → (command, argument|None).
+
+    Command is lower-cased; argument is everything after the first whitespace
+    (or None). Blank/whitespace-only lines yield ("", None).
+    """
+    parts = line.strip().split(maxsplit=1)
+    if not parts:
+        return "", None
+    cmd = parts[0].lower()
+    arg = parts[1].strip() if len(parts) > 1 else None
+    return cmd, arg
+
+
+async def handle_control_command(line: str) -> str:
+    """Execute one control command and return the reply text (no trailing newline)."""
+    cmd, arg = parse_control_line(line)
+
+    if cmd == "ping":
+        return "pong"
+
+    if cmd in ("enable", "disable"):
+        if not arg:
+            return f"error: {cmd} requires a server id"
+        cap_name = find_capability_by_server(arg)
+        if not cap_name:
+            return f"error: no capability owns server '{arg}'"
+
+        if cmd == "enable":
+            try:
+                tools = await load_capability_tools(cap_name)
+            except Exception as e:  # noqa: BLE001
+                return f"error: failed to load '{arg}': {e}"
+            notified = await _send_list_changed()
+            if notified is not True:
+                return notified  # error string
+            log.info(f"Control: enabled {arg} ({len(tools)} tools) via out-of-band command")
+            return f"ok: enabled {arg} ({len(tools)} tools)"
+
+        # disable
+        unload_capability(cap_name)
+        notified = await _send_list_changed()
+        if notified is not True:
+            return notified
+        log.info(f"Control: disabled {arg} via out-of-band command")
+        return f"ok: disabled {arg}"
+
+    if cmd == "":
+        return "error: empty command"
+
+    return f"error: unknown command '{cmd}'"
+
+
+async def _handle_control_client(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+    """Serve one connected control client: newline-delimited request/reply loop."""
+    try:
+        while True:
+            raw = await reader.readline()
+            if not raw:  # client disconnected
+                break
+            line = raw.decode("utf-8", errors="replace")
+            if not line.strip():
+                continue
+            try:
+                reply = await handle_control_command(line)
+            except Exception as e:  # noqa: BLE001 — never let one command crash the gateway
+                log.warning(f"Control command error: {e}")
+                reply = f"error: {e}"
+            try:
+                writer.write((reply + "\n").encode())
+                await writer.drain()
+            except (ConnectionResetError, BrokenPipeError):
+                break
+    except (ConnectionResetError, BrokenPipeError):
+        pass
+    except Exception as e:  # noqa: BLE001
+        log.warning(f"Control client handler error: {e}")
+    finally:
+        try:
+            writer.close()
+        except Exception:
+            pass
+
+
+async def run_control_server(sock_path: Path = None):
+    """Background task: listen on the Unix control socket until cancelled."""
+    sock_path = Path(sock_path) if sock_path else CONTROL_SOCK_PATH
+    sock_path.parent.mkdir(parents=True, exist_ok=True)
+    # Remove a stale socket file from a previous (crashed) run.
+    try:
+        sock_path.unlink()
+    except FileNotFoundError:
+        pass
+
+    server = await asyncio.start_unix_server(_handle_control_client, path=str(sock_path))
+    log.info(f"Control socket listening at {sock_path}")
+    try:
+        async with server:
+            await server.serve_forever()
+    finally:
+        try:
+            sock_path.unlink()
+        except FileNotFoundError:
+            pass
+        log.info("Control socket closed.")
+
+
 # ─── MCP Server definition ───────────────────────────────────────────────────────
 
 app = Server("vero-mcp-router")
@@ -444,6 +614,8 @@ async def list_tools() -> list[types.Tool]:
     1. The 3 meta-tools (always present)
     2. Any tools from currently active capabilities
     """
+    _capture_active_session()
+
     meta_tools = [
         types.Tool(
             name="list_capabilities",
@@ -564,6 +736,7 @@ async def list_tools() -> list[types.Tool]:
 @app.call_tool()
 async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     """Route tool calls to meta-handlers or child MCP servers."""
+    _capture_active_session()
 
     # ── Meta: list_capabilities ──────────────────────────────────────────────
     if name == "list_capabilities":
@@ -840,7 +1013,17 @@ async def main():
             init_options = app.create_initialization_options(
                 notification_options=NotificationOptions(tools_changed=True)
             )
-            await app.run(read_stream, write_stream, init_options)
+            # Start the out-of-band control socket alongside the MCP server so an
+            # external `mcp enable <server>` can flip capabilities live.
+            control_task = asyncio.create_task(run_control_server())
+            try:
+                await app.run(read_stream, write_stream, init_options)
+            finally:
+                control_task.cancel()
+                try:
+                    await control_task
+                except asyncio.CancelledError:
+                    pass
     finally:
         await shutdown()
         log.info("Vero MCP Router stopped.")
