@@ -1,219 +1,181 @@
 # MCP Salad 🥗
 
-### MCP Salad doesn't grow vegetables. It's the bowl.
+### The bowl, not the vegetables.
 
-**Built for people who use tools, not people who build them.**
+You start a session. You don't know which tools you'll need.
 
-**Nobody knows which MCP servers they'll need before a session starts.**
+Every other MCP setup makes you decide upfront — edit a config file, restart the client, repeat until you've bloated your context with tools you're not using. MCP Salad doesn't work that way. Servers sit dormant until you need them. When you do, one command drops them into your live session. Done with them? Remove them and the context comes back.
 
-Every other tool makes you decide upfront. MCP Salad doesn't. Servers sit dormant — zero tokens, zero context cost — until you actually need them. When you do, one command from a second terminal drops them into your running session instantly. Done with them? Remove them and the tokens come back.
-
-No restart. No pre-planning. Just grab what you need, when you need it.
-
-Powered by the MCP spec's own `notifications/tools/list_changed`. Searches and installs from the official registry (14,000+ servers). The bowl holds whatever ingredients you put in — and you can swap them mid-session.
+**No restart. No pre-planning. No context waste.**
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Servers](https://img.shields.io/badge/servers-103-brightgreen.svg)
-![Runtime](https://img.shields.io/badge/runtime-hot--swap-ff69b4.svg)
+![Servers](https://img.shields.io/badge/curated_servers-103-brightgreen.svg)
+![Registry](https://img.shields.io/badge/official_registry-14%2C000%2B-ff69b4.svg)
 
-![MCP Salad runtime hot-swap demo](docs/hotswap-demo.gif)
+---
 
-**No restart. No polling. Just MCP notifications.**
-
-> The "no restart" part depends on your client honoring `notifications/tools/list_changed`. Recent Claude Code does; support elsewhere varies by client and version. This isn't a new invention — it's the spec's own notification, wired up end to end with a clean enable/disable UX.
-
-### How it compares
-
-|                              | Restart the client | Poll for changes | Load on demand | Unload to save context |
-|------------------------------|:------------------:|:----------------:|:--------------:|:----------------------:|
-| Edit your `mcp.json` by hand |         ✅          |        —         |       ❌        |           ❌            |
-| Most MCP gateways            |         ✅          |        ✅         |       ❌        |           ❌            |
-| **MCP Salad**                |         ❌          |        ❌         |       ✅        |           ✅            |
-
-One popular server ships **161 tools (~8k tokens)**. With MCP Salad those tools aren't in your context until you `enable` the server — and you can `disable` it to hand the context back.
-
-## Quick Start
+## The complete loop
 
 ```bash
-pip install pyyaml click
+# 1. Don't know what you need? Describe it.
+salad suggest "research patents and prior art"
 
-# hot-swap: flip a server on/off in a running session (no restart)
-salad enable twstock
-salad disable twstock
+#   → Top 5 matches (searches 14,373 servers):
+#     1. lens-mcp          [official]  Patent search — USPTO, EPO, WIPO
+#     2. semantic-scholar  [official]  200M+ academic papers, citations
+#     3. arxiv-mcp         [official]  Preprint papers, full-text access
+#     4. pubmed            [curated]   Biomedical literature (NIH)
+#     5. crossref-mcp      [official]  DOI lookup, citation metadata
 
-# don't know what you need? describe it
-salad suggest "research academic papers"   # keyword-matches 14k+ servers, top 5 back
-salad suggest "查台灣股票"                  # CJK works too
+# 2. Install it.
+salad install lens-mcp
 
-# registry: find and manage servers
-salad search finance        # searches curated + the official MCP registry
-salad install firecrawl     # curated server, or any name from the official registry
-salad list                  # see what you have
-salad doctor                # health-check them
-salad publish               # submit your own server in ~30s
+# 3. Drop it into your running session — no restart.
+salad enable lens-mcp
+#   → ✓ tools live in session. Claude can now search patents.
+
+# 4. Done with it? Take the context back.
+salad disable lens-mcp
+#   → ✓ disabled. Context freed.
 ```
 
-> No install step for the CLI yet — run it as `python3 cli/mcp.py <command>`, or add the one-line `salad` shim (see [Install the `salad` command](#install-the-salad-command)).
+That's the loop. Suggest → install → enable → use → disable. Mid-session, no restart, no config editing.
 
-### 103 curated servers across 15 categories
+![MCP Salad demo](docs/hotswap-demo.gif)
 
-The registry ships with **103 hand-picked servers** covering Medical/Biomedical, Finance & Economics, Trade & Customs, Legal & Compliance, Patents & IP, Research, Productivity, Travel, Documents, Developer Tools, Audio/Media, Geo, and more.
+---
 
-Browse by category: [`registry/CATEGORIES.md`](registry/CATEGORIES.md)
+## Why this matters
 
-Notable curated collections:
-- **16 medical/pharma** servers — PubMed, ClinicalTrials, OpenFDA, ICD, RxNorm, ChEMBL, UniProt...
-- **14 finance/economics** servers — FRED, IMF, OECD, World Bank, ECB, SEC EDGAR, Treasury...
-- **6 trade/customs** servers — UN Comtrade, HTS tariffs, HS code classifier, PortWatch...
-- **8 legal/compliance** servers — Taiwanese/Brazil/Japan law, OFAC sanctions, VAT validator...
+One popular MCP server ships **161 tools — roughly 8,000 tokens** of context. If you're not using it, that's 8k tokens doing nothing but slowing you down every turn.
 
-### Search spans the official registry
+With MCP Salad, you load a server only when you need it. When you're done, you unload it. Your session stays lean.
 
-`salad search <query>` now searches **both** the curated local registry and the
-[official MCP registry](https://registry.modelcontextprotocol.io) (thousands of
-servers). Curated hits are tagged `[curated]`, official hits `[official]`:
+|                              | Restart required | Context cost when idle | Load on demand | Unload mid-session |
+|------------------------------|:----------------:|:----------------------:|:--------------:|:------------------:|
+| Edit `mcp.json` by hand      |        ✅         |          ✅             |       ❌        |         ❌          |
+| Most MCP gateways            |        ✅         |          ✅             |       ❌        |         ❌          |
+| **MCP Salad**                |        ❌         |          ❌             |       ✅        |         ✅          |
+
+Hot-swap works by wiring up the MCP spec's own `notifications/tools/list_changed` end-to-end. The spec defines it; MCP Salad uses it cleanly.
+
+---
+
+## Discovery: `salad suggest`
+
+The hardest part of MCP isn't running servers — it's knowing which ones exist.
 
 ```bash
-salad search notion                 # both sources (default)
-salad search notion --source official   # only the official registry
-salad search notion --source local      # curated only, no network
+salad suggest "analyze financial statements"
+salad suggest "check drug interactions"
+salad suggest "track container shipments"
+salad suggest "查台灣股票"                   # CJK works too
 ```
 
-`salad install <name>` first checks the curated registry; if it isn't there, it
-resolves the name from the official registry, picks the latest active version,
-and writes a gateway entry — `remotes` → an HTTP entry, `packages` (npm/pypi/oci)
-→ a stdio `command`/`args` entry with any required credentials surfaced as
-placeholders. If the network is down or the server can't be mapped, it fails with
-a clear message (no traceback).
+Each query searches 14,373 servers from the official MCP registry. No LLM, no API key — pure keyword matching, scored by relevance. Top 5 results back in seconds. Pick one, install it, enable it.
 
-## Install Servers
+---
 
-Once you have a gateway `config.yaml` (copy from `gateway/config.example.yaml`), you can manage installed servers directly from the CLI:
+## 103 curated servers across 15 domains
+
+Beyond the official registry, MCP Salad ships with 103 hand-picked servers organized by domain. These are tested, documented, and tagged — not a raw dump.
+
+| Domain | Servers | Examples |
+|--------|---------|---------|
+| 🧬 Medical & Pharma | 16 | PubMed, ClinicalTrials.gov, OpenFDA, ICD-10, RxNorm, ChEMBL, UniProt |
+| 💹 Finance & Economics | 14 | FRED, IMF, OECD, World Bank, ECB, SEC EDGAR, US Treasury |
+| 🚢 Trade & Customs | 6 | UN Comtrade, HTS tariff codes, HS classifier, PortWatch |
+| ⚖️ Legal & Compliance | 8 | Taiwan/Brazil/Japan law, OFAC sanctions, VAT validator |
+| 🔬 Research | 8 | Semantic Scholar, arXiv, CrossRef, OpenAlex, CORE |
+| 📋 Patents & IP | 4 | USPTO, EPO, Lens, Google Patents |
+| ✈️ Travel | 5 | Flight data, Amadeus, visa info |
+| 📄 Documents | 6 | Word, Excel, PDF, Markdown converters |
+| 🗺️ Geo | 4 | Geocoding, elevation, place search |
+| 🛠️ Developer Tools | 12 | Firecrawl, Context7, Git, GitHub, code execution |
+| 🎵 Audio & Media | 4 | Spotify, YouTube, audio analysis |
+| 🗄️ Databases | 5 | PostgreSQL, MySQL, SQLite, Redis |
+| ⚙️ Infrastructure | 4 | Docker, K8s, AWS, monitoring |
+| 📚 Reference | 4 | Wikipedia, Wikidata, OpenLibrary |
+| 🔧 Productivity | 3 | Obsidian, Notion, Calendar |
+
+Full catalog with install instructions: [`registry/CATEGORIES.md`](registry/CATEGORIES.md)
+
+---
+
+## `salad search` spans both sources
 
 ```bash
-# Install a server into your Gateway
-python3 cli/mcp.py install firecrawl
-
-# List installed servers
-python3 cli/mcp.py list
-
-# Remove a server
-python3 cli/mcp.py uninstall firecrawl
+salad search biomedical            # curated + official registry
+salad search biomedical --source local    # curated only, fast
+salad search biomedical --source official # official registry only
 ```
 
-Set `MCP_GATEWAY_CONFIG=/path/to/your/config.yaml` to point the CLI at your live gateway config.
+Curated results are tagged `[curated]`. Official hits are tagged `[official]`. Install any of them the same way: `salad install <name>`.
 
-## Demo
+---
 
-```
-$ python3 cli/mcp.py search weather
-
-  Found 2 server(s) matching 'weather':
-
-  open-meteo                 Free weather API — no key required...
-  [weather] [api] [forecast]
-
-  weather-gov                Official US National Weather Service data...
-  [weather] [us] [forecast]
-```
-
-```
-$ python3 cli/mcp.py install firecrawl
-
-  Installing: Firecrawl
-
-  Required environment variables:
-    FIRECRAWL_API_KEY — Get from firecrawl.dev/app
-
-  Add to Claude Desktop config:
-
-  "firecrawl": {
-    "command": "npx",
-    "args": ["-y", "firecrawl-mcp"],
-    "env": {"FIRECRAWL_API_KEY": "YOUR_KEY_HERE"}
-  }
-
-  ✓ Config snippet copied to clipboard!
-```
-
-## Browse Servers
-
-| Name | Description | Tags |
-|------|-------------|------|
-| firecrawl | Web scraping and crawling | web, scraping |
-| context7 | Live library documentation | docs, coding |
-| pubmed | Biomedical literature search | research, health |
-| yahoo-finance | Stock quotes and market data | finance, stocks |
-| alpha-vantage | Comprehensive market data API | finance, forex |
-| twstock | Taiwan stock market (TWSE/OTC) | finance, taiwan |
-| google-maps | Location, directions, geocoding | maps, places |
-| obsidian-fs | Read/write your Obsidian vault | notes, pkm |
-
-## Website
-
-The `website/` directory is a static, zero-build site (GitHub Pages compatible). It loads `registry.json` and renders a searchable card grid. Regenerate the JSON after adding servers:
+## Quick reference
 
 ```bash
-python3 scripts/build_registry_json.py
+# Discovery
+salad suggest "<description>"      # keyword-match 14k+ servers, top 5
+salad search <query>               # search curated + official registry
+
+# Management
+salad install <name>               # add to your gateway config
+salad uninstall <name>             # remove from config
+salad list                         # what's installed
+salad doctor                       # health-check all servers
+
+# Runtime (hot-swap — no restart)
+salad enable <name>                # load into running session
+salad disable <name>               # unload, free context
+
+# Contribute
+salad publish                      # submit your server in ~30s
 ```
 
-Then serve locally to preview:
+---
 
-```bash
-python3 -m http.server 8000 --directory website
-# open http://localhost:8000
-```
-
-## Install the `salad` command
-
-The repo ships a tiny `salad` shim so you can type `salad enable twstock` from anywhere:
+## Install
 
 ```bash
 git clone https://github.com/cesarlai-alt/mcp-salad
 cd mcp-salad
-ln -s "$(pwd)/salad" /usr/local/bin/salad   # or any dir on your PATH
+ln -s "$(pwd)/salad" /usr/local/bin/salad
 salad --help
 ```
 
-The shim just forwards to `python3 cli/mcp.py`, so every command below works with either form.
+Copy `gateway/config.example.yaml` to `~/.mcp-salad/config.yaml`, then point your MCP client at the gateway socket (`~/.mcp-salad/gateway.sock`).
 
-## Submit Your Server
-
-Fastest way — let the CLI do it in ~30 seconds:
+**Dependencies:**
 
 ```bash
-salad publish   # prompts for name/description/install, writes the YAML,
-                # and opens a pre-filled GitHub submission for you
+pip install pyyaml click
 ```
 
-Or [open an issue](../../issues/new?template=submit-server.yml) / send a PR by hand. See [CONTRIBUTING.md](CONTRIBUTING.md) for the YAML format.
+> Hot-swap requires your client to honor `notifications/tools/list_changed`. Claude Code (recent versions) does. Cursor, Windsurf: untested. The registry/CLI works with any MCP-compatible client regardless.
 
-## Compatible With
+---
 
-MCP Salad works with any MCP-compatible agent or IDE:
+## How it compares (honest version)
 
-Hot-swap only works where the client honors `notifications/tools/list_changed`, so support is client- and version-dependent:
+This is a small, solo project. There's an official MCP registry (Anthropic + GitHub + Microsoft) with tens of thousands of servers — MCP Salad isn't trying to out-register those; `salad suggest` searches them directly. The `list_changed` hot-swap mechanism is from the MCP spec itself; others use it too. What MCP Salad adds is **a clean operator UX**: one command to flip a server on or off in a live session, with a discovery layer to find what you need first.
 
-| Client | Registry/CLI | Runtime hot-swap (`list_changed`) |
-|--------|----------|--------------------------|
-| [Claude Code](https://claude.ai/code) | ✅ | ✅ on recent versions (support landed through 2026) |
-| [Cursor](https://cursor.com) | ✅ | 🔄 untested |
-| [Windsurf](https://codeium.com/windsurf) | ✅ | 🔄 untested |
-| Any MCP-spec client | ✅ | ✅ if it implements `list_changed` |
+For the full competitive landscape: [`docs/landscape.md`](docs/landscape.md)
 
-The registry/CLI works with any client (it just writes config). The hot-swap is the part that needs client support.
+---
 
-## How this compares (honestly)
+## Submit a server
 
-This is a tiny, days-old, solo project. There's an official MCP registry (Anthropic + GitHub + Microsoft) and directories indexing tens of thousands of servers — MCP Salad isn't trying to out-register those. The `list_changed` mechanism is straight from the spec; others use it too. What's actually here is a clean **operator hot-swap UX** — flip a whole server on/off, live, from a second terminal — plus a small legible CLI.
+```bash
+salad publish   # prompts for name/description/install, opens a pre-filled PR
+```
 
-For the full competitive picture, honest verdict, and what is / isn't novel, see **[docs/landscape.md](docs/landscape.md)**.
+Or open an [issue](../../issues/new?template=submit-server.yml) / send a PR by hand. See [CONTRIBUTING.md](CONTRIBUTING.md) for the YAML format.
 
-## Two parts, one project
-
-- **Gateway** (`gateway/`) — an MCP router that loads servers on demand and hot-swaps them at runtime via `notifications/tools/list_changed`. It opens a control socket so `salad enable/disable <server>` can flip tools on a live session — no restart.
-- **Registry** (`registry/`) — servers indexed in Homebrew-style YAML. The CLI reads and writes your live gateway `config.yaml`, so you never hand-edit YAML: `salad install`, `salad uninstall`, `salad list`, `salad publish`.
+---
 
 ## License
 
