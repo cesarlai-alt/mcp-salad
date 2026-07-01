@@ -42,6 +42,10 @@ pip install pyyaml click
 salad enable twstock
 salad disable twstock
 
+# don't know what you need? describe it
+salad suggest "research academic papers"   # keyword-matches 14k+ servers, top 5 back
+salad suggest "查台灣股票"                  # CJK works too
+
 # registry: find and manage servers
 salad search finance        # searches curated + the official MCP registry
 salad install firecrawl     # curated server, or any name from the official registry
