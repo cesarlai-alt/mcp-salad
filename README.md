@@ -13,6 +13,8 @@ Powered by the MCP spec's own `notifications/tools/list_changed`. Flip a server 
 
 **No restart. No polling. Just MCP notifications.**
 
+> The "no restart" part depends on your client honoring `notifications/tools/list_changed`. Recent Claude Code does; support elsewhere varies by client and version. This isn't a new invention — it's the spec's own notification, wired up end to end with a clean enable/disable UX.
+
 ### How it compares
 
 |                              | Restart the client | Poll for changes | Load on demand | Unload to save context |
@@ -148,14 +150,16 @@ Or [open an issue](../../issues/new?template=submit-server.yml) / send a PR by h
 
 MCP Salad works with any MCP-compatible agent or IDE:
 
-| Client | Registry | Gateway (dynamic loading) |
+Hot-swap only works where the client honors `notifications/tools/list_changed`, so support is client- and version-dependent:
+
+| Client | Registry/CLI | Runtime hot-swap (`list_changed`) |
 |--------|----------|--------------------------|
-| [Claude Code](https://claude.ai/code) | ✅ | ✅ verified |
-| [OpenClaw](https://openclaw.ai) | ✅ | ✅ supports MCP |
-| [Hermes Agent](https://github.com/NousResearch/hermes-agent) | ✅ | ✅ supports MCP |
-| [Cursor](https://cursor.com) | ✅ | 🔄 testing |
-| [Windsurf](https://codeium.com/windsurf) | ✅ | 🔄 testing |
-| Any MCP-spec client | ✅ | depends on notifications support |
+| [Claude Code](https://claude.ai/code) | ✅ | ✅ on recent versions (support landed through 2026) |
+| [Cursor](https://cursor.com) | ✅ | 🔄 untested |
+| [Windsurf](https://codeium.com/windsurf) | ✅ | 🔄 untested |
+| Any MCP-spec client | ✅ | ✅ if it implements `list_changed` |
+
+The registry/CLI works with any client (it just writes config). The hot-swap is the part that needs client support.
 
 ## Two parts, one project
 
