@@ -8,7 +8,7 @@ MCP Salad fixes this: an open, community-maintained registry with a CLI and a se
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Servers](https://img.shields.io/badge/servers-8-brightgreen.svg)
+![Servers](https://img.shields.io/badge/servers-26-brightgreen.svg)
 
 ## Quick Start
 
@@ -95,6 +95,19 @@ python3 -m http.server 8000 --directory website
 Found an MCP server not in the registry? [Open an issue](../../issues/new?template=submit-server.yml) or submit a PR.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the YAML format.
+
+## Compatible With
+
+MCP Salad works with any MCP-compatible agent or IDE:
+
+| Client | Registry | Gateway (dynamic loading) |
+|--------|----------|--------------------------|
+| [Claude Code](https://claude.ai/code) | ✅ | ✅ verified |
+| [OpenClaw](https://openclaw.ai) | ✅ | ✅ supports MCP |
+| [Hermes Agent](https://github.com/NousResearch/hermes-agent) | ✅ | ✅ supports MCP |
+| [Cursor](https://cursor.com) | ✅ | 🔄 testing |
+| [Windsurf](https://codeium.com/windsurf) | ✅ | 🔄 testing |
+| Any MCP-spec client | ✅ | depends on notifications support |
 
 ## Companion Project
 
