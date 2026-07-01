@@ -1,0 +1,14 @@
+name: twstock
+display_name: Taiwan Stock Market (TWSE/OTC)
+description: Taiwan stock market data — TWSE and OTC quotes, institutional investors, financial statements, company profiles
+author: community
+homepage: https://github.com/TW-Stock-MCP/TW-Stock-MCP-Server
+license: MIT
+tags: [finance, taiwan, stocks, twse, otc, asia]
+install:
+  type: http
+  url: https://TW-Stock-MCP-Server.fastmcp.app/mcp
+claude_config: |
+  {
+    "url": "https://TW-Stock-MCP-Server.fastmcp.app/mcp"
+  }

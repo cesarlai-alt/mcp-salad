@@ -1,0 +1,16 @@
+name: yahoo-finance
+display_name: Yahoo Finance
+description: Real-time stock quotes, historical data, financial statements, and market news via Yahoo Finance
+author: community
+homepage: https://finance.yahoo.com
+license: MIT
+tags: [finance, stocks, markets, investing, data]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "yahoo-finance-mcp"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "yahoo-finance-mcp"]
+  }

@@ -1,0 +1,89 @@
+name: Submit an MCP Server
+description: Suggest a new MCP server to add to the registry
+title: "Add: <server-name>"
+labels: ["new-server"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a server! Fill in the fields below. A maintainer will turn this into a `registry/servers/<name>.yaml` entry, or you can open a PR directly (see CONTRIBUTING.md).
+
+  - type: input
+    id: name
+    attributes:
+      label: Server name
+      description: Lowercase, hyphenated, unique (e.g. `yahoo-finance`)
+      placeholder: my-server
+    validations:
+      required: true
+
+  - type: input
+    id: package
+    attributes:
+      label: npm package or URL
+      description: The npm package name for stdio servers, or the Streamable HTTP endpoint URL
+      placeholder: "my-mcp-server  OR  https://my-server.example.app/mcp"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: One clear sentence about what the server does
+      placeholder: Does X for Y — with Z capabilities
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Author / homepage
+      description: Author handle and project homepage
+      placeholder: "acme  —  https://acme.dev"
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated keywords
+      placeholder: "finance, stocks, data"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: needs_key
+    attributes:
+      label: Requires API key?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: textarea
+    id: claude_config
+    attributes:
+      label: claude_config snippet
+      description: The JSON config block to add to claude_desktop_config.json
+      render: json
+      placeholder: |
+        {
+          "command": "npx",
+          "args": ["-y", "my-mcp-server"],
+          "env": {"MY_API_KEY": "YOUR_KEY_HERE"}
+        }
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: The server is publicly available and free of malware
+          required: true
+        - label: The metadata above is accurate
+          required: true

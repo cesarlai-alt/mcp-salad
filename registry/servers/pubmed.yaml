@@ -1,0 +1,16 @@
+name: pubmed
+display_name: PubMed Research
+description: Search and retrieve biomedical literature from PubMed and Europe PMC databases
+author: community
+homepage: https://pubmed.ncbi.nlm.nih.gov
+license: MIT
+tags: [research, biomedical, science, papers, health]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "pubmed-mcp-server"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "pubmed-mcp-server"]
+  }

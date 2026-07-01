@@ -1,0 +1,16 @@
+name: context7
+display_name: Context7
+description: Up-to-date documentation for any library — resolves library IDs and fetches live docs
+author: upstash
+homepage: https://context7.com
+license: MIT
+tags: [documentation, libraries, coding, research]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@upstash/context7-mcp"]
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"]
+  }

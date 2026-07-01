@@ -1,0 +1,21 @@
+name: alpha-vantage
+display_name: Alpha Vantage
+description: Comprehensive financial market data — stocks, forex, crypto, and economic indicators via Alpha Vantage API
+author: community
+homepage: https://www.alphavantage.co
+license: MIT
+tags: [finance, stocks, forex, crypto, data, api]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "alpha-vantage-mcp"]
+  env_required:
+    - name: ALPHA_VANTAGE_API_KEY
+      description: "Get free key at alphavantage.co/support/#api-key"
+      url: https://www.alphavantage.co/support/#api-key
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "alpha-vantage-mcp"],
+    "env": {"ALPHA_VANTAGE_API_KEY": "YOUR_KEY_HERE"}
+  }

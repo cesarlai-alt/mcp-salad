@@ -1,0 +1,21 @@
+name: firecrawl
+display_name: Firecrawl
+description: Web scraping and crawling MCP server — extract content from any URL
+author: mendableai
+homepage: https://firecrawl.dev
+license: MIT
+tags: [web, scraping, crawling, research]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "firecrawl-mcp"]
+  env_required:
+    - name: FIRECRAWL_API_KEY
+      description: "Get from firecrawl.dev/app"
+      url: https://firecrawl.dev/app
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "firecrawl-mcp"],
+    "env": {"FIRECRAWL_API_KEY": "YOUR_KEY_HERE"}
+  }

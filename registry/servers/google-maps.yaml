@@ -1,0 +1,21 @@
+name: google-maps
+display_name: Google Maps
+description: Location search, directions, distance matrix, geocoding, and place details via Google Maps API
+author: google
+homepage: https://developers.google.com/maps
+license: Apache-2.0
+tags: [maps, location, navigation, geocoding, places]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "@googlemaps/mcp"]
+  env_required:
+    - name: GOOGLE_MAPS_API_KEY
+      description: "Get from Google Cloud Console"
+      url: https://console.cloud.google.com/
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "@googlemaps/mcp"],
+    "env": {"GOOGLE_MAPS_API_KEY": "YOUR_KEY_HERE"}
+  }

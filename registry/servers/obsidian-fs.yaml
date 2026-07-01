@@ -1,0 +1,21 @@
+name: obsidian-fs
+display_name: Obsidian File System
+description: Read, write, and search notes in your Obsidian vault — full filesystem access to local markdown notes
+author: community
+homepage: https://obsidian.md
+license: MIT
+tags: [notes, obsidian, markdown, productivity, pkm]
+install:
+  type: stdio
+  command: npx
+  args: ["-y", "obsidian-mcp"]
+  env_required:
+    - name: OBSIDIAN_VAULT_PATH
+      description: "Absolute path to your Obsidian vault folder"
+      url: https://obsidian.md
+claude_config: |
+  {
+    "command": "npx",
+    "args": ["-y", "obsidian-mcp"],
+    "env": {"OBSIDIAN_VAULT_PATH": "/path/to/your/vault"}
+  }
