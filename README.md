@@ -9,22 +9,7 @@ Powered by the MCP spec's own `notifications/tools/list_changed`. Flip a server 
 ![Servers](https://img.shields.io/badge/servers-26-brightgreen.svg)
 ![Runtime](https://img.shields.io/badge/runtime-hot--swap-ff69b4.svg)
 
-```
-  ┌── Claude Code (running) ──────┐     ┌── your terminal ──────────────┐
-  │                               │     │                               │
-  │  you ▸ what's TSMC trading at?│     │                               │
-  │  ✦   ▸ I don't have a stock   │     │                               │
-  │        tool for that.         │     │                               │
-  │                               │     │  $ salad enable twstock       │
-  │                               │     │  ✓ enabled twstock (161 tools)│
-  │       ⚡ tools/list_changed ◀─┼─────┼──                            │
-  │                               │     │                               │
-  │  you ▸ try again              │     │                               │
-  │  ✦   ▸ TSMC (2330) is at …    │     │                               │
-  │        ↑ no restart, no new   │     │                               │
-  │          chat. it just works. │     │                               │
-  └───────────────────────────────┘     └───────────────────────────────┘
-```
+![MCP Salad runtime hot-swap demo](docs/hotswap-demo.gif)
 
 **No restart. No polling. Just MCP notifications.**
 
