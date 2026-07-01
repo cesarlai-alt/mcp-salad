@@ -452,36 +452,114 @@ def uninstall(name):
 
 # ── Doctor ────────────────────────────────────────────────────────────────────
 
+def _check_http(url: str, timeout: float = 2.0) -> tuple:
+    """Return (reachable: bool, message: str) for an HTTP server URL."""
+    try:
+        import httpx
+        try:
+            with httpx.Client(timeout=timeout, verify=False) as client:
+                resp = client.get(url)
+            reachable = 200 <= resp.status_code < 500
+            return reachable, f"HTTP {resp.status_code}"
+        except Exception as exc:
+            return False, str(exc)
+    except ImportError:
+        pass
+
+    # Fall back to urllib.request
+    import urllib.request
+    import urllib.error
+    try:
+        req = urllib.request.Request(url, method="HEAD")
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return True, f"HTTP {resp.status}"
+    except urllib.error.HTTPError as exc:
+        # 4xx responses still mean the server is reachable
+        reachable = 400 <= exc.code < 500
+        return reachable, f"HTTP {exc.code}"
+    except Exception as exc:
+        return False, str(exc)
+
+
 @cli.command()
 def doctor():
-    """Check if common MCP dependencies are installed."""
-    click.echo(f"\n MCP Doctor — checking dependencies\n")
+    """Check health of installed MCP servers in the Gateway config."""
+    import shutil as _shutil
 
-    checks = [
-        ("node",    ["node", "--version"],    "Node.js (required for npx-based servers)"),
-        ("npx",     ["npx", "--version"],     "npx (runs MCP servers without global install)"),
-        ("python3", ["python3", "--version"], "Python 3 (for Python-based MCP servers)"),
-        ("uv",      ["uv", "--version"],      "uv (fast Python package runner, optional)"),
-        ("git",     ["git", "--version"],     "Git (for source-based installs)"),
-    ]
+    config = load_gateway_config()
 
-    all_ok = True
-    for cmd, test_cmd, label in checks:
-        try:
-            result = subprocess.run(test_cmd, capture_output=True, text=True, timeout=5)
-            version = result.stdout.strip().split("\n")[0]
-            click.echo(f"  {click.style('✓', fg='green')} {label}")
-            click.echo(f"    {version}")
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            click.echo(f"  {click.style('✗', fg='red')} {label}")
-            click.echo(f"    Not found — some servers may not work")
-            all_ok = False
-        click.echo()
+    click.echo(f"\n MCP Salad Doctor 🥗\n")
+    click.echo(f" Gateway config: {GATEWAY_CONFIG}")
 
-    if all_ok:
-        click.echo(f"  {click.style('All dependencies found!', fg='green', bold=True)}\n")
+    if config is None:
+        click.echo(f" Gateway config not found at {GATEWAY_CONFIG}")
+        sys.exit(1)
+
+    installed = config.get("servers") or {}
+    click.echo(f" Installed servers: {len(installed)}\n")
+
+    if not installed:
+        click.echo("  No servers installed. Run `mcp install <name>` to get started.")
+        sys.exit(0)
+
+    # Build a name→registry-entry lookup for env_required checks
+    registry_by_id: dict = {}
+    for s in load_local_registry():
+        reg_name = s.get("name", "")
+        # Store under both the raw name and the normalized (underscore) form
+        registry_by_id[reg_name] = s
+        registry_by_id[normalize_server_id(reg_name)] = s
+
+    issues = 0
+
+    for server_id, server_def in installed.items():
+        server_type = server_def.get("type", "stdio")
+        caps = get_capabilities_for_server(config, server_id)
+        cap_label = caps[0] if caps else "no_capability"
+
+        if server_type == "http":
+            url = server_def.get("url", "")
+            ok, detail = _check_http(url)
+            status = click.style("✅", fg="green") if ok else click.style("❌", fg="red")
+            msg = f"reachable (HTTP)" if ok else f"connection failed: {detail}"
+            if not ok:
+                issues += 1
+        else:
+            command = server_def.get("command", "")
+            found = _shutil.which(command)
+            ok = found is not None
+            status = click.style("✅", fg="green") if ok else click.style("❌", fg="red")
+            msg = f"command found: {command}" if ok else f"command not found: {command}"
+            if not ok:
+                issues += 1
+
+        click.echo(f"  {server_id:<16} [{cap_label}]   {status} {msg}")
+
+        # Env-var check: cross-reference registry for env_required
+        reg_entry = registry_by_id.get(server_id)
+        if reg_entry:
+            env_required = reg_entry.get("install", {}).get("env_required", [])
+            server_env = server_def.get("env", {})
+            for env_item in env_required:
+                var_name = env_item["name"]
+                configured_val = server_env.get(var_name, "")
+                is_placeholder = (
+                    isinstance(configured_val, str)
+                    and configured_val.startswith("${")
+                    and configured_val.endswith("}")
+                )
+                in_real_env = var_name in os.environ
+                if is_placeholder and not in_real_env:
+                    click.echo(f"    {click.style('⚠️', fg='yellow')}  {var_name} is still a placeholder — set it before use")
+                    issues += 1
+
+    click.echo()
+    if issues == 0:
+        click.echo(f" {click.style('All servers healthy.', fg='green', bold=True)}\n")
     else:
-        click.echo(f"  {click.style('Some dependencies missing.', fg='yellow')} Install them for full compatibility.\n")
+        click.echo(f" {click.style(str(issues) + ' issue(s) found.', fg='yellow')}\n")
+
+    sys.exit(0 if issues == 0 else 1)
 
 
 if __name__ == "__main__":

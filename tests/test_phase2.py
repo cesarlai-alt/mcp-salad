@@ -242,6 +242,93 @@ class TestErrorHandling:
 # Smoke: existing Phase 1 commands still work
 # --------------------------------------------------------------------------- #
 
+# --------------------------------------------------------------------------- #
+# Tests: mcp doctor
+# --------------------------------------------------------------------------- #
+
+class TestMcpDoctor:
+    def test_doctor_empty_config_no_servers(self, empty_config):
+        """Doctor with empty config prints 'No servers installed' and exits 0."""
+        result = run_cli("doctor", config_path=empty_config)
+        assert result.returncode == 0, (
+            f"Expected exit 0 for empty config, got {result.returncode}\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        combined = (result.stdout + result.stderr).lower()
+        assert "no servers" in combined or "not installed" in combined, (
+            f"Expected 'no servers' or 'not installed' message.\nOutput:\n{result.stdout}"
+        )
+
+    def test_doctor_python3_server_shows_ok(self, tmp_path):
+        """Doctor with python3 as command shows checkmark (python3 is always available)."""
+        data = {
+            "capabilities": {
+                "test_cap": {
+                    "description": "test capability",
+                    "keywords": ["test"],
+                    "servers": ["test_server"],
+                }
+            },
+            "servers": {
+                "test_server": {
+                    "type": "stdio",
+                    "command": "python3",
+                    "args": ["some_script.py"],
+                }
+            },
+        }
+        cfg = tmp_path / "config.yaml"
+        cfg.write_text(yaml.dump(data))
+
+        result = run_cli("doctor", config_path=cfg)
+        # python3 is definitely on PATH since we're running the CLI with it
+        assert result.returncode == 0, (
+            f"Expected exit 0 when python3 is found, got {result.returncode}\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        combined = result.stdout + result.stderr
+        assert "✅" in combined or "command found" in combined.lower(), (
+            f"Expected ✅ or 'command found' in output.\nOutput:\n{combined}"
+        )
+
+    def test_doctor_missing_command_shows_error(self, tmp_path):
+        """Doctor with a non-existent command shows ❌ and exits 1."""
+        data = {
+            "capabilities": {},
+            "servers": {
+                "broken_server": {
+                    "type": "stdio",
+                    "command": "xyz-missing-binary-99999",
+                    "args": [],
+                }
+            },
+        }
+        cfg = tmp_path / "config.yaml"
+        cfg.write_text(yaml.dump(data))
+
+        result = run_cli("doctor", config_path=cfg)
+        assert result.returncode == 1, (
+            f"Expected exit 1 when command not found, got {result.returncode}\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        combined = result.stdout + result.stderr
+        assert "❌" in combined or "not found" in combined.lower(), (
+            f"Expected ❌ or 'not found' in output.\nOutput:\n{combined}"
+        )
+
+    def test_doctor_shows_server_count(self, config_with_firecrawl):
+        """Doctor header shows the number of installed servers."""
+        result = run_cli("doctor", config_path=config_with_firecrawl)
+        # Should show count — either "1" in "Installed servers: 1" line
+        assert "1" in result.stdout, (
+            f"Expected server count '1' in output.\nOutput:\n{result.stdout}"
+        )
+
+
+# --------------------------------------------------------------------------- #
+# Smoke: existing Phase 1 commands still work
+# --------------------------------------------------------------------------- #
+
 class TestPhase1Regression:
     """Quick sanity checks that Phase 1 commands weren't broken by Phase 2."""
 
