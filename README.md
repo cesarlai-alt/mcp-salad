@@ -23,10 +23,13 @@ python3 cli/mcp.py search finance
 # Get details
 python3 cli/mcp.py info firecrawl
 
-# Show install config
+# Install a server into your gateway
 python3 cli/mcp.py install firecrawl
 
-# Check your setup
+# List what you have installed
+python3 cli/mcp.py list
+
+# Check the health of your setup
 python3 cli/mcp.py doctor
 ```
 
