@@ -9,6 +9,7 @@ MCP Salad fixes this: an open, community-maintained registry with a CLI and a se
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Servers](https://img.shields.io/badge/servers-26-brightgreen.svg)
+![Phase 2 Runtime](https://img.shields.io/badge/phase--2-runtime-blueviolet.svg)
 
 ## Quick Start
 
@@ -28,6 +29,23 @@ python3 cli/mcp.py install firecrawl
 # Check your setup
 python3 cli/mcp.py doctor
 ```
+
+## Install Servers
+
+Once you have a gateway `config.yaml` (copy from `gateway/config.example.yaml`), you can manage installed servers directly from the CLI:
+
+```bash
+# Install a server into your Gateway
+python3 cli/mcp.py install firecrawl
+
+# List installed servers
+python3 cli/mcp.py list
+
+# Remove a server
+python3 cli/mcp.py uninstall firecrawl
+```
+
+Set `MCP_GATEWAY_CONFIG=/path/to/your/config.yaml` to point the CLI at your live gateway config.
 
 ## Demo
 
@@ -112,6 +130,8 @@ MCP Salad works with any MCP-compatible agent or IDE:
 ## Companion Project
 
 This registry pairs with [dynamic-mcp-gateway](https://github.com/cesarlai-alt/mcp-salad) — a router that lets Claude dynamically load MCP servers on demand without restarting.
+
+**Phase 2 Runtime**: the CLI now talks directly to your gateway `config.yaml`. `mcp install`, `mcp uninstall`, and `mcp list` read and write your live config so you never have to hand-edit YAML to add or remove a server.
 
 ## License
 

@@ -94,7 +94,10 @@
           <p class="card-desc">${escapeHtml(s.description || "")}</p>
           <div class="card-tags">${tags}</div>
           <code class="card-cmd">${escapeHtml(installSnippet(s))}</code>
-          <button class="copy-btn" type="button">Copy Config</button>
+          <div class="card-footer">
+            <button class="copy-btn" type="button">Copy Config</button>
+            <button class="install-btn" type="button">📦 Install</button>
+          </div>
         `;
 
         card.querySelector(".copy-btn").addEventListener("click", () => {
@@ -108,6 +111,25 @@
             document.body.appendChild(ta);
             ta.select();
             try { document.execCommand("copy"); showToast(); } catch (e) {}
+            document.body.removeChild(ta);
+          });
+        });
+
+        const installBtn = card.querySelector(".install-btn");
+        installBtn.addEventListener("click", () => {
+          const text = `python3 cli/mcp.py install ${s.name}`;
+          const reset = () => {
+            setTimeout(() => { installBtn.textContent = "📦 Install"; }, 1600);
+          };
+          navigator.clipboard.writeText(text).then(() => {
+            installBtn.textContent = "✓ Copied!";
+            reset();
+          }).catch(() => {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); installBtn.textContent = "✓ Copied!"; reset(); } catch (e) {}
             document.body.removeChild(ta);
           });
         });

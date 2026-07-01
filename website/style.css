@@ -170,8 +170,13 @@ main {
   white-space: nowrap;
 }
 
+.card-footer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .copy-btn {
-  align-self: flex-start;
   background: var(--accent);
   color: #fff;
   border: none;
@@ -184,6 +189,22 @@ main {
 }
 
 .copy-btn:hover { background: var(--accent-hover); }
+
+.install-btn {
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  border-radius: 7px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.install-btn:hover {
+  background: rgba(57, 197, 207, 0.15);
+}
 
 .empty-state {
   text-align: center;

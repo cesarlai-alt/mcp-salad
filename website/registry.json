@@ -29,7 +29,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"alpha-vantage-mcp\"],\n  \"env\": {\"ALPHA_VANTAGE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"alpha-vantage-mcp\"],\n  \"env\": {\"ALPHA_VANTAGE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "aws-docs",
@@ -52,7 +53,8 @@
         "awslabs.aws-documentation-mcp-server@latest"
       ]
     },
-    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\"awslabs.aws-documentation-mcp-server@latest\"],\n  \"env\": {\"FASTMCP_LOG_LEVEL\": \"ERROR\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"uvx\",\n  \"args\": [\"awslabs.aws-documentation-mcp-server@latest\"],\n  \"env\": {\"FASTMCP_LOG_LEVEL\": \"ERROR\"}\n}\n",
+    "installable": true
   },
   {
     "name": "brave-search",
@@ -83,7 +85,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@brave/brave-search-mcp-server\"],\n  \"env\": {\"BRAVE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@brave/brave-search-mcp-server\"],\n  \"env\": {\"BRAVE_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "context7",
@@ -106,7 +109,8 @@
         "@upstash/context7-mcp"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@upstash/context7-mcp\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@upstash/context7-mcp\"]\n}\n",
+    "installable": true
   },
   {
     "name": "docker",
@@ -130,7 +134,8 @@
         "mcp-server-docker"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-server-docker\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"mcp-server-docker\"]\n}\n",
+    "installable": true
   },
   {
     "name": "fetch",
@@ -154,7 +159,8 @@
         "@modelcontextprotocol/server-fetch"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-fetch\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-fetch\"]\n}\n",
+    "installable": true
   },
   {
     "name": "figma",
@@ -186,7 +192,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"figma-developer-mcp\", \"--stdio\"],\n  \"env\": {\"FIGMA_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"figma-developer-mcp\", \"--stdio\"],\n  \"env\": {\"FIGMA_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "filesystem",
@@ -211,7 +218,8 @@
         "/path/to/allowed/dir"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"/Users/username/Documents\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"/Users/username/Documents\"]\n}\n",
+    "installable": true
   },
   {
     "name": "firecrawl",
@@ -241,7 +249,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"firecrawl-mcp\"],\n  \"env\": {\"FIRECRAWL_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"firecrawl-mcp\"],\n  \"env\": {\"FIRECRAWL_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "git-mcp",
@@ -261,7 +270,8 @@
       "type": "http",
       "url": "https://gitmcp.io/{owner}/{repo}"
     },
-    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://gitmcp.io/owner/repo\"\n}\n"
+    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://gitmcp.io/owner/repo\"\n}\n",
+    "installable": true
   },
   {
     "name": "github",
@@ -297,7 +307,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"-e\", \"GITHUB_PERSONAL_ACCESS_TOKEN\", \"ghcr.io/github/github-mcp-server\"],\n  \"env\": {\"GITHUB_PERSONAL_ACCESS_TOKEN\": \"YOUR_TOKEN_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"docker\",\n  \"args\": [\"run\", \"-i\", \"--rm\", \"-e\", \"GITHUB_PERSONAL_ACCESS_TOKEN\", \"ghcr.io/github/github-mcp-server\"],\n  \"env\": {\"GITHUB_PERSONAL_ACCESS_TOKEN\": \"YOUR_TOKEN_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "google-maps",
@@ -328,7 +339,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@googlemaps/mcp\"],\n  \"env\": {\"GOOGLE_MAPS_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@googlemaps/mcp\"],\n  \"env\": {\"GOOGLE_MAPS_API_KEY\": \"YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "kubernetes",
@@ -352,7 +364,8 @@
         "mcp-server-kubernetes"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"mcp-server-kubernetes\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"mcp-server-kubernetes\"]\n}\n",
+    "installable": true
   },
   {
     "name": "linear",
@@ -372,7 +385,8 @@
       "type": "http",
       "url": "https://mcp.linear.app/mcp"
     },
-    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://mcp.linear.app/mcp\"\n}\n"
+    "claude_config": "{\n  \"type\": \"http\",\n  \"url\": \"https://mcp.linear.app/mcp\"\n}\n",
+    "installable": true
   },
   {
     "name": "memory",
@@ -396,7 +410,8 @@
         "@modelcontextprotocol/server-memory"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"]\n}\n",
+    "installable": true
   },
   {
     "name": "mysql",
@@ -438,7 +453,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@benborla29/mcp-server-mysql\"],\n  \"env\": {\n    \"MYSQL_HOST\": \"127.0.0.1\",\n    \"MYSQL_USER\": \"root\",\n    \"MYSQL_PASS\": \"YOUR_PASSWORD\",\n    \"MYSQL_DB\": \"your_database\"\n  }\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@benborla29/mcp-server-mysql\"],\n  \"env\": {\n    \"MYSQL_HOST\": \"127.0.0.1\",\n    \"MYSQL_USER\": \"root\",\n    \"MYSQL_PASS\": \"YOUR_PASSWORD\",\n    \"MYSQL_DB\": \"your_database\"\n  }\n}\n",
+    "installable": true
   },
   {
     "name": "notion",
@@ -469,7 +485,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n  \"env\": {\n    \"OPENAPI_MCP_HEADERS\": \"{\\\"Authorization\\\": \\\"Bearer YOUR_NOTION_TOKEN_HERE\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\"\n  }\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@notionhq/notion-mcp-server\"],\n  \"env\": {\n    \"OPENAPI_MCP_HEADERS\": \"{\\\"Authorization\\\": \\\"Bearer YOUR_NOTION_TOKEN_HERE\\\", \\\"Notion-Version\\\": \\\"2022-06-28\\\"}\"\n  }\n}\n",
+    "installable": true
   },
   {
     "name": "obsidian-fs",
@@ -500,7 +517,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"obsidian-mcp\"],\n  \"env\": {\"OBSIDIAN_VAULT_PATH\": \"/path/to/your/vault\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"obsidian-mcp\"],\n  \"env\": {\"OBSIDIAN_VAULT_PATH\": \"/path/to/your/vault\"}\n}\n",
+    "installable": true
   },
   {
     "name": "playwright",
@@ -524,7 +542,8 @@
         "@playwright/mcp@latest"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@playwright/mcp@latest\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@playwright/mcp@latest\"]\n}\n",
+    "installable": true
   },
   {
     "name": "postgres",
@@ -549,7 +568,8 @@
         "postgresql://localhost/mydb"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-postgres\", \"postgresql://user:password@host:5432/dbname\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-postgres\", \"postgresql://user:password@host:5432/dbname\"]\n}\n",
+    "installable": true
   },
   {
     "name": "pubmed",
@@ -573,7 +593,8 @@
         "pubmed-mcp-server"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"pubmed-mcp-server\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"pubmed-mcp-server\"]\n}\n",
+    "installable": true
   },
   {
     "name": "slack",
@@ -609,7 +630,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-slack\"],\n  \"env\": {\n    \"SLACK_BOT_TOKEN\": \"xoxb-YOUR_TOKEN_HERE\",\n    \"SLACK_TEAM_ID\": \"YOUR_TEAM_ID_HERE\"\n  }\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-slack\"],\n  \"env\": {\n    \"SLACK_BOT_TOKEN\": \"xoxb-YOUR_TOKEN_HERE\",\n    \"SLACK_TEAM_ID\": \"YOUR_TEAM_ID_HERE\"\n  }\n}\n",
+    "installable": true
   },
   {
     "name": "sqlite",
@@ -634,7 +656,8 @@
         "/path/to/database.db"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-sqlite\", \"/absolute/path/to/your.db\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-sqlite\", \"/absolute/path/to/your.db\"]\n}\n",
+    "installable": true
   },
   {
     "name": "stripe",
@@ -666,7 +689,8 @@
         }
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@stripe/mcp\"],\n  \"env\": {\"STRIPE_SECRET_KEY\": \"sk_test_YOUR_KEY_HERE\"}\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@stripe/mcp\"],\n  \"env\": {\"STRIPE_SECRET_KEY\": \"sk_test_YOUR_KEY_HERE\"}\n}\n",
+    "installable": true
   },
   {
     "name": "twstock",
@@ -687,7 +711,8 @@
       "type": "http",
       "url": "https://TW-Stock-MCP-Server.fastmcp.app/mcp"
     },
-    "claude_config": "{\n  \"url\": \"https://TW-Stock-MCP-Server.fastmcp.app/mcp\"\n}\n"
+    "claude_config": "{\n  \"url\": \"https://TW-Stock-MCP-Server.fastmcp.app/mcp\"\n}\n",
+    "installable": true
   },
   {
     "name": "yahoo-finance",
@@ -711,6 +736,7 @@
         "yahoo-finance-mcp"
       ]
     },
-    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"yahoo-finance-mcp\"]\n}\n"
+    "claude_config": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"yahoo-finance-mcp\"]\n}\n",
+    "installable": true
   }
 ]

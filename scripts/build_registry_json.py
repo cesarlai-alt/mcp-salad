@@ -29,6 +29,7 @@ def build():
         with open(yaml_file) as f:
             data = yaml.safe_load(f)
             if data:
+                data["installable"] = True
                 servers.append(data)
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
