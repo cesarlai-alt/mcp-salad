@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# salad — thin shim for the MCP Salad CLI.
+# Lets you type `salad enable twstock` instead of `python3 cli/mcp.py enable twstock`.
+#
+# Install (one line):
+#   ln -s "$(pwd)/salad" /usr/local/bin/salad     # or anywhere on your PATH
+#
+# It resolves its own location, so the symlink works from anywhere.
+set -euo pipefail
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+ROOT="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+exec python3 "$ROOT/cli/mcp.py" "$@"

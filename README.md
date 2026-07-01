@@ -1,37 +1,61 @@
 # MCP Salad 🥗
 
-**The MCP ecosystem has no package manager.**
+### Hot-swappable MCP servers for Claude Code. Enable or disable them at runtime — no restart.
 
-500+ servers exist. They're scattered across GitHub repos, npm packages, and blog posts. There's no `npm install`. No search. No standard way to know what exists or how to try it.
-
-MCP Salad fixes this: an open, community-maintained registry with a CLI and a searchable index. `mcp search web` finds what you need. `mcp install firecrawl` shows you exactly how to configure it.
+Powered by the MCP spec's own `notifications/tools/list_changed`. Flip a server on from another terminal and your **already-running** session gains its tools instantly.
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Servers](https://img.shields.io/badge/servers-26-brightgreen.svg)
-![Phase 2 Runtime](https://img.shields.io/badge/phase--2-runtime-blueviolet.svg)
+![Runtime](https://img.shields.io/badge/runtime-hot--swap-ff69b4.svg)
+
+```
+  ┌── Claude Code (running) ──────┐     ┌── your terminal ──────────────┐
+  │                               │     │                               │
+  │  you ▸ what's TSMC trading at?│     │                               │
+  │  ✦   ▸ I don't have a stock   │     │                               │
+  │        tool for that.         │     │                               │
+  │                               │     │  $ salad enable twstock       │
+  │                               │     │  ✓ enabled twstock (161 tools)│
+  │       ⚡ tools/list_changed ◀─┼─────┼──                            │
+  │                               │     │                               │
+  │  you ▸ try again              │     │                               │
+  │  ✦   ▸ TSMC (2330) is at …    │     │                               │
+  │        ↑ no restart, no new   │     │                               │
+  │          chat. it just works. │     │                               │
+  └───────────────────────────────┘     └───────────────────────────────┘
+```
+
+**No restart. No polling. Just MCP notifications.**
+
+### How it compares
+
+|                              | Restart the client | Poll for changes | Load on demand | Unload to save context |
+|------------------------------|:------------------:|:----------------:|:--------------:|:----------------------:|
+| Edit your `mcp.json` by hand |         ✅          |        —         |       ❌        |           ❌            |
+| Most MCP gateways            |         ✅          |        ✅         |       ❌        |           ❌            |
+| **MCP Salad**                |         ❌          |        ❌         |       ✅        |           ✅            |
+
+One popular server ships **161 tools (~8k tokens)**. With MCP Salad those tools aren't in your context until you `enable` the server — and you can `disable` it to hand the context back.
 
 ## Quick Start
 
 ```bash
-# Install CLI
 pip install pyyaml click
 
-# Search for servers
-python3 cli/mcp.py search finance
+# hot-swap: flip a server on/off in a running session (no restart)
+salad enable twstock
+salad disable twstock
 
-# Get details
-python3 cli/mcp.py info firecrawl
-
-# Install a server into your gateway
-python3 cli/mcp.py install firecrawl
-
-# List what you have installed
-python3 cli/mcp.py list
-
-# Check the health of your setup
-python3 cli/mcp.py doctor
+# registry: find and manage servers
+salad search finance        # find servers
+salad install firecrawl     # add one to your gateway config
+salad list                  # see what you have
+salad doctor                # health-check them
+salad publish               # submit your own server in ~30s
 ```
+
+> No install step for the CLI yet — run it as `python3 cli/mcp.py <command>`, or add the one-line `salad` shim (see [Install the `salad` command](#install-the-salad-command)).
 
 ## Install Servers
 
@@ -111,11 +135,29 @@ python3 -m http.server 8000 --directory website
 # open http://localhost:8000
 ```
 
+## Install the `salad` command
+
+The repo ships a tiny `salad` shim so you can type `salad enable twstock` from anywhere:
+
+```bash
+git clone https://github.com/cesarlai-alt/mcp-salad
+cd mcp-salad
+ln -s "$(pwd)/salad" /usr/local/bin/salad   # or any dir on your PATH
+salad --help
+```
+
+The shim just forwards to `python3 cli/mcp.py`, so every command below works with either form.
+
 ## Submit Your Server
 
-Found an MCP server not in the registry? [Open an issue](../../issues/new?template=submit-server.yml) or submit a PR.
+Fastest way — let the CLI do it in ~30 seconds:
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the YAML format.
+```bash
+salad publish   # prompts for name/description/install, writes the YAML,
+                # and opens a pre-filled GitHub submission for you
+```
+
+Or [open an issue](../../issues/new?template=submit-server.yml) / send a PR by hand. See [CONTRIBUTING.md](CONTRIBUTING.md) for the YAML format.
 
 ## Compatible With
 
@@ -130,11 +172,10 @@ MCP Salad works with any MCP-compatible agent or IDE:
 | [Windsurf](https://codeium.com/windsurf) | ✅ | 🔄 testing |
 | Any MCP-spec client | ✅ | depends on notifications support |
 
-## Companion Project
+## Two parts, one project
 
-This registry pairs with [dynamic-mcp-gateway](https://github.com/cesarlai-alt/mcp-salad) — a router that lets Claude dynamically load MCP servers on demand without restarting.
-
-**Phase 2 Runtime**: the CLI now talks directly to your gateway `config.yaml`. `mcp install`, `mcp uninstall`, and `mcp list` read and write your live config so you never have to hand-edit YAML to add or remove a server.
+- **Gateway** (`gateway/`) — an MCP router that loads servers on demand and hot-swaps them at runtime via `notifications/tools/list_changed`. It opens a control socket so `salad enable/disable <server>` can flip tools on a live session — no restart.
+- **Registry** (`registry/`) — servers indexed in Homebrew-style YAML. The CLI reads and writes your live gateway `config.yaml`, so you never hand-edit YAML: `salad install`, `salad uninstall`, `salad list`, `salad publish`.
 
 ## License
 
