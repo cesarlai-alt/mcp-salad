@@ -35,14 +35,33 @@ salad enable twstock
 salad disable twstock
 
 # registry: find and manage servers
-salad search finance        # find servers
-salad install firecrawl     # add one to your gateway config
+salad search finance        # searches curated + the official MCP registry
+salad install firecrawl     # curated server, or any name from the official registry
 salad list                  # see what you have
 salad doctor                # health-check them
 salad publish               # submit your own server in ~30s
 ```
 
 > No install step for the CLI yet — run it as `python3 cli/mcp.py <command>`, or add the one-line `salad` shim (see [Install the `salad` command](#install-the-salad-command)).
+
+### Search spans the official registry
+
+`salad search <query>` now searches **both** the curated local registry and the
+[official MCP registry](https://registry.modelcontextprotocol.io) (thousands of
+servers). Curated hits are tagged `[curated]`, official hits `[official]`:
+
+```bash
+salad search notion                 # both sources (default)
+salad search notion --source official   # only the official registry
+salad search notion --source local      # curated only, no network
+```
+
+`salad install <name>` first checks the curated registry; if it isn't there, it
+resolves the name from the official registry, picks the latest active version,
+and writes a gateway entry — `remotes` → an HTTP entry, `packages` (npm/pypi/oci)
+→ a stdio `command`/`args` entry with any required credentials surfaced as
+placeholders. If the network is down or the server can't be mapped, it fails with
+a clear message (no traceback).
 
 ## Install Servers
 

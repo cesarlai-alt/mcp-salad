@@ -11,6 +11,10 @@ from pathlib import Path
 
 # Auto-detect registry location: sibling ../registry/servers/ OR fallback to GitHub raw
 SCRIPT_DIR = Path(__file__).parent
+
+# Official MCP registry client (sibling module — script is run directly).
+sys.path.insert(0, str(SCRIPT_DIR))
+import official
 LOCAL_REGISTRY = SCRIPT_DIR.parent / "registry" / "servers"
 GITHUB_RAW_BASE = "https://raw.githubusercontent.com/your-org/mcp-registry/main/registry/servers"
 
@@ -143,14 +147,10 @@ Quick start:\n
 
 # ── Search ────────────────────────────────────────────────────────────────────
 
-@cli.command()
-@click.argument("query")
-def search(query):
-    """Search for MCP servers by keyword."""
-    servers = get_servers()
-    query_lower = query.lower()
+def _search_local(query_lower):
+    """Return curated local servers matching the query."""
     results = []
-    for s in servers:
+    for s in get_servers():
         searchable = " ".join([
             s.get("name", ""),
             s.get("display_name", ""),
@@ -159,18 +159,70 @@ def search(query):
         ]).lower()
         if query_lower in searchable:
             results.append(s)
+    return results
 
-    if not results:
+
+@cli.command()
+@click.argument("query")
+@click.option("--source", type=click.Choice(["local", "official", "all"]),
+              default="all", show_default=True,
+              help="Where to search: curated local registry, the official registry, or both.")
+@click.option("--limit", type=int, default=20, show_default=True,
+              help="Max official-registry results to show.")
+def search(query, source, limit):
+    """Search for MCP servers by keyword (local curated + official registry)."""
+    query_lower = query.lower()
+
+    local_results = _search_local(query_lower) if source in ("local", "all") else []
+    local_names = {s["name"] for s in local_results}
+
+    printed_any = False
+
+    # ── Curated local hits first ──────────────────────────────────────────────
+    if local_results:
+        printed_any = True
+        click.echo(f"\n Found {len(local_results)} curated server(s) matching '{query}':\n")
+        for s in local_results:
+            tag = click.style("[curated]", fg="magenta")
+            click.echo(f"  {click.style(s['name'], fg='green', bold=True):<25} {tag} {s.get('description', '')[:55]}")
+            tags = " ".join(f"[{t}]" for t in s.get("tags", [])[:4])
+            if tags:
+                click.echo(f"  {'':25} {click.style(tags, fg='cyan')}")
+            click.echo()
+
+    # ── Official-registry hits ────────────────────────────────────────────────
+    if source in ("official", "all"):
+        try:
+            official_hits, total = official.search_servers(query, limit=limit)
+        except official.OfficialRegistryError as exc:
+            click.echo(f" Could not reach the official registry ({exc}). "
+                       f"Showing local results only." if source == "all"
+                       else f" Could not reach the official registry: {exc}")
+            official_hits, total = [], 0
+
+        # De-dup: skip official servers whose basename matches a curated hit.
+        deduped = []
+        for h in official_hits:
+            basename = h["name"].split("/")[-1].replace("-", "_")
+            if h["name"] in local_names or basename in {n.replace("-", "_") for n in local_names}:
+                continue
+            deduped.append(h)
+
+        if deduped:
+            printed_any = True
+            click.echo(f"\n Found {total} server(s) in the official registry "
+                       f"matching '{query}':\n")
+            for h in deduped:
+                tag = click.style("[official]", fg="blue")
+                click.echo(f"  {click.style(h['name'], fg='green', bold=True):<32} {tag} {h.get('description', '')[:50]}")
+                click.echo(f"  {'':32} {click.style(h['kind'] + ' · v' + (h.get('version') or '?'), fg='cyan')}")
+                click.echo()
+            if total > len(deduped):
+                click.echo(f"  … and {total - len(deduped)} more in the official registry. "
+                           f"Use --limit to see more.\n")
+
+    if not printed_any:
         click.echo(f"No servers found for '{query}'")
-        return
-
-    click.echo(f"\n Found {len(results)} server(s) matching '{query}':\n")
-    for s in results:
-        tags = " ".join(f"[{t}]" for t in s.get("tags", [])[:4])
-        click.echo(f"  {click.style(s['name'], fg='green', bold=True):<25} {s.get('description', '')[:60]}...")
-        if tags:
-            click.echo(f"  {'':25} {click.style(tags, fg='cyan')}")
-        click.echo()
 
 
 # ── Registry (was: list) ──────────────────────────────────────────────────────
@@ -303,6 +355,103 @@ def show_config(name):
 
 # ── Install ───────────────────────────────────────────────────────────────────
 
+def _parse_env_flags(env_vars) -> dict:
+    provided = {}
+    for ev in env_vars:
+        if "=" in ev:
+            k, v = ev.split("=", 1)
+            provided[k] = v
+    return provided
+
+
+def _install_from_official(name, env_vars, yes):
+    """Resolve a server from the official registry and add it to the gateway config."""
+    # ── Resolve ───────────────────────────────────────────────────────────────
+    try:
+        item = official.get_server(name)
+    except official.OfficialRegistryError as exc:
+        click.echo(
+            f"Server '{name}' isn't in the local registry, and the official "
+            f"registry couldn't be reached ({exc})."
+        )
+        sys.exit(1)
+
+    if item is None:
+        click.echo(
+            f"Server '{name}' not found in the local registry or the official "
+            f"registry. Try 'mcp search {name}' to see close matches."
+        )
+        sys.exit(1)
+
+    # ── Map to a gateway entry ────────────────────────────────────────────────
+    try:
+        entry, env_required = official.to_gateway_entry(item)
+    except official.OfficialRegistryError as exc:
+        click.echo(f"Can't install '{name}' from the official registry: {exc}")
+        sys.exit(1)
+
+    config = load_gateway_config()
+    if config is None:
+        click.echo(f"Gateway config not found at {GATEWAY_CONFIG}")
+        sys.exit(1)
+    config.setdefault("servers", {})
+    config.setdefault("capabilities", {})
+
+    server_id = official.official_server_id(name)
+    if server_id in config["servers"]:
+        click.echo(f"\n  '{server_id}' is already installed.")
+        caps = get_capabilities_for_server(config, server_id)
+        if caps:
+            click.echo(f"  Capabilities: {', '.join(f'[{c}]' for c in caps)}")
+        click.echo()
+        return
+
+    # ── Collect env vars (mirror the local-install UX) ────────────────────────
+    provided_env = _parse_env_flags(env_vars)
+    use_placeholders = yes or not sys.stdin.isatty()
+    if env_required:
+        click.echo(f"\n  This server requires configuration:")
+        for env_item in env_required:
+            var_name = env_item["name"]
+            if var_name not in provided_env:
+                click.echo(f"\n    {click.style(var_name, fg='yellow')}: {env_item.get('description', '')}")
+                if use_placeholders:
+                    click.echo(f"    Using placeholder: ${{{var_name}}}")
+                else:
+                    value = click.prompt(
+                        f"    Value for {var_name} (Enter to use placeholder)",
+                        default="", show_default=False,
+                    )
+                    if value:
+                        provided_env[var_name] = value
+
+        # Fold real values into whichever placeholder block to_gateway_entry made.
+        for block in ("env", "headers"):
+            if block in entry:
+                for var_name in list(entry[block].keys()):
+                    if provided_env.get(var_name):
+                        entry[block][var_name] = provided_env[var_name]
+
+    config["servers"][server_id] = entry
+
+    # ── Assign a capability (official servers carry no tags → new capability) ──
+    srv = item.get("server", {})
+    description = srv.get("description") or srv.get("title") or name
+    keywords = [t for t in official.official_server_id(name).split("_") if len(t) > 1]
+    config["capabilities"][server_id] = {
+        "description": description,
+        "keywords": keywords or [server_id],
+        "servers": [server_id],
+    }
+
+    save_gateway_config(config)
+
+    kind = "HTTP remote" if entry.get("type") == "http" else f"stdio ({entry.get('command')})"
+    click.echo(f"\n  ✅ {server_id} installed from the official registry ({kind}).")
+    click.echo(f"  Capability: [{server_id}]")
+    click.echo(f"  Call `use_capability('{server_id}')` to activate.\n")
+
+
 @cli.command()
 @click.argument("name")
 @click.option("--env", "env_vars", multiple=True, metavar="KEY=VALUE",
@@ -315,8 +464,9 @@ def install(name, env_vars, yes):
     servers = get_servers()
     server = next((s for s in servers if s["name"] == name), None)
     if not server:
-        click.echo(f"Server '{name}' not found. Try 'mcp registry' or 'mcp search <query>'.")
-        sys.exit(1)
+        # Not curated locally — try resolving from the official registry.
+        _install_from_official(name, env_vars, yes)
+        return
 
     # ── 2. Load gateway config ────────────────────────────────────────────────
     config = load_gateway_config()

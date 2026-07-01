@@ -1,0 +1,137 @@
+{
+  "servers": [
+    {
+      "server": {
+        "name": "com.example/widget",
+        "title": "Widget (old)",
+        "description": "An older widget server version that should be dropped",
+        "version": "0.9.0",
+        "remotes": [
+          {"type": "streamable-http", "url": "https://old.example.com/mcp"}
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "isLatest": false,
+          "publishedAt": "2026-01-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "server": {
+        "name": "com.example/widget",
+        "title": "Widget",
+        "description": "A hosted widget MCP server over HTTP",
+        "version": "1.0.0",
+        "remotes": [
+          {
+            "type": "streamable-http",
+            "url": "https://api.example.com/mcp",
+            "headers": [
+              {"name": "Authorization", "description": "Bearer token", "isRequired": true, "isSecret": true}
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "isLatest": true,
+          "publishedAt": "2026-05-01T00:00:00Z"
+        }
+      }
+    },
+    {
+      "server": {
+        "name": "io.acme/toolbox",
+        "title": "Acme Toolbox",
+        "description": "A widget-adjacent npm toolbox installed via npx",
+        "version": "2.3.1",
+        "packages": [
+          {
+            "registryType": "npm",
+            "identifier": "@acme/toolbox-mcp",
+            "version": "2.3.1",
+            "transport": {"type": "stdio"},
+            "environmentVariables": [
+              {"name": "ACME_API_KEY", "description": "Acme API key", "isRequired": true, "isSecret": true}
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "isLatest": true,
+          "publishedAt": "2026-05-02T00:00:00Z"
+        }
+      }
+    },
+    {
+      "server": {
+        "name": "io.pytools/widget-cli",
+        "title": "PyTools Widget CLI",
+        "description": "A widget pypi package run with uvx",
+        "version": "0.4.0",
+        "packages": [
+          {
+            "registryType": "pypi",
+            "identifier": "widget-cli-mcp",
+            "version": "0.4.0",
+            "transport": {"type": "stdio"}
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "isLatest": true,
+          "publishedAt": "2026-05-03T00:00:00Z"
+        }
+      }
+    },
+    {
+      "server": {
+        "name": "io.deprecated/widget-gone",
+        "title": "Deprecated Widget",
+        "description": "A deprecated widget server that must be filtered out",
+        "version": "1.0.0",
+        "remotes": [
+          {"type": "streamable-http", "url": "https://gone.example.com/mcp"}
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "deprecated",
+          "isLatest": true,
+          "publishedAt": "2026-05-04T00:00:00Z"
+        }
+      }
+    },
+    {
+      "server": {
+        "name": "io.exotic/mystery",
+        "title": "Mystery Box",
+        "description": "A widget with an unmappable package type",
+        "version": "1.0.0",
+        "packages": [
+          {
+            "registryType": "nuget",
+            "identifier": "Mystery.Mcp",
+            "version": "1.0.0",
+            "transport": {"type": "stdio"}
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "isLatest": true,
+          "publishedAt": "2026-05-05T00:00:00Z"
+        }
+      }
+    }
+  ],
+  "metadata": {"count": 6}
+}
