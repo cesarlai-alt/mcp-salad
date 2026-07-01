@@ -2,11 +2,13 @@
 
 ### MCP Salad doesn't grow vegetables. It's the bowl.
 
-Hot-swappable MCP servers for Claude Code. Enable or disable them at runtime — no restart.
+**Nobody knows which MCP servers they'll need before a session starts.**
 
-MCP Salad is a CLI + runtime layer for the MCP ecosystem. It searches and installs from the official MCP registry (14,000+ servers), then adds one thing the registry can't: flip servers on/off in a running session from a second terminal.
+Every other tool makes you decide upfront. MCP Salad doesn't. Servers sit dormant — zero tokens, zero context cost — until you actually need them. When you do, one command from a second terminal drops them into your running session instantly. Done with them? Remove them and the tokens come back.
 
-Powered by the MCP spec's own `notifications/tools/list_changed`. Enable a server from another terminal and your **already-running** session gains its tools instantly. Disable it and the context tokens come back.
+No restart. No pre-planning. Just grab what you need, when you need it.
+
+Powered by the MCP spec's own `notifications/tools/list_changed`. Searches and installs from the official registry (14,000+ servers). The bowl holds whatever ingredients you put in — and you can swap them mid-session.
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
