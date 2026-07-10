@@ -377,6 +377,18 @@ class StreamableHttpMCPClient:
 
 _clients: dict[str, StdioMCPClient | StreamableHttpMCPClient] = {}
 
+# Per-server locks serializing restart_server() (and, incidentally, the
+# lazy-start race in StdioMCPClient._ensure_started()) so two concurrent
+# `restart <id>` control commands for the same server can't both terminate/
+# spawn subprocesses at once and orphan one of them.
+_restart_locks: dict[str, asyncio.Lock] = {}
+
+
+def _restart_lock_for(server_id: str) -> asyncio.Lock:
+    if server_id not in _restart_locks:
+        _restart_locks[server_id] = asyncio.Lock()
+    return _restart_locks[server_id]
+
 
 def get_client(server_id: str) -> StdioMCPClient | StreamableHttpMCPClient:
     if server_id not in _clients:
@@ -448,6 +460,76 @@ def unload_capability(cap_name: str) -> bool:
         del active_capabilities[cap_name]
         return True
     return False
+
+
+async def restart_server(server_id: str) -> str:
+    """Kill and relaunch a stdio server's subprocess in place.
+
+    WHY THIS EXISTS: `/mcp reconnect` (Claude Code's built-in command) only
+    re-attaches the client's transport to an already-running stdio subprocess —
+    it does not kill and relaunch it. So if a server's underlying script/binary
+    is redeployed in place (same command/args, new code), reconnect never picks
+    up the new version; only a full Claude Code session restart does, which
+    loses conversation context. See GitHub issue anthropics/claude-code#24057.
+
+    This closes that gap for servers that sit behind the gateway: terminate the
+    existing subprocess, drop the cached client/tool-schema, and (if the
+    capability is currently active) eagerly relaunch it and re-notify the
+    client via tools/list_changed — all without the Claude Code session itself
+    ever restarting.
+    """
+    server_def = SERVER_DEFS.get(server_id)
+    if not server_def:
+        return f"error: unknown server id '{server_id}'"
+    if server_def.get("type") == "http":
+        return (
+            f"error: '{server_id}' is an HTTP server — restart only applies to "
+            f"stdio servers (HTTP servers reconnect fresh on every call already)"
+        )
+
+    # Serialize concurrent restarts of the *same* server: without this, two
+    # overlapping `restart <id>` commands could both terminate/spawn at once,
+    # each losing track of the other's subprocess (an orphan leak). This also
+    # guards against a restart racing a fresh lazy-start (get_client() ->
+    # _ensure_started()) triggered by an unrelated in-flight tool call.
+    async with _restart_lock_for(server_id):
+        proc = child_processes.get(server_id)
+        if proc and proc.returncode is None:
+            proc.terminate()
+            try:
+                await asyncio.wait_for(proc.wait(), timeout=5.0)
+            except asyncio.TimeoutError:
+                proc.kill()
+                await proc.wait()
+            log.info(f"Control: killed {server_id} subprocess for restart")
+
+        # Drop cached client/process/tools so the next call rebuilds from scratch.
+        _clients.pop(server_id, None)
+        child_processes.pop(server_id, None)
+        server_tool_cache.pop(server_id, None)
+
+        cap_name = find_capability_by_server(server_id)
+        if cap_name and cap_name in active_capabilities:
+            # Was active — relaunch eagerly now and refresh the schema so any
+            # new/changed tools from the redeployed code surface immediately.
+            unload_capability(cap_name)
+            try:
+                tools = await load_capability_tools(cap_name)
+            except Exception as e:  # noqa: BLE001
+                # Reload failed: the capability is already unloaded (its tools
+                # are gone from active_capabilities) but the client doesn't
+                # know that yet. Notify anyway so it re-fetches tools/list and
+                # doesn't keep calling now-dead tool names into a black hole.
+                await _send_list_changed()
+                return f"error: restarted {server_id} but failed to reload tools: {e}"
+            notified = await _send_list_changed()
+            if notified is not True:
+                return notified  # error string from _send_list_changed
+            log.info(f"Control: restarted {server_id} and refreshed {len(tools)} tools")
+            return f"ok: restarted {server_id} ({len(tools)} tools)"
+
+        log.info(f"Control: restarted {server_id} (not currently active; will start fresh on next use)")
+        return f"ok: restarted {server_id} (will start fresh on next use)"
 
 
 # ─── Out-of-band control channel ─────────────────────────────────────────────────
@@ -528,6 +610,11 @@ async def handle_control_command(line: str) -> str:
             return notified
         log.info(f"Control: disabled {arg} via out-of-band command")
         return f"ok: disabled {arg}"
+
+    if cmd == "restart":
+        if not arg:
+            return "error: restart requires a server id"
+        return await restart_server(arg)
 
     if cmd == "":
         return "error: empty command"

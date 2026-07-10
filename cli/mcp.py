@@ -814,6 +814,19 @@ def disable(server):
     _run_control_command("disable", server)
 
 
+@cli.command()
+@click.argument("server")
+def restart(server):
+    """Kill and relaunch a stdio server's subprocess in the RUNNING Gateway.
+
+    Use this after redeploying a stdio server's code in place (same command/
+    args, new script or binary) — Claude Code's built-in `/mcp reconnect` only
+    re-attaches to the existing subprocess and won't pick up the new code.
+    This kills it and starts fresh, without restarting the Claude Code session.
+    """
+    _run_control_command("restart", server)
+
+
 # ── Doctor ────────────────────────────────────────────────────────────────────
 
 def _check_http(url: str, timeout: float = 2.0) -> tuple:

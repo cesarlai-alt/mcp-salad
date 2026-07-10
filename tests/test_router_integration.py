@@ -320,3 +320,174 @@ def test_drop_capability_handler_end_to_end():
         assert "fake_cap" not in router.active_capabilities
 
     asyncio.run(scenario())
+
+
+# --------------------------------------------------------------------------- #
+# 8. restart_server — kill-and-relaunch a stdio server in place
+#
+# Regression coverage for the gap raised on GitHub issue #24057: `/mcp
+# reconnect` only re-attaches to an already-running stdio subprocess, so
+# redeployed-in-place code (same command/args, new script) is never picked up
+# without a full session restart. restart_server() must actually terminate the
+# old subprocess (not just clear config) and, if the capability was active,
+# relaunch + refresh the tool schema so the client sees fresh state.
+# --------------------------------------------------------------------------- #
+
+class _StubSession:
+    """Stand-in for the captured MCP ServerSession (no real client is attached
+    in this test), just enough to satisfy _send_list_changed()'s call site."""
+    async def send_tool_list_changed(self):
+        return None
+
+
+def test_restart_kills_and_relaunches_the_real_subprocess(monkeypatch):
+    async def scenario():
+        # Get the capability running first so there's a live child PID to kill.
+        await router.load_capability_tools("fake_cap")
+        old_client = router._clients["fakeserver"]
+        old_proc = old_client.proc
+        assert old_proc is not None and old_proc.returncode is None
+        old_pid = old_proc.pid
+
+        # restart_server() eagerly reloads and notifies via
+        # _send_list_changed(), which needs a captured session — normally set
+        # by _capture_active_session() on the first real client request. No
+        # real MCP client is attached in this test, so stub it directly
+        # (mirrors how test_control_channel.py handles the same dependency).
+        monkeypatch.setattr(router, "_active_session", _StubSession())
+
+        reply = await router.restart_server("fakeserver")
+        assert reply.startswith("ok:"), reply
+
+        # The old subprocess must actually be gone (terminated), not merely
+        # forgotten — this is the whole point vs. a config-only no-op.
+        assert old_proc.returncode is not None, "old subprocess was never terminated"
+
+        # The capability was active, so restart_server should have eagerly
+        # relaunched it: a fresh client/process should already exist, tools
+        # still work, and the tool list is intact.
+        assert "fakeserver" in router._clients
+        new_client = router._clients["fakeserver"]
+        assert new_client.proc is not None and new_client.proc.returncode is None
+        assert new_client.proc.pid != old_pid, "expected a genuinely new subprocess"
+
+        echo_res = await new_client.call_tool("echo", {"text": "after-restart"})
+        assert echo_res["content"][0]["text"] == "after-restart"
+        assert "fake_cap" in router.active_capabilities
+
+    asyncio.run(scenario())
+
+
+def test_restart_when_capability_not_active_just_clears_cache():
+    async def scenario():
+        # Never loaded in this scenario — nothing active, nothing running yet.
+        assert "fake_cap" not in router.active_capabilities
+
+        reply = await router.restart_server("fakeserver")
+        assert reply.startswith("ok:"), reply
+        assert "will start fresh" in reply
+
+        # No eager relaunch when the capability wasn't active — lazy-start on
+        # next real use is fine and cheaper.
+        assert "fakeserver" not in router._clients
+        assert "fake_cap" not in router.active_capabilities
+
+    asyncio.run(scenario())
+
+
+def test_restart_unknown_server_errors_gracefully():
+    async def scenario():
+        reply = await router.restart_server("no_such_server_xyz")
+        assert reply.startswith("error:"), reply
+        assert "unknown server id" in reply.lower()
+
+    asyncio.run(scenario())
+
+
+def test_restart_http_server_rejected():
+    async def scenario():
+        # Register an ad-hoc HTTP server def for this one test without
+        # mutating the shared module-level SERVER_DEFS permanently.
+        router.SERVER_DEFS["http_srv"] = {"type": "http", "url": "http://localhost:1"}
+        try:
+            reply = await router.restart_server("http_srv")
+            assert reply.startswith("error:"), reply
+            assert "http" in reply.lower()
+        finally:
+            del router.SERVER_DEFS["http_srv"]
+
+    asyncio.run(scenario())
+
+
+def test_control_command_restart_routes_correctly():
+    async def scenario():
+        reply = await router.handle_control_command("restart fakeserver")
+        assert reply.startswith("ok:"), reply
+
+        # Missing arg → error, no crash.
+        reply2 = await router.handle_control_command("restart")
+        assert reply2.startswith("error"), reply2
+
+    asyncio.run(scenario())
+
+
+def test_restart_failure_path_still_notifies_client(monkeypatch):
+    """If reload fails after unload, the client must still be told the tool
+    list changed — otherwise it keeps calling now-dead tool names into a
+    black hole, believing the capability is still loaded."""
+    async def scenario():
+        await router.load_capability_tools("fake_cap")
+        monkeypatch.setattr(router, "_active_session", _StubSession())
+
+        notified = {"count": 0}
+        real_send = router._send_list_changed
+
+        async def counting_send():
+            notified["count"] += 1
+            return await real_send()
+
+        monkeypatch.setattr(router, "_send_list_changed", counting_send)
+
+        async def failing_load(cap_name):
+            raise RuntimeError("simulated reload failure")
+
+        monkeypatch.setattr(router, "load_capability_tools", failing_load)
+
+        reply = await router.restart_server("fakeserver")
+        assert reply.startswith("error:"), reply
+        assert "failed to reload" in reply
+
+        assert notified["count"] == 1, (
+            "expected _send_list_changed to be called on the failure path "
+            "so the client re-fetches tools/list instead of calling into a "
+            "capability that was already unloaded"
+        )
+
+    asyncio.run(scenario())
+
+
+def test_concurrent_restarts_do_not_orphan_a_subprocess(monkeypatch):
+    """Two overlapping restart_server() calls for the same server_id must not
+    each spawn their own replacement — the per-server lock should serialize
+    them so only one relaunch actually happens at a time."""
+    async def scenario():
+        await router.load_capability_tools("fake_cap")
+        monkeypatch.setattr(router, "_active_session", _StubSession())
+
+        results = await asyncio.gather(
+            router.restart_server("fakeserver"),
+            router.restart_server("fakeserver"),
+        )
+        assert all(r.startswith("ok:") for r in results), results
+
+        # Exactly one live client/process should exist afterward — not a
+        # leaked orphan from the two calls racing each other.
+        assert "fakeserver" in router._clients
+        final_client = router._clients["fakeserver"]
+        assert final_client.proc is not None and final_client.proc.returncode is None
+
+        # And it still actually works.
+        res = await final_client.call_tool("echo", {"text": "post-race"})
+        assert res["content"][0]["text"] == "post-race"
+
+    asyncio.run(scenario())
