@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/cesarlai-alt-mcp-salad-badge.png)](https://mseep.ai/app/cesarlai-alt-mcp-salad)
+
 # MCP Salad 🥗
 
 ### The bowl, not the vegetables.
